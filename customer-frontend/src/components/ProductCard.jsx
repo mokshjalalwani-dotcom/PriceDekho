@@ -46,6 +46,10 @@ const ProductCard = ({ product }) => {
           className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           style={{ maxHeight: '180px' }}
           loading="lazy"
+          onError={(e) => {
+            e.target.src = 'https://placehold.co/300x300/f8fafc/94a3b8?text=No+Image';
+            e.target.onerror = null;
+          }}
         />
       </div>
 

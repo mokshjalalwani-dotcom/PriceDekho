@@ -187,6 +187,10 @@ const ProductDetails = () => {
                 alt={product.name}
                 referrerPolicy="no-referrer"
                 className="max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-105"
+                onError={(e) => {
+                  e.target.src = 'https://placehold.co/500x500/f8fafc/94a3b8?text=No+Image';
+                  e.target.onerror = null;
+                }}
               />
               {discount > 0 && (
                 <span className="absolute top-4 left-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-lg shadow">{discount}% OFF</span>
@@ -200,7 +204,16 @@ const ProductDetails = () => {
                     onClick={() => setSelectedImage(idx)}
                     className={`w-16 h-16 border-2 rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-1 transition-all ${selectedImage === idx ? 'border-orange-500 shadow-md' : 'border-gray-200 hover:border-gray-300'}`}
                   >
-                    <img src={img} alt="" referrerPolicy="no-referrer" className="w-full h-full object-contain" />
+                    <img 
+                      src={img} 
+                      alt="" 
+                      referrerPolicy="no-referrer" 
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        e.target.src = 'https://placehold.co/100x100/f8fafc/94a3b8?text=No+Image';
+                        e.target.onerror = null;
+                      }} 
+                    />
                   </button>
                 ))}
               </div>

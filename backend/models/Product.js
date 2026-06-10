@@ -249,5 +249,13 @@ productSchema.pre('validate', function () {
 // Text search index
 productSchema.index({ name: 'text', tags: 'text', shortDescription: 'text' });
 
+// Performance Indexes for common queries
+productSchema.index({ category: 1 });
+productSchema.index({ brand: 1 });
+productSchema.index({ sellingPrice: 1 });
+productSchema.index({ availability: 1 });
+productSchema.index({ modelNumber: 1 });
+productSchema.index({ createdAt: -1 });
+
 const Product = mongoose.model('Product', productSchema);
 export default Product;
