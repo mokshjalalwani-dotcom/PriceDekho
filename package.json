@@ -1,0 +1,12 @@
+{
+  "name": "satguru-smartshop",
+  "version": "1.0.0",
+  "description": "Satguru Electronics Smart Shop",
+  "scripts": {
+    "dev:backend": "cd backend && npm start",
+    "dev:customer": "cd customer-frontend && npm run dev",
+    "dev:admin": "cd admin-frontend && npm run dev",
+    "build:customer": "cd customer-frontend && npm run build",
+    "build:admin": "cd admin-frontend && npm run build"
+  }
+}

@@ -1,0 +1,102 @@
+import React from 'react';
+import {
+  TvIcon,
+  RefrigeratorIcon,
+  FanIcon,
+  MixerIcon,
+  WaterPurifierIcon,
+  GharGhantiIcon,
+  SoundSystemIcon,
+  AcIcon,
+  WashingMachineIcon,
+  MicrowaveIcon,
+  GasStoveIcon,
+  DishwasherIcon
+} from '../components/icons/CategoryIcons';
+
+export const CATEGORIES = [
+  {
+    name: 'Televisions',
+    slug: 'tv',
+    icon: <TvIcon size={52} className="text-white" />,
+    color: 'from-[#FFB732] to-[#F19A1A]',
+    smallColor: 'bg-[#FFB300]',
+  },
+  {
+    name: 'Refrigerator',
+    slug: 'refrigerator',
+    icon: <RefrigeratorIcon size={52} className="text-white" />,
+    color: 'from-[#B0D136] to-[#8CBB1B]',
+    smallColor: 'bg-[#8BC34A]',
+  },
+  {
+    name: 'Fan',
+    slug: 'fan',
+    icon: <FanIcon size={52} className="text-white" />,
+    color: 'from-[#00BCD4] to-[#0097A7]',
+    smallColor: 'bg-[#00BCD4]',
+  },
+  {
+    name: 'Mixer',
+    slug: 'mixer',
+    icon: <MixerIcon size={52} className="text-white" />,
+    color: 'from-[#E91E63] to-[#C2185B]',
+    smallColor: 'bg-[#E91E63]',
+  },
+  {
+    name: 'Water Purifier',
+    slug: 'water-purifier',
+    icon: <WaterPurifierIcon size={52} className="text-white" />,
+    color: 'from-[#00D2FF] to-[#3A7BD5]',
+    smallColor: 'bg-[#00B0FF]',
+  },
+  {
+    name: 'Ghar Ghanti',
+    slug: 'ghar-ghanti',
+    icon: <GharGhantiIcon size={52} className="text-white" />,
+    color: 'from-[#1880C4] to-[#2B2384]',
+    smallColor: 'bg-[#1A237E]',
+  },
+  {
+    name: 'Sound System',
+    slug: 'sound-system',
+    icon: <SoundSystemIcon size={52} className="text-white" />,
+    color: 'from-[#614385] to-[#516395]',
+    smallColor: 'bg-[#5C6BC0]',
+  },
+  {
+    name: 'Air Conditioner',
+    slug: 'air-conditioners',
+    icon: <AcIcon size={52} className="text-white" />,
+    color: 'from-[#1CC89B] to-[#0CB07D]',
+    smallColor: 'bg-[#00BFA5]',
+  },
+  {
+    name: 'Washing Machine',
+    slug: 'washing-machines',
+    icon: <WashingMachineIcon size={52} className="text-white" />,
+    color: 'from-[#FF6368] to-[#F0444A]',
+    smallColor: 'bg-[#F44336]',
+  },
+  {
+    name: 'Oven',
+    slug: 'oven',
+    icon: <MicrowaveIcon size={52} className="text-white" />,
+    color: 'from-[#FF9800] to-[#F57C00]',
+    smallColor: 'bg-[#FF9800]',
+  },
+  {
+    name: 'Gas Stove',
+    slug: 'gas-stove',
+    icon: <GasStoveIcon size={52} className="text-white" />,
+    color: 'from-[#FF5722] to-[#E64A19]',
+    smallColor: 'bg-[#FF5722]',
+  },
+  {
+    name: 'Dishwasher',
+    slug: 'dishwashers',
+    icon: <DishwasherIcon size={52} className="text-white" />,
+    color: 'from-[#FF875A] to-[#F56434]',
+    smallColor: 'bg-[#FF7043]',
+  },
+];
