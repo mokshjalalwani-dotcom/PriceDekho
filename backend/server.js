@@ -43,17 +43,27 @@ app.use(cors({
       }
     }
 
-    // Production: allow explicitly listed origins from .env
-    const productionOrigins = [
-      process.env.CLIENT_URL,
-      process.env.ADMIN_URL,
-    ].filter(Boolean);
+    // Production: allow explicitly listed origins from .env, ignoring trailing slashes
+    const cleanOrigin = origin.replace(/\/$/, '');
+    const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : '';
+    const adminUrl = process.env.ADMIN_URL ? process.env.ADMIN_URL.replace(/\/$/, '') : '';
 
-    if (productionOrigins.includes(origin)) {
+    if (cleanOrigin === clientUrl || cleanOrigin === adminUrl) {
+      return callback(null, true);
+    }
+
+    // Also allow any Cloudflare Pages branch deployments for these specific projects
+    if (
+      cleanOrigin.endsWith('.pricedekho-customer.pages.dev') ||
+      cleanOrigin.endsWith('.pricedekho-admin.pages.dev') ||
+      cleanOrigin === 'https://pricedekho-customer.pages.dev' ||
+      cleanOrigin === 'https://pricedekho-admin.pages.dev'
+    ) {
       return callback(null, true);
     }
 
     // Everything else → blocked
+    console.log(`[CORS Blocked] Origin: ${origin}`);
     return callback(null, false);
   },
   credentials: true,
