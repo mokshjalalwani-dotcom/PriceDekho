@@ -28,6 +28,27 @@ const getInitialState = () => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, null, getInitialState);
 
+  useEffect(() => {
+    const restoreSession = async () => {
+      const stored = localStorage.getItem('customerUser');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed.token) {
+            const res = await axios.get('/api/auth/me', {
+              headers: { Authorization: `Bearer ${parsed.token}` }
+            });
+            dispatch({ type: 'LOGIN', payload: { ...res.data, token: parsed.token } });
+          }
+        } catch (error) {
+          console.error('Session expired or invalid', error);
+          dispatch({ type: 'LOGOUT' });
+        }
+      }
+    };
+    restoreSession();
+  }, []);
+
   const login = async (email, password) => {
     const res = await axios.post('/api/auth/login', { email, password });
     dispatch({ type: 'LOGIN', payload: res.data });

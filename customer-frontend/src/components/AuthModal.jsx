@@ -5,7 +5,7 @@ import { useToast } from '../context/ToastContext';
 
 const AuthModal = ({ isOpen, onClose, onSuccess }) => {
   const [mode, setMode] = useState('login'); // 'login' | 'register'
-  const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { login, register } = useAuth();
@@ -24,8 +24,13 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
     setError('');
     try {
       if (mode === 'register') {
-        if (!form.name || !form.email || !form.password) {
+        if (!form.name || !form.email || !form.password || !form.confirmPassword) {
           setError('Please fill all required fields');
+          setLoading(false);
+          return;
+        }
+        if (form.password !== form.confirmPassword) {
+          setError('Passwords do not match');
           setLoading(false);
           return;
         }
@@ -132,6 +137,19 @@ const AuthModal = ({ isOpen, onClose, onSuccess }) => {
               />
             </div>
           </div>
+
+          {mode === 'register' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password *</label>
+              <div className="relative">
+                <Lock size={16} className="absolute left-3 top-3 text-gray-400" />
+                <input
+                  name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange}
+                  className="input-field pl-10" placeholder="••••••••" required minLength={6}
+                />
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"
