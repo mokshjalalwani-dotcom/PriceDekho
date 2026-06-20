@@ -4,7 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import axios from 'axios'
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || '';
+// VITE_API_BASE_URL should be the backend root, e.g. https://pricedekho-1backend.onrender.com
+// All axios calls already include /api/ prefix, so baseURL must NOT end with /api
+let baseURL = import.meta.env.VITE_API_BASE_URL || '';
+// Safety: strip trailing /api or /api/ to prevent double-pathing
+baseURL = baseURL.replace(/\/api\/?$/, '');
+axios.defaults.baseURL = baseURL;
+
+console.log('[PriceDekho] API Base URL:', baseURL || '(proxy mode)');
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
