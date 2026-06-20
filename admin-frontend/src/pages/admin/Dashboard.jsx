@@ -167,8 +167,8 @@ const AdminDashboard = () => {
     <div className="flex h-screen bg-gray-50">
       <div className={`${isSidebarCollapsed ? 'w-20' : 'w-64'} transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-sm flex-col hidden md:flex shrink-0`}>
         <div className="p-4 border-b border-gray-100 flex items-center gap-3">
-          <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
-            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+          <div className="h-10 flex items-center justify-center shrink-0">
+            <img src="/logo.png" alt="Logo" className="w-auto h-full object-contain" />
           </div>
           {!isSidebarCollapsed && <span className="font-bold text-xl text-[var(--color-secondary)] whitespace-nowrap">Satguru<span className="text-[var(--color-primary)]">Admin</span></span>}
         </div>
