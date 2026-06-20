@@ -4,7 +4,7 @@ import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, ArrowLeft } from 'lucide-
 import { useCart } from '../context/CartContext';
 
 const Cart = () => {
-  const { cart, cartTotal, cartCount, dispatch } = useCart();
+  const { cart, cartCount, cartTotal, dispatch } = useCart();
   const navigate = useNavigate();
 
   const shippingPrice = cartTotal > 999 ? 0 : 60;
@@ -63,8 +63,7 @@ const Cart = () => {
                       <span className="w-8 text-center font-semibold">{item.qty}</span>
                       <button
                         onClick={() => dispatch({ type: 'UPDATE_QTY', payload: { id: item._id, qty: item.qty + 1 } })}
-                        disabled={item.qty >= item.countInStock}
-                        className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
                       >
                         <Plus size={14} />
                       </button>

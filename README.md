@@ -1,69 +1,142 @@
 # PriceDekho Web App
 
-A full-stack, decoupled e-commerce application.
+A full-stack, decoupled e-commerce application for electronics retail.
 
 ## Project Structure
-The repository is split into three decoupled applications:
-* `backend/` - Node.js/Express API (Serves both Customer & Admin apps)
-* `customer-frontend/` - React app for public customers (Deployed on Cloudflare Pages)
-* `admin-frontend/` - React app for admin dashboard (Deployed on Cloudflare Pages)
+
+```
+project/
+├── admin-frontend/     → React admin dashboard (Cloudflare Pages)
+├── backend/            → Node.js/Express API (Render)
+├── customer-frontend/  → React customer storefront (Cloudflare Pages)
+├── package.json        → Root monorepo helper scripts
+├── sample_data.json    → Seed data for products
+└── README.md
+```
+
+---
+
+## Running Locally
+
+### Prerequisites
+- Node.js v18+
+- MongoDB (local or Atlas)
+
+### Backend
+```bash
+cd backend
+npm install
+npm run dev        # uses nodemon for hot-reload
+# or
+npm start          # production mode (node server.js)
+```
+Runs on: `http://localhost:5000`
+
+### Customer Frontend
+```bash
+cd customer-frontend
+npm install
+npm run dev
+```
+Runs on: `http://localhost:5175`
+
+### Admin Frontend
+```bash
+cd admin-frontend
+npm install
+npm run dev
+```
+Runs on: `http://localhost:5176`
+
+### Root Shortcut Scripts
+From the project root:
+```bash
+npm run dev:backend     # Start backend
+npm run dev:customer    # Start customer frontend
+npm run dev:admin       # Start admin frontend
+npm run build:customer  # Build customer frontend
+npm run build:admin     # Build admin frontend
+```
+
+---
 
 ## Environment Variables
 
 ### Backend (`backend/.env`)
 ```
-PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-CLIENT_URL=https://customer.yourdomain.com
-ADMIN_URL=https://admin.yourdomain.com
 NODE_ENV=production
+PORT=5000
+MONGO_URI=mongodb+srv://your_atlas_connection_string
+JWT_SECRET=your_jwt_secret
+CLIENT_URL=https://pricedekho-customer.pages.dev
+ADMIN_URL=https://pricedekho-admin.pages.dev
 ```
 
-### Customer Frontend (`customer-frontend/.env`)
+### Customer Frontend
+Set as Cloudflare Pages environment variable:
 ```
-VITE_API_BASE_URL=https://your-backend-api.onrender.com/api
-```
-
-### Admin Frontend (`admin-frontend/.env`)
-```
-VITE_API_BASE_URL=https://your-backend-api.onrender.com/api
+VITE_API_BASE_URL=https://pricedekho-1backend.onrender.com/api
 ```
 
-## Running Locally
+### Admin Frontend
+Set as Cloudflare Pages environment variable:
+```
+VITE_API_BASE_URL=https://pricedekho-1backend.onrender.com/api
+```
 
-From the root directory:
-* Run Backend: `npm run dev:backend` (Runs on `http://localhost:5000`)
-* Run Customer Frontend: `npm run dev:customer` (Runs on `http://localhost:5175`)
-* Run Admin Frontend: `npm run dev:admin` (Runs on `http://localhost:5176`)
+---
 
-> **Note:** The frontends use `VITE_API_BASE_URL` to connect to the backend API. If you leave it empty locally, it will default to the Vite proxy targeting `http://localhost:5000`.
+## Deployment
 
-## Deployment Instructions
+### Backend — Render (Already Deployed ✅)
 
-### Backend (Render)
-1. Connect Render to this GitHub repository.
-2. Root Directory: `backend`
-3. Build Command: `npm install`
-4. Start Command: `npm start`
-5. Set the required Environment Variables in the Render Dashboard.
-6. Verify deployment by visiting `/api/health`.
+- **URL**: https://pricedekho-1backend.onrender.com
+- **Health Check**: https://pricedekho-1backend.onrender.com/api/health
+- **Root Directory**: `backend`
+- **Build Command**: `npm install`
+- **Start Command**: `npm start`
 
-### Customer Frontend (Cloudflare Pages)
-1. Connect Cloudflare Pages to this GitHub repository.
-2. Framework preset: `React`
-3. Root Directory: `customer-frontend`
-4. Build Command: `npm run build`
-5. Build Output Directory: `dist`
-6. Environment Variables: Set `VITE_API_BASE_URL` to your live Render backend URL.
+### Customer Frontend — Cloudflare Pages
 
-### Admin Frontend (Cloudflare Pages)
-1. Connect Cloudflare Pages to this GitHub repository.
-2. Framework preset: `React`
-3. Root Directory: `admin-frontend`
-4. Build Command: `npm run build`
-5. Build Output Directory: `dist`
-6. Environment Variables: Set `VITE_API_BASE_URL` to your live Render backend URL.
+| Field | Value |
+|---|---|
+| **Project name** | `pricedekho-customer` |
+| **Repository** | `mokshjalalwani-dotcom/PriceDekho` |
+| **Production branch** | `main` |
+| **Root directory** | `customer-frontend` |
+| **Build command** | `npm run build` |
+| **Build output directory** | `dist` |
+| **Environment variable** | `VITE_API_BASE_URL` = `https://pricedekho-1backend.onrender.com/api` |
+
+### Admin Frontend — Cloudflare Pages
+
+| Field | Value |
+|---|---|
+| **Project name** | `pricedekho-admin` |
+| **Repository** | `mokshjalalwani-dotcom/PriceDekho` |
+| **Production branch** | `main` |
+| **Root directory** | `admin-frontend` |
+| **Build command** | `npm run build` |
+| **Build output directory** | `dist` |
+| **Environment variable** | `VITE_API_BASE_URL` = `https://pricedekho-1backend.onrender.com/api` |
+
+### Important Notes
+- Do **NOT** use `npm run dev` in Cloudflare. That is for local development only.
+- Both frontends include `public/_redirects` with `/* /index.html 200` for SPA routing.
+- Both frontends include `.npmrc` with `legacy-peer-deps=true` for clean installs.
+- If using Wrangler direct upload instead of Git deploy: `npx wrangler pages deploy dist`
+
+---
 
 ## Image Hosting
-The application stores direct URLs to images rather than storing the files locally. Both the admin portal and customer product pages handle broken image links with a robust fallback system automatically.
+
+The application uses direct image URLs (e.g. Amazon product images). No file uploads are stored on the server. Broken image URLs automatically show a placeholder fallback.
+
+---
+
+## Security
+
+- Customer frontend contains **zero** admin routes, components, or code.
+- Admin frontend is a completely separate app with its own login and authentication.
+- Backend admin APIs require JWT authentication.
+- CORS is configured to only allow specific frontend origins.

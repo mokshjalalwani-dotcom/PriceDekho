@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { CompareProvider } from './context/CompareContext';
 import { ToastProvider } from './context/ToastContext';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
@@ -27,25 +29,29 @@ const CustomerLayout = () => (
 function App() {
   return (
     <ToastProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <Router>
-            <Routes>
-              {/* Customer Routes - With Navbar & Footer */}
-              <Route element={<CustomerLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/product/:slug" element={<ProductDetails />} />
-                <Route path="/compare" element={<CompareProducts />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order/:id" element={<OrderConfirmation />} />
-              </Route>
-            </Routes>
-          </Router>
-        </WishlistProvider>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <CompareProvider>
+              <Router>
+                <Routes>
+                  {/* Customer Routes - With Navbar & Footer */}
+                  <Route element={<CustomerLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/shop" element={<Shop />} />
+                    <Route path="/product/:slug" element={<ProductDetails />} />
+                    <Route path="/compare" element={<CompareProducts />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/order/:id" element={<OrderConfirmation />} />
+                  </Route>
+                </Routes>
+              </Router>
+            </CompareProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
     </ToastProvider>
   );
 }

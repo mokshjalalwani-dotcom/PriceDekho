@@ -11,12 +11,12 @@ const cartReducer = (state, action) => {
           ...state,
           items: state.items.map(i =>
             i._id === action.payload._id
-              ? { ...i, qty: Math.min(i.qty + 1, i.countInStock) }
+              ? { ...i, qty: i.qty + action.payload.qty }
               : i
           ),
         };
       }
-      return { ...state, items: [...state.items, { ...action.payload, qty: 1 }] };
+      return { ...state, items: [...state.items, { ...action.payload }] };
     }
     case 'REMOVE_ITEM':
       return { ...state, items: state.items.filter(i => i._id !== action.payload) };
@@ -25,7 +25,7 @@ const cartReducer = (state, action) => {
         ...state,
         items: state.items.map(i =>
           i._id === action.payload.id
-            ? { ...i, qty: Math.max(1, Math.min(action.payload.qty, i.countInStock)) }
+            ? { ...i, qty: Math.max(1, action.payload.qty) }
             : i
         ),
       };

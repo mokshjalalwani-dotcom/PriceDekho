@@ -13,8 +13,7 @@ export const TvIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
     <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
     <path d="M17 2l-5 5-5-5"></path>
-    <path d="M9 14.5h6"></path>
-    <path d="M12 11.5v6"></path>
+    <text x="12" y="16" textAnchor="middle" dominantBaseline="middle" fill="currentColor" stroke="none" fontSize="6" fontWeight="bold" fontFamily="Arial, sans-serif">TV</text>
   </svg>
 );
 
@@ -101,10 +100,17 @@ export const FanIcon = ({ size = 24, className = "" }) => (
 
 export const MixerIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <path d="M8 2h8v5L14 13v7a2 2 0 0 1-4 0v-7L8 7V2z"></path>
-    <path d="M16 2h3v5l-3 4"></path>
-    <path d="M8 2H5v5l3 4"></path>
-    <path d="M10 16h4"></path>
+    {/* Base */}
+    <path d="M7 21h10l-2-7H9l-2 7z" />
+    {/* Pitcher */}
+    <path d="M8 6h8l-1 8H9L8 6z" />
+    {/* Lid */}
+    <path d="M7 6h10" />
+    <path d="M10 3h4v3" />
+    {/* Handle */}
+    <path d="M16 8h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-1" />
+    {/* Knob/Dial on base */}
+    <circle cx="12" cy="18" r="1.5" />
   </svg>
 );
 

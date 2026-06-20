@@ -16,8 +16,8 @@ const Footer = () => {
           {/* Brand & About */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden bg-white">
-                <img src="https://scontent.fstv8-3.fna.fbcdn.net/v/t39.30808-6/300021862_402490028652945_4472372223676585025_n.png?stp=dst-png&cstp=mx1988x1988&ctp=s1988x1988&_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=a27DF4JTHrkQ7kNvwGa_95R&_nc_oc=AdpCpnZHRWUOA8J7g3cIN0eD0qnWflCUg2iCAfvHIJGMpIGO4zAdMFJhKHxRXoFWVcdYxjNQdziCGF8Xo4f1QDFG&_nc_zt=23&_nc_ht=scontent.fstv8-3.fna&_nc_gid=OgBEbQELv3IGsxePTgMJ9Q&_nc_ss=7b289&oh=00_Af8ktO_MTN191pgTqic1Z6LL--6lBrJkGujJa2OFNoJuZQ&oe=6A2F99E0" alt="Satguru Electricals Logo" className="w-full h-full object-cover" />
+              <div className="w-[42px] h-[42px] rounded-lg flex items-center justify-center overflow-hidden bg-white p-1">
+                <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
               </div>
               <span className="font-bold text-2xl tracking-tight text-white">Satguru<span className="text-[var(--color-primary)]">Electricals</span></span>
             </Link>

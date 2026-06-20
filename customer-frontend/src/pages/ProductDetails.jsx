@@ -3,12 +3,15 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   ShoppingCart, Heart, ChevronRight, Share2, CheckCircle, Package,
-  ShieldCheck, Truck, RotateCcw, Star, Info, Minus, Plus, ChevronDown, ChevronUp, CreditCard
+  ShieldCheck, Truck, RotateCcw, Star, Info, Minus, Plus, ChevronDown, ChevronUp, CreditCard, GitCompare, MessageCircle
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useCompare } from '../context/CompareContext';
 import ProductCard from '../components/ProductCard';
+import AuthModal from '../components/AuthModal';
 import { CATEGORY_FIELDS } from '../constants/CategoryFieldsConfig';
 
 const ProductDetails = () => {
@@ -21,10 +24,14 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState('specs');
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
+  const [settings, setSettings] = useState(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const { dispatch: cartDispatch } = useCart();
   const { isWishlisted, dispatch: wishlistDispatch } = useWishlist();
+  const { isInCompare, isFull, dispatch: compareDispatch } = useCompare();
   const { addToast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,6 +45,10 @@ const ProductDetails = () => {
           const simRes = await axios.get(`/api/products/${res.data._id}/similar`);
           setSimilarProducts(simRes.data || []);
         }
+
+        // Fetch settings for WhatsApp number
+        const setRes = await axios.get('/api/settings');
+        setSettings(setRes.data);
       } catch (error) {
         console.error('Error fetching product', error);
       } finally {
@@ -83,18 +94,18 @@ const ProductDetails = () => {
   const price = selectedVariant?.sellingPrice || product.sellingPrice || product.price || 0;
   const mrp = selectedVariant?.mrp || product.mrp || 0;
   const discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
-  const stock = selectedVariant?.countInStock ?? product.countInStock ?? 0;
-  const inStock = stock > 0;
+  
+  const inStock = true;
+  
   const allImages = [product.mainImage, ...(product.galleryImages || []), ...(product.images || [])].filter(Boolean);
   const uniqueImages = [...new Set(allImages)];
   const categorySlug = product.category?.slug || '';
   const categoryConfig = CATEGORY_FIELDS[categorySlug] || null;
 
   const handleAddToCart = () => {
-    if (!inStock) return;
     cartDispatch({
       type: 'ADD_ITEM',
-      payload: { ...product, price, qty: 1, countInStock: stock }
+      payload: { ...product, price, qty }
     });
     addToast(`${product.name} added to cart!`);
   };
@@ -111,6 +122,29 @@ const ProductDetails = () => {
       navigator.clipboard.writeText(window.location.href);
       addToast('Link copied to clipboard!', 'info');
     }
+  };
+
+  const handleWhatsAppEnquiry = () => {
+    if (!user) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    if (!settings?.whatsappNumber) {
+      addToast('WhatsApp enquiry is not configured yet', 'error');
+      return;
+    }
+    const message = `Hi, I'm interested in:
+📦 ${product.name}
+💰 Price: ₹${price.toLocaleString('en-IN')}
+🔗 ${window.location.href}
+
+My Details:
+👤 ${user.name}
+📞 ${user.phone || 'N/A'}
+📧 ${user.email}`;
+
+    const waLink = `https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+    window.open(waLink, '_blank');
   };
 
   // Build spec table from specGroups + categoryFields
@@ -264,10 +298,8 @@ const ProductDetails = () => {
 
             {/* Availability */}
             <div className="flex items-center gap-2">
-              <span className={`w-2.5 h-2.5 rounded-full ${inStock ? 'bg-green-500' : 'bg-red-500'}`}></span>
-              <span className={`text-sm font-semibold ${inStock ? 'text-green-600' : 'text-red-500'}`}>
-                {inStock ? `In Stock (${stock} available)` : 'Out of Stock'}
-              </span>
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+              <span className="text-sm font-semibold text-green-600">In Stock</span>
             </div>
 
             {/* Variants */}
@@ -311,21 +343,18 @@ const ProductDetails = () => {
 
             {/* Quantity & Action Buttons */}
             <div className="flex items-center gap-3 pt-2 flex-wrap">
-              {inStock && (
-                <div className="flex items-center border border-gray-200 rounded-lg">
-                  <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 rounded-l-lg"><Minus size={14} /></button>
-                  <span className="w-10 text-center text-sm font-bold">{qty}</span>
-                  <button onClick={() => setQty(q => Math.min(stock, q + 1))} className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 rounded-r-lg"><Plus size={14} /></button>
-                </div>
-              )}
+              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shrink-0">
+                <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 rounded-l-lg"><Minus size={14} /></button>
+                <span className="w-10 text-center text-sm font-bold">{qty}</span>
+                <button onClick={() => setQty(q => q + 1)} className="w-9 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 rounded-r-lg"><Plus size={14} /></button>
+              </div>
 
               <button
                 onClick={handleAddToCart}
-                disabled={!inStock}
-                className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 text-sm font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 text-sm font-bold"
               >
                 <ShoppingCart size={18} />
-                {inStock ? 'Add to Cart' : 'Out of Stock'}
+                Add to Cart
               </button>
 
               <button
@@ -337,6 +366,41 @@ const ProductDetails = () => {
 
               <button onClick={handleShare} className="w-12 h-12 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 transition-colors">
                 <Share2 size={18} />
+              </button>
+
+              <button
+                onClick={() => {
+                  if (isInCompare(product._id)) {
+                    compareDispatch({ type: 'REMOVE', payload: product._id });
+                    addToast('Removed from compare', 'info');
+                  } else {
+                    if (isFull) {
+                      addToast('Compare list is full (max 4). Remove one first.', 'error');
+                      return;
+                    }
+                    compareDispatch({ type: 'ADD', payload: product });
+                    addToast('Added to compare');
+                  }
+                }}
+                className={`w-12 h-12 flex items-center justify-center rounded-lg border transition-colors ${
+                  isInCompare(product._id)
+                    ? 'bg-blue-50 border-blue-200 text-blue-500'
+                    : 'border-gray-200 text-gray-500 hover:bg-gray-50'
+                }`}
+                title={isInCompare(product._id) ? 'Remove from compare' : 'Add to compare'}
+              >
+                <GitCompare size={18} />
+              </button>
+            </div>
+
+            {/* WhatsApp Enquiry */}
+            <div className="pt-2">
+              <button
+                onClick={handleWhatsAppEnquiry}
+                className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 rounded-lg font-bold transition-colors shadow-sm"
+              >
+                <MessageCircle size={20} />
+                Enquire on WhatsApp
               </button>
             </div>
 
@@ -462,6 +526,8 @@ const ProductDetails = () => {
           </div>
         )}
       </div>
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );
 };

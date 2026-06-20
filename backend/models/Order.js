@@ -9,6 +9,7 @@ const orderItemSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   name: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },
@@ -25,6 +26,9 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: { type: String, default: 'COD' },
   isPaid: { type: Boolean, default: false },
   isDelivered: { type: Boolean, default: false },
+  advancePaid: { type: Boolean, default: false },
+  advanceAmount: { type: Number, default: 0 },
+  upiTransactionId: { type: String, default: '' },
   status: {
     type: String,
     enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],

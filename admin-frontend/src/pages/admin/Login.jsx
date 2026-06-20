@@ -17,12 +17,23 @@ const AdminLogin = () => {
     setError('');
     
     try {
+      console.log('Sending login request to /api/admin/login with email:', email);
       const res = await axios.post('/api/admin/login', { email, password });
       localStorage.setItem('adminToken', res.data.token);
       localStorage.setItem('adminInfo', JSON.stringify(res.data));
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password');
+      console.error('LOGIN ERROR DETAILS:', err);
+      if (err.response) {
+        // The request was made and the server responded with a status code outside of 2xx
+        setError(err.response?.data?.message || `Server Error: ${err.response.status}`);
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError('Network Error: Could not connect to the server (Proxy issue?)');
+      } else {
+        // Something happened in setting up the request
+        setError(`Error: ${err.message}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -32,8 +43,8 @@ const AdminLogin = () => {
     <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full mb-16">
         <div className="text-center mb-10">
-          <div className="w-20 h-20 rounded-2xl flex items-center justify-center overflow-hidden bg-white mx-auto mb-6 shadow-lg">
-            <img src="https://scontent.fstv8-3.fna.fbcdn.net/v/t39.30808-6/300021862_402490028652945_4472372223676585025_n.png?stp=dst-png&cstp=mx1988x1988&ctp=s1988x1988&_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=a27DF4JTHrkQ7kNvwGa_95R&_nc_oc=AdpCpnZHRWUOA8J7g3cIN0eD0qnWflCUg2iCAfvHIJGMpIGO4zAdMFJhKHxRXoFWVcdYxjNQdziCGF8Xo4f1QDFG&_nc_zt=23&_nc_ht=scontent.fstv8-3.fna&_nc_gid=OgBEbQELv3IGsxePTgMJ9Q&_nc_ss=7b289&oh=00_Af8ktO_MTN191pgTqic1Z6LL--6lBrJkGujJa2OFNoJuZQ&oe=6A2F99E0" alt="Satguru Admin Logo" className="w-full h-full object-cover" />
+          <div className="w-[104px] h-[104px] rounded-2xl flex items-center justify-center overflow-hidden bg-white mx-auto mb-6 shadow-lg p-2">
+            <img src="/logo.png" alt="Satguru Admin Logo" className="w-full h-full object-contain" />
           </div>
           <h2 className="text-3xl font-extrabold text-gray-900">Admin Portal</h2>
           <p className="mt-2 text-sm text-gray-600">Secure access for authorized personnel only</p>

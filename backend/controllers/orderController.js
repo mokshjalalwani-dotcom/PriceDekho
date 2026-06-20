@@ -6,16 +6,21 @@ import Product from '../models/Product.js';
 // @access  Public (guest checkout)
 export const createOrder = async (req, res) => {
   try {
-    const { name, email, phone, shippingAddress, orderItems, itemsPrice, shippingPrice, totalPrice, paymentMethod } = req.body;
+    const { name, email, phone, shippingAddress, orderItems, itemsPrice, shippingPrice, totalPrice, paymentMethod, advancePaid, advanceAmount, upiTransactionId, user } = req.body;
 
     if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'No order items' });
     }
 
     const order = new Order({
+      user: user || undefined,
       name, email, phone, shippingAddress,
       orderItems, itemsPrice, shippingPrice, totalPrice,
       paymentMethod: paymentMethod || 'COD',
+      advancePaid: advancePaid || false,
+      advanceAmount: advanceAmount || 0,
+      upiTransactionId: upiTransactionId || '',
+      isPaid: paymentMethod === 'UPI',
     });
 
     const createdOrder = await order.save();

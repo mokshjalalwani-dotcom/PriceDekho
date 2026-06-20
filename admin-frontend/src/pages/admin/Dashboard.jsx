@@ -4,9 +4,10 @@ import axios from 'axios';
 import {
   Package, ShoppingBag, IndianRupee, Plus, Edit, Trash2, LogOut,
   ArrowUpRight, Search, X, ChevronDown, Tag, Eye, EyeOff, AlertTriangle,
-  BarChart3, Filter, Menu, ChevronRight, ChevronLeft
+  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings
 } from 'lucide-react';
 import ProductModal from './ProductModal';
+import AdminSettings from './AdminSettings';
 
 const statusColors = {
   Pending: 'bg-yellow-100 text-yellow-700',
@@ -29,7 +30,6 @@ const AdminDashboard = () => {
   const [statusMessage, setStatusMessage] = useState('');
   const [productSearch, setProductSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
-  const [stockFilter, setStockFilter] = useState('');
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -147,10 +147,7 @@ const AdminDashboard = () => {
       (p.brand?.name || '').toLowerCase().includes(productSearch.toLowerCase()) ||
       (p.modelNumber || '').toLowerCase().includes(productSearch.toLowerCase());
     const matchCategory = !categoryFilter || (p.category?._id === categoryFilter || p.category?.slug === categoryFilter);
-    const matchStock = !stockFilter ||
-      (stockFilter === 'instock' && p.countInStock > 0) ||
-      (stockFilter === 'outofstock' && p.countInStock <= 0);
-    return matchSearch && matchCategory && matchStock;
+    return matchSearch && matchCategory;
   });
 
   const totalRevenue = orders
@@ -158,12 +155,12 @@ const AdminDashboard = () => {
     .reduce((sum, o) => sum + o.totalPrice, 0);
 
   const pendingOrders = orders.filter(o => o.status === 'Pending').length;
-  const outOfStockCount = products.filter(p => p.countInStock <= 0).length;
   const hiddenCount = products.filter(p => !p.isVisible).length;
 
   const sidebarItems = [
     { key: 'products', label: 'Products', icon: Package },
     { key: 'orders', label: 'Orders', icon: ShoppingBag },
+    { key: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
@@ -213,7 +210,7 @@ const AdminDashboard = () => {
         {/* Header */}
         <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm z-10">
           <h2 className="text-xl font-bold text-gray-800">
-            {activeTab === 'products' ? 'Product Management' : 'Order Management'}
+            {activeTab === 'products' ? 'Product Management' : activeTab === 'orders' ? 'Order Management' : 'Store Settings'}
           </h2>
           <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-[var(--color-primary)] font-bold">A</div>
         </header>
@@ -222,7 +219,7 @@ const AdminDashboard = () => {
         <main className="flex-1 overflow-y-auto p-8">
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
               <div className="flex justify-between items-start mb-3">
                 <div className="p-2.5 bg-blue-50 text-blue-600 rounded-lg"><Package size={22} /></div>
@@ -233,13 +230,6 @@ const AdminDashboard = () => {
             </div>
             <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
               <div className="flex justify-between items-start mb-3">
-                <div className="p-2.5 bg-red-50 text-red-500 rounded-lg"><AlertTriangle size={22} /></div>
-              </div>
-              <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Out of Stock</h3>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{loading ? '...' : outOfStockCount}</p>
-            </div>
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
                 <div className="p-2.5 bg-orange-50 text-orange-500 rounded-lg"><ShoppingBag size={22} /></div>
                 {pendingOrders > 0 && <span className="text-xs bg-yellow-100 text-yellow-700 font-semibold px-2 py-1 rounded-full">{pendingOrders} Pending</span>}
               </div>
@@ -247,13 +237,11 @@ const AdminDashboard = () => {
               <p className="text-2xl font-bold text-gray-900 mt-1">{ordersLoading ? '...' : orders.length}</p>
             </div>
             <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-4">
+              <div className="flex justify-between items-start mb-3">
                 <div className="p-2.5 bg-green-50 text-green-600 rounded-lg"><IndianRupee size={22} /></div>
-                <div>
-                  <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Total Revenue</h3>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">₹{totalRevenue.toLocaleString()}</p>
-                </div>
               </div>
+              <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Total Revenue</h3>
+              <p className="text-2xl font-bold text-gray-900 mt-1">₹{totalRevenue.toLocaleString()}</p>
             </div>
           </div>
 
@@ -278,12 +266,6 @@ const AdminDashboard = () => {
                     <option value="">All Categories</option>
                     {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                   </select>
-                  {/* Stock Filter */}
-                  <select value={stockFilter} onChange={(e) => setStockFilter(e.target.value)} className="py-2 px-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200">
-                    <option value="">All Stock</option>
-                    <option value="instock">In Stock</option>
-                    <option value="outofstock">Out of Stock</option>
-                  </select>
                   {/* Add Button */}
                   <button onClick={handleAddProduct} className="btn-primary py-2 px-4 text-sm flex items-center gap-2">
                     <Plus size={16} /> Add Product
@@ -297,16 +279,15 @@ const AdminDashboard = () => {
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Visible</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {loading ? (
-                      <tr><td colSpan="6" className="p-8 text-center text-gray-500">Loading inventory...</td></tr>
+                      <tr><td colSpan="5" className="p-8 text-center text-gray-500">Loading inventory...</td></tr>
                     ) : filteredProducts.length === 0 ? (
-                      <tr><td colSpan="6" className="p-8 text-center text-gray-500">No products found</td></tr>
+                      <tr><td colSpan="5" className="p-8 text-center text-gray-500">No products found</td></tr>
                     ) : filteredProducts.map(product => (
                       <tr key={product._id} className="hover:bg-gray-50 transition-colors">
                         <td className="p-4">
@@ -331,11 +312,6 @@ const AdminDashboard = () => {
                         <td className="p-4">
                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
                             <Tag size={10} /> {product.category?.name || '-'}
-                          </span>
-                        </td>
-                        <td className="p-4">
-                          <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${product.countInStock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                            {product.countInStock > 0 ? `${product.countInStock} in stock` : 'Out of stock'}
                           </span>
                         </td>
                         <td className="p-4">
@@ -420,6 +396,11 @@ const AdminDashboard = () => {
                 </table>
               </div>
             </div>
+          )}
+
+          {/* Settings Tab */}
+          {activeTab === 'settings' && (
+            <AdminSettings />
           )}
 
         </main>

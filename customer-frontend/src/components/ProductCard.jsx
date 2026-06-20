@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Eye } from 'lucide-react';
+import { Eye, GitCompare } from 'lucide-react';
+import { useCompare } from '../context/CompareContext';
+import { useToast } from '../context/ToastContext';
 
 const ProductCard = ({ product }) => {
   const price = product.sellingPrice || product.price || 0;
@@ -9,6 +11,27 @@ const ProductCard = ({ product }) => {
     : 0;
   const inStock = product.countInStock > 0 && product.availability !== 'Out of Stock';
   const imgSrc = product.mainImage || product.images?.[0] || 'https://placehold.co/300x300/f8fafc/94a3b8?text=No+Image';
+
+  const { isInCompare, isFull, dispatch: compareDispatch } = useCompare();
+  const { addToast } = useToast();
+
+  const inCompare = isInCompare(product._id);
+
+  const handleCompareToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (inCompare) {
+      compareDispatch({ type: 'REMOVE', payload: product._id });
+      addToast(`${product.name} removed from compare`, 'info');
+    } else {
+      if (isFull) {
+        addToast('Compare list is full (max 4 products). Remove one first.', 'error');
+        return;
+      }
+      compareDispatch({ type: 'ADD', payload: product });
+      addToast(`${product.name} added to compare`);
+    }
+  };
 
   return (
     <Link
@@ -30,11 +53,22 @@ const ProductCard = ({ product }) => {
         )}
       </div>
 
-      {/* Quick View */}
-      <div className="absolute top-2.5 right-2.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <span className="w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-500 hover:text-orange-500 transition-colors">
+      {/* Quick Actions */}
+      <div className="absolute top-2.5 right-2.5 z-10 flex flex-col gap-1.5">
+        <span className="w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-500 hover:text-orange-500 transition-colors opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Eye size={15} />
         </span>
+        <button
+          onClick={handleCompareToggle}
+          title={inCompare ? 'Remove from compare' : 'Add to compare'}
+          className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all duration-200 ${
+            inCompare
+              ? 'bg-blue-500 text-white hover:bg-blue-600'
+              : 'bg-white text-gray-500 hover:text-blue-500 opacity-0 group-hover:opacity-100'
+          }`}
+        >
+          <GitCompare size={14} />
+        </button>
       </div>
 
       {/* Image */}

@@ -177,7 +177,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   const addVariant = () => {
     setFormData(prev => ({
       ...prev,
-      variants: [...prev.variants, { variantName: '', color: '', sellingPrice: '', mrp: '', countInStock: 0 }]
+      variants: [...prev.variants, { variantName: '', color: '', sellingPrice: '', mrp: '' }]
     }));
   };
   const handleVariantChange = (idx, key, val) => {
@@ -211,7 +211,6 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
       if (!formData.category) throw new Error('Category is required');
       if (!formData.brand) throw new Error('Brand is required');
       if (!formData.sellingPrice || Number(formData.sellingPrice) <= 0) throw new Error('Valid price is required');
-      if (formData.countInStock < 0) throw new Error('Stock cannot be negative');
 
       const allImages = [formData.mainImage, ...(formData.galleryImages || [])].filter(Boolean);
 
@@ -221,8 +220,8 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
         sellingPrice: Number(formData.sellingPrice),
         mrp: formData.mrp ? Number(formData.mrp) : undefined,
         offerPrice: formData.offerPrice ? Number(formData.offerPrice) : undefined,
-        countInStock: Number(formData.countInStock),
-        availability: Number(formData.countInStock) > 0 ? 'In Stock' : 'Out of Stock',
+        countInStock: 9999,
+        availability: 'In Stock',
         images: allImages,
         tags: typeof formData.tags === 'string'
           ? formData.tags.split(',').map(t => t.trim()).filter(Boolean)
@@ -439,18 +438,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   <input type="number" name="offerPrice" value={formData.offerPrice} onChange={handleChange} min="0" className={inputCls} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                <div>
-                  <label className={labelCls}>Stock Quantity</label>
-                  <input type="number" name="countInStock" value={formData.countInStock} onChange={handleChange} min="0" className={inputCls} />
-                </div>
-                <div>
-                  <label className={labelCls}>Availability</label>
-                  <select name="availability" value={Number(formData.countInStock) > 0 ? 'In Stock' : 'Out of Stock'} disabled className={`${inputCls} bg-gray-50`}>
-                    <option>In Stock</option>
-                    <option>Out of Stock</option>
-                  </select>
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                   <label className={labelCls}>Warranty Details</label>
                   <input type="text" name="warrantyDetails" value={formData.warrantyDetails} onChange={handleChange} className={inputCls} placeholder="e.g. 1 Year Comprehensive" />
@@ -574,7 +562,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
             <div className="p-4 border border-gray-100 rounded-lg space-y-3">
               {formData.variants.map((v, idx) => (
                 <div key={idx} className="bg-gray-50 rounded-lg p-3 border border-gray-100">
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 relative">
                     <div>
                       <label className={labelCls}>Variant Name</label>
                       <input type="text" value={v.variantName} onChange={(e) => handleVariantChange(idx, 'variantName', e.target.value)} className={inputCls} placeholder="e.g. 256GB" />
@@ -591,12 +579,8 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                       <label className={labelCls}>MRP (₹)</label>
                       <input type="number" value={v.mrp} onChange={(e) => handleVariantChange(idx, 'mrp', e.target.value)} className={inputCls} />
                     </div>
-                    <div className="flex items-end gap-2">
-                      <div className="flex-1">
-                        <label className={labelCls}>Stock</label>
-                        <input type="number" value={v.countInStock} onChange={(e) => handleVariantChange(idx, 'countInStock', e.target.value)} min="0" className={inputCls} />
-                      </div>
-                      <button type="button" onClick={() => removeVariant(idx)} className="text-red-400 hover:text-red-600 p-2 mb-0.5"><Trash2 size={14} /></button>
+                    <div className="absolute right-0 top-0">
+                      <button type="button" onClick={() => removeVariant(idx)} className="text-red-400 hover:text-red-600 p-2 bg-white rounded-bl-lg shadow-sm"><Trash2 size={14} /></button>
                     </div>
                   </div>
                 </div>
