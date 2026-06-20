@@ -166,9 +166,9 @@ const AdminDashboard = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       <div className={`${isSidebarCollapsed ? 'w-20' : 'w-64'} transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-sm flex-col hidden md:flex shrink-0`}>
-        <div className="h-20 flex items-center justify-center border-b border-gray-100 gap-2 overflow-hidden px-2">
-          <div className="w-8 h-8 rounded-lg overflow-hidden bg-white shadow-sm shrink-0">
-            <img src="https://scontent.fstv8-3.fna.fbcdn.net/v/t39.30808-6/300021862_402490028652945_4472372223676585025_n.png?stp=dst-png&cstp=mx1988x1988&ctp=s1988x1988&_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=a27DF4JTHrkQ7kNvwGa_95R&_nc_oc=AdpCpnZHRWUOA8J7g3cIN0eD0qnWflCUg2iCAfvHIJGMpIGO4zAdMFJhKHxRXoFWVcdYxjNQdziCGF8Xo4f1QDFG&_nc_zt=23&_nc_ht=scontent.fstv8-3.fna&_nc_gid=OgBEbQELv3IGsxePTgMJ9Q&_nc_ss=7b289&oh=00_Af8ktO_MTN191pgTqic1Z6LL--6lBrJkGujJa2OFNoJuZQ&oe=6A2F99E0" alt="Logo" className="w-full h-full object-cover" />
+        <div className="p-4 border-b border-gray-100 flex items-center gap-3">
+          <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+            <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
           </div>
           {!isSidebarCollapsed && <span className="font-bold text-xl text-[var(--color-secondary)] whitespace-nowrap">Satguru<span className="text-[var(--color-primary)]">Admin</span></span>}
         </div>
