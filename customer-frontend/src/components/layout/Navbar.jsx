@@ -5,18 +5,14 @@ import { CATEGORIES } from '../../constants/categories';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCompare } from '../../context/CompareContext';
-import { useAuth } from '../../context/AuthContext';
-import AuthModal from '../AuthModal';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const navigate = useNavigate();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { compareCount } = useCompare();
-  const { user, logout } = useAuth();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -69,30 +65,6 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-            {user ? (
-              <div className="relative group">
-                <button className="flex items-center gap-1.5 text-gray-600 hover:text-[var(--color-primary)] font-semibold transition-colors text-sm">
-                  <User size={20} />
-                  {user.name.split(' ')[0]}
-                </button>
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
-                  <div className="p-3 border-b border-gray-100">
-                    <p className="text-sm font-bold text-gray-900">{user.name}</p>
-                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                  </div>
-                  <div className="p-2">
-                    <button onClick={logout} className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <button onClick={() => setIsAuthModalOpen(true)} className="flex items-center gap-1.5 text-gray-600 hover:text-[var(--color-primary)] font-semibold transition-colors text-sm">
-                <User size={20} />
-                Sign In
-              </button>
-            )}
             <Link to="/wishlist" className="text-gray-600 hover:text-red-500 transition-colors relative">
               <Heart size={22} />
               {wishlistCount > 0 && (
@@ -156,42 +128,7 @@ const Navbar = () => {
               </Link>
             ))}
 
-            {/* Mobile Auth Section */}
-            <div className="border-t border-gray-100 mt-4 pt-4 px-2">
-              {user ? (
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
-                      {user.name?.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-gray-900">{user.name}</p>
-                      <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={() => {
-                      logout();
-                      setIsMenuOpen(false);
-                    }} 
-                    className="w-full text-center px-3 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <button 
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsAuthModalOpen(true);
-                  }} 
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-[var(--color-primary)] bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
-                >
-                  <User size={18} />
-                  Sign In / Register
-                </button>
-              )}
-            </div>
+
 
             <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-4 mt-2">
               <Link to="/wishlist" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg">
@@ -203,7 +140,7 @@ const Navbar = () => {
         </div>
       )}
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+
     </div>
   );
 };

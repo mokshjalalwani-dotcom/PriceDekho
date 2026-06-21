@@ -4,8 +4,6 @@ import axios from 'axios';
 import { ArrowLeft, MapPin, User, Phone, Mail, CreditCard, CheckCircle, QrCode } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
-import { useAuth } from '../context/AuthContext';
-
 const Checkout = () => {
   const { cart, cartTotal, dispatch } = useCart();
   const { addToast } = useToast();
@@ -24,7 +22,6 @@ const Checkout = () => {
   const [advancePaid, setAdvancePaid] = useState(false);
   const [upiTransactionId, setUpiTransactionId] = useState('');
   
-  const { user } = useAuth();
 
   React.useEffect(() => {
     const init = async () => {
@@ -36,11 +33,7 @@ const Checkout = () => {
       }
     };
     init();
-    
-    if (user) {
-      setForm(f => ({ ...f, name: user.name, email: user.email, phone: user.phone || '' }));
-    }
-  }, [user]);
+  }, []);
 
   if (cart.length === 0) {
     navigate('/cart');

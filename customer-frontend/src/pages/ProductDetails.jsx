@@ -7,11 +7,9 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
-import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
 import { useCompare } from '../context/CompareContext';
+import { useToast } from '../context/ToastContext';
 import ProductCard from '../components/ProductCard';
-import AuthModal from '../components/AuthModal';
 import { CATEGORY_FIELDS } from '../constants/CategoryFieldsConfig';
 
 const ProductDetails = () => {
@@ -25,13 +23,11 @@ const ProductDetails = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
   const [settings, setSettings] = useState(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const { dispatch: cartDispatch } = useCart();
   const { isWishlisted, dispatch: wishlistDispatch } = useWishlist();
   const { isInCompare, isFull, dispatch: compareDispatch } = useCompare();
   const { addToast } = useToast();
-  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -125,23 +121,28 @@ const ProductDetails = () => {
   };
 
   const handleWhatsAppEnquiry = () => {
-    if (!user) {
-      setIsAuthModalOpen(true);
-      return;
-    }
     if (!settings?.whatsappNumber) {
       addToast('WhatsApp enquiry is not configured yet', 'error');
       return;
     }
-    const message = `Hi, I'm interested in:
-📦 ${product.name}
-💰 Price: ₹${price.toLocaleString('en-IN')}
-🔗 ${window.location.href}
 
-My Details:
-👤 ${user.name}
-📞 ${user.phone || 'N/A'}
-📧 ${user.email}`;
+    const categoryName = product.category?.name || 'N/A';
+    const brandName = product.brand?.name || product.brand || 'N/A';
+    const modelNum = product.modelNumber || product.categoryFields?.modelNumber || 'N/A';
+    const capacitySize = product.capacity || product.size || product.categoryFields?.capacity || product.categoryFields?.size || 'N/A';
+    const color = product.color || product.categoryFields?.color || 'N/A';
+
+    const message = `Hello, I am interested in this product:
+
+Product: ${product.name}
+Category: ${categoryName}
+Brand: ${brandName}
+Model: ${modelNum}
+Capacity/Size: ${capacitySize}
+Color: ${color}
+Price: ₹${price.toLocaleString('en-IN')}
+
+Please share more details.`;
 
     const waLink = `https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
     window.open(waLink, '_blank');
@@ -400,7 +401,7 @@ My Details:
                 className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 rounded-lg font-bold transition-colors shadow-sm"
               >
                 <MessageCircle size={20} />
-                Enquire on WhatsApp
+                Send Enquiry
               </button>
             </div>
 
@@ -527,7 +528,7 @@ My Details:
         )}
       </div>
 
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+
     </div>
   );
 };

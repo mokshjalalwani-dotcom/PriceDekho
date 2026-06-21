@@ -4,7 +4,7 @@ import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { CompareProvider } from './context/CompareContext';
 import { ToastProvider } from './context/ToastContext';
-import { AuthProvider } from './context/AuthContext';
+
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
@@ -29,7 +29,7 @@ const CustomerLayout = () => (
 function App() {
   return (
     <ToastProvider>
-      <AuthProvider>
+
         <CartProvider>
           <WishlistProvider>
             <CompareProvider>
@@ -51,7 +51,7 @@ function App() {
             </CompareProvider>
           </WishlistProvider>
         </CartProvider>
-      </AuthProvider>
+
     </ToastProvider>
   );
 }
