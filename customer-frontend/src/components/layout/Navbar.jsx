@@ -38,7 +38,7 @@ const Navbar = () => {
               <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
             </div>
             <span className="font-[800] text-[22px] tracking-tight text-[#242933]">
-              SatguruElectricals
+              Satguru<span style={{ color: 'rgb(123,63,0)' }}>Electricals</span>
             </span>
           </Link>
 
