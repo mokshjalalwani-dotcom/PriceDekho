@@ -75,49 +75,36 @@ export const SoundSystemIcon = ({ size = 24, className = "" }) => (
 );
 
 export const DishwasherIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
-    {/* Outer Box */}
-    <rect x="10" y="10" width="80" height="80" rx="8" />
-    {/* Control Panel Line */}
-    <line x1="10" y1="30" x2="90" y2="30" />
-    {/* Control Panel Circles */}
-    <circle cx="26" cy="20" r="4" />
-    <circle cx="42" cy="20" r="4" />
-    {/* Control Panel Screen */}
-    <rect x="58" y="16" width="22" height="8" rx="2" />
-    {/* Inner Tub Frame */}
-    <path d="M 18 30 V 82 H 82 V 30" />
-    {/* Wavy Water Line */}
-    <path d="M 18 42 Q 26 36 34 42 T 50 42 T 66 42 T 82 42" />
-    {/* Wine Glass */}
-    <path d="M 26 50 H 42 V 58 Q 42 68 34 68 Q 26 68 26 58 Z" />
-    <line x1="34" y1="68" x2="34" y2="82" />
-    <line x1="28" y1="82" x2="40" y2="82" />
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <path d="M 3 8 H 21"></path>
+    <circle cx="7" cy="5.5" r="1"></circle>
+    <circle cx="11" cy="5.5" r="1"></circle>
+    <rect x="15" y="4.5" width="4" height="2" rx="0.5"></rect>
+    {/* Inner Box */}
+    <rect x="5" y="10" width="14" height="9" rx="1"></rect>
+    {/* Wavy Line inside inner box */}
+    <path d="M 5 13 Q 8.5 11, 12 13 T 19 13"></path>
+    {/* Wine glass */}
+    <path d="M 8 14 H 11 V 15 C 11 16.5, 8 16.5, 8 15 Z"></path>
+    <line x1="9.5" y1="16.5" x2="9.5" y2="19"></line>
+    <line x1="8" y1="19" x2="11" y2="19"></line>
     {/* Plate */}
-    <circle cx="64" cy="65" r="14" />
-    <circle cx="64" cy="65" r="7" />
+    <circle cx="15" cy="16.5" r="2.5"></circle>
+    <circle cx="15" cy="16.5" r="1"></circle>
   </svg>
 );
 
 // Custom matching thin-line styles for the rest of categories
 export const FanIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="currentColor">
-    {/* Center Ring */}
-    <circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="8" />
-    <g transform="translate(50, 50)">
-      {/* Blade 1 */}
-      <path d="M 8 -8 C 20 -35, 40 -40, 45 -20 C 35 -5, 20 -5, 12 -4 Z" />
-      <path d="M 12 -42 C 35 -48, 55 -25, 45 5 C 55 -25, 35 -42, 12 -42 Z" />
-      {/* Blade 2 */}
-      <g transform="rotate(120)">
-        <path d="M 8 -8 C 20 -35, 40 -40, 45 -20 C 35 -5, 20 -5, 12 -4 Z" />
-        <path d="M 12 -42 C 35 -48, 55 -25, 45 5 C 55 -25, 35 -42, 12 -42 Z" />
-      </g>
-      {/* Blade 3 */}
-      <g transform="rotate(240)">
-        <path d="M 8 -8 C 20 -35, 40 -40, 45 -20 C 35 -5, 20 -5, 12 -4 Z" />
-        <path d="M 12 -42 C 35 -48, 55 -25, 45 5 C 55 -25, 35 -42, 12 -42 Z" />
-      </g>
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
+    <circle cx="12" cy="12" r="2.5"></circle>
+    <path d="M 12 9.5 C 16 3, 21 5, 20 9 C 19 13, 14 11, 12 9.5 Z"></path>
+    <g transform="rotate(120 12 12)">
+      <path d="M 12 9.5 C 16 3, 21 5, 20 9 C 19 13, 14 11, 12 9.5 Z"></path>
+    </g>
+    <g transform="rotate(240 12 12)">
+      <path d="M 12 9.5 C 16 3, 21 5, 20 9 C 19 13, 14 11, 12 9.5 Z"></path>
     </g>
   </svg>
 );
@@ -160,24 +147,21 @@ export const GasStoveIcon = ({ size = 24, className = "" }) => (
 );
 
 export const GharGhantiIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
     {/* Hopper Top */}
-    <rect x="22" y="16" width="40" height="12" />
+    <rect x="7" y="3" width="10" height="3" />
     {/* Hopper Funnel */}
-    <path d="M26 28 L36 45 H48 L58 28" />
-    {/* Lid */}
-    <line x1="15" y1="45" x2="69" y2="45" />
+    <path d="M 8 6 L 10 12 H 14 L 16 6" />
+    {/* Body */}
+    <rect x="5" y="12" width="14" height="9" />
     {/* Mid Band */}
-    <line x1="15" y1="58" x2="69" y2="58" />
-    {/* Base Band */}
-    <line x1="15" y1="80" x2="69" y2="80" />
-    {/* Body Left */}
-    <line x1="18" y1="45" x2="18" y2="80" />
-    {/* Body Right */}
-    <line x1="66" y1="45" x2="66" y2="80" />
+    <line x1="5" y1="16" x2="19" y2="16" />
+    {/* Inner Body Lines */}
+    <line x1="7" y1="12" x2="7" y2="21" />
+    <line x1="17" y1="12" x2="17" y2="21" />
     {/* Crank Shaft */}
-    <path d="M 66 51 H 78 V 30 H 84" />
+    <path d="M 19 14 H 21 V 8 H 22" />
     {/* Crank Knob */}
-    <rect x="84" y="26" width="12" height="8" rx="4" fill="currentColor" stroke="none" />
+    <circle cx="22" cy="8" r="1" />
   </svg>
 );
