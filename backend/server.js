@@ -28,6 +28,22 @@ const app = express();
 // In production: only allow CLIENT_URL and ADMIN_URL from .env.
 const isProduction = process.env.NODE_ENV === 'production';
 
+const allowedOrigins = [
+  'https://pricedekho-customer.pages.dev',
+  'https://www.satguru.shop',
+  'https://satguru.shop',
+  'https://pricedekho-admin.pages.dev',
+  'https://main.pricedekho-admin.pages.dev'
+];
+
+app.use((req, res, next) => {
+  // Temporary logging for debugging incoming request origin
+  if (req.headers.origin) {
+    console.log(`[CORS Check] Incoming Request Origin: ${req.headers.origin} | Path: ${req.path}`);
+  }
+  next();
+});
+
 app.use(cors({
   origin: function (origin, callback) {
     // Requests with no origin (server-to-server, curl, Postman, etc.) → always allow
@@ -48,25 +64,29 @@ app.use(cors({
     const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, '') : '';
     const adminUrl = process.env.ADMIN_URL ? process.env.ADMIN_URL.replace(/\/$/, '') : '';
 
-    if (cleanOrigin === clientUrl || cleanOrigin === adminUrl) {
+    if (
+      cleanOrigin === clientUrl || 
+      cleanOrigin === adminUrl ||
+      allowedOrigins.includes(cleanOrigin)
+    ) {
       return callback(null, true);
     }
 
     // Also allow any Cloudflare Pages branch deployments for these specific projects
     if (
       cleanOrigin.endsWith('.pricedekho-customer.pages.dev') ||
-      cleanOrigin.endsWith('.pricedekho-admin.pages.dev') ||
-      cleanOrigin === 'https://pricedekho-customer.pages.dev' ||
-      cleanOrigin === 'https://pricedekho-admin.pages.dev'
+      cleanOrigin.endsWith('.pricedekho-admin.pages.dev')
     ) {
       return callback(null, true);
     }
 
     // Everything else → blocked
     console.log(`[CORS Blocked] Origin: ${origin}`);
-    return callback(null, false);
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
 // ──────────────────────────────────────────────────────────────────────────────
 
