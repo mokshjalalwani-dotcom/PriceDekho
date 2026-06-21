@@ -77,22 +77,24 @@ export const SoundSystemIcon = ({ size = 24, className = "" }) => (
 export const DishwasherIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
     {/* Main Body */}
-    <path d="M 3 20 V 5 A 2 2 0 0 1 5 3 H 19 A 2 2 0 0 1 21 5 V 20 Z" />
+    <path d="M 3 20 V 4 A 2 2 0 0 1 5 2 H 19 A 2 2 0 0 1 21 4 V 20 Z" />
     
     {/* Control Panel Separator */}
-    <line x1="3" y1="7" x2="21" y2="7" />
+    <line x1="3" y1="6" x2="21" y2="6" />
     
-    {/* Control Panel Items */}
-    <line x1="5.5" y1="5" x2="8.5" y2="5" />
-    <line x1="10.5" y1="5" x2="13.5" y2="5" />
-    <circle cx="16" cy="5" r="0.8" />
-    <circle cx="18.5" cy="5" r="0.8" />
+    {/* 3 Dots */}
+    <circle cx="5.5" cy="4" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="8" cy="4" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="10.5" cy="4" r="0.8" fill="currentColor" stroke="none" />
+    
+    {/* Right Trapezoid Display */}
+    <path d="M 14.5 6 L 15.5 3.5 H 18.5 L 19.5 6" />
     
     {/* Door Handle */}
-    <path d="M 7 11 L 8.5 14 H 15.5 L 17 11 Z" />
+    <rect x="6.5" y="8.5" width="11" height="2" rx="1" />
     
     {/* Bottom Base */}
-    <path d="M 4 20 V 21.5 H 20 V 20" />
+    <path d="M 4 20 V 22 H 20 V 20" />
   </svg>
 );
 
