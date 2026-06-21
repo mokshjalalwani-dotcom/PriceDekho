@@ -76,35 +76,23 @@ export const SoundSystemIcon = ({ size = 24, className = "" }) => (
 
 export const DishwasherIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    {/* Inner Box */}
-    <path d="M 4 11 V 3 H 20 V 11" />
-    <line x1="4" y1="6" x2="20" y2="6" />
+    {/* Main Body */}
+    <path d="M 3 20 V 5 A 2 2 0 0 1 5 3 H 19 A 2 2 0 0 1 21 5 V 20 Z" />
     
-    {/* Control Panel Circles */}
-    <circle cx="9.5" cy="4.5" r="0.8" fill="currentColor" stroke="none" />
-    <circle cx="12" cy="4.5" r="0.8" fill="currentColor" stroke="none" />
-    <circle cx="14.5" cy="4.5" r="0.8" fill="currentColor" stroke="none" />
+    {/* Control Panel Separator */}
+    <line x1="3" y1="7" x2="21" y2="7" />
     
-    {/* Plate */}
-    <path d="M 5.5 11 A 3.5 3.5 0 0 1 12.5 11" />
-    <path d="M 7 11 A 2 2 0 0 1 11 11" />
+    {/* Control Panel Items */}
+    <line x1="5.5" y1="5" x2="8.5" y2="5" />
+    <line x1="10.5" y1="5" x2="13.5" y2="5" />
+    <circle cx="16" cy="5" r="0.8" />
+    <circle cx="18.5" cy="5" r="0.8" />
     
-    {/* Cup */}
-    <path d="M 13.5 11 L 14 7.5 C 14 7 16 7 16 7.5 L 16.5 11" />
-    <path d="M 14 7.5 C 14 8 16 8 16 7.5" />
+    {/* Door Handle */}
+    <path d="M 7 11 L 8.5 14 H 15.5 L 17 11 Z" />
     
-    {/* Fork */}
-    <path d="M 17.5 7 V 8.5 A 0.75 0.75 0 0 0 19 8.5 V 7" />
-    <line x1="18.25" y1="7" x2="18.25" y2="11" />
-    
-    {/* Tub Rim */}
-    <rect x="2" y="11" width="20" height="2" />
-    
-    {/* Tub Body */}
-    <path d="M 3 13 L 5 21 H 19 L 21 13 Z" />
-    
-    {/* Tub Handle */}
-    <line x1="10" y1="16" x2="14" y2="16" />
+    {/* Bottom Base */}
+    <path d="M 4 20 V 21.5 H 20 V 20" />
   </svg>
 );
 
