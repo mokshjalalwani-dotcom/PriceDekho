@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, X, Search, Heart, GitCompare, User } from 'lucide-react';
 import { CATEGORIES } from '../../constants/categories';
@@ -9,10 +9,17 @@ import { useCompare } from '../../context/CompareContext';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { compareCount } = useCompare();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -24,59 +31,62 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full bg-white shadow-sm sticky top-0 z-50">
-      <nav className="max-w-[1400px] mx-auto border-b border-gray-100">
-        <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 h-[72px]">
+    <div className={`w-full bg-white sticky top-0 z-50 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+      <nav className="max-w-[1400px] mx-auto border-b border-gray-100/80">
+        <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 h-[68px]">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <div className="w-[52px] h-[52px] rounded-full flex items-center justify-center overflow-hidden bg-white shadow-md group-hover:scale-105 transition-transform p-1">
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm ring-1 ring-gray-100 group-hover:shadow-md transition-shadow p-0.5">
               <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-[800] text-[22px] tracking-tight text-[#242933]">
+            <span className="font-[800] text-lg tracking-tight text-[#242933] hidden sm:inline">
               Satguru<span style={{ color: 'rgb(123,63,0)' }}>Electricals</span>
             </span>
           </Link>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl mx-12">
-            <div className="flex w-full ring-1 ring-gray-200 rounded-md overflow-hidden bg-gray-50 focus-within:ring-2 focus-within:ring-gray-300 focus-within:bg-white transition-all h-[42px]">
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
+            <div className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-orange-300 focus-within:bg-white transition-all h-[42px]">
+              <div className="flex items-center pl-4 text-gray-400">
+                <Search size={16} />
+              </div>
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Search for TVs, ACs, Fridges..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-2 pl-4 pr-4 bg-transparent outline-none text-sm text-gray-800"
+                className="w-full py-2 pl-3 pr-4 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400"
               />
-              <button type="submit" className="bg-[#242933] hover:bg-black text-white px-6 flex items-center justify-center transition-colors">
-                <Search size={18} />
+              <button type="submit" className="bg-[#242933] hover:bg-black text-white px-5 flex items-center justify-center transition-colors">
+                <Search size={16} />
               </button>
             </div>
           </form>
 
           {/* User Actions */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Link to="/compare" className="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 font-semibold transition-colors text-sm relative">
-              <GitCompare size={20} />
-              Compare
+          <div className="hidden md:flex items-center gap-1">
+            <Link to="/compare" className="flex items-center gap-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 font-medium transition-colors text-sm relative rounded-full px-3 py-2">
+              <GitCompare size={19} />
+              <span className="hidden lg:inline">Compare</span>
               {compareCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white shadow-sm">
+                <span className="absolute -top-0.5 right-0.5 bg-blue-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {compareCount}
                 </span>
               )}
             </Link>
-            <Link to="/wishlist" className="text-gray-600 hover:text-red-500 transition-colors relative">
-              <Heart size={22} />
+            <Link to="/wishlist" className="text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors relative rounded-full p-2.5">
+              <Heart size={20} />
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white shadow-sm">
+                <span className="absolute -top-0.5 right-0 bg-red-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {wishlistCount > 9 ? '9+' : wishlistCount}
                 </span>
               )}
             </Link>
-            <Link to="/cart" className="text-gray-600 hover:text-blue-600 transition-colors relative">
-              <ShoppingCart size={22} />
+            <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors relative rounded-full p-2.5">
+              <ShoppingCart size={20} />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white shadow-sm">
+                <span className="absolute -top-0.5 right-0 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {cartCount > 9 ? '9+' : cartCount}
                 </span>
               )}
@@ -84,17 +94,17 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <Link to="/cart" className="text-gray-600 hover:text-blue-600 transition-colors relative">
-              <ShoppingCart size={24} />
+          <div className="md:hidden flex items-center gap-2">
+            <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
+              <ShoppingCart size={22} />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">
+                <span className="absolute -top-1 -right-1 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {cartCount > 9 ? '9+' : cartCount}
                 </span>
               )}
             </Link>
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 p-1">
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -103,19 +113,24 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 shadow-xl absolute w-full z-40">
+        <div className="md:hidden bg-white border-b border-gray-100 shadow-xl absolute w-full z-40 animate-fade-in-up">
           <div className="px-4 pt-2 pb-6 space-y-1 max-h-[80vh] overflow-y-auto">
             <form onSubmit={handleSearch} className="relative mt-2 mb-4">
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-md py-2.5 pl-4 pr-10 outline-none focus:border-blue-500"
-              />
-              <button type="submit" className="absolute right-3 top-2.5">
-                <Search size={18} className="text-gray-400" />
-              </button>
+              <div className="flex items-center bg-gray-50 border border-gray-200 rounded-full overflow-hidden focus-within:border-orange-300 focus-within:ring-2 focus-within:ring-orange-100">
+                <div className="pl-4 text-gray-400">
+                  <Search size={16} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full py-2.5 pl-3 pr-4 bg-transparent outline-none text-sm"
+                />
+                <button type="submit" className="pr-4">
+                  <Search size={16} className="text-gray-400" />
+                </button>
+              </div>
             </form>
               {CATEGORIES.map(cat => (
               <Link
@@ -131,10 +146,10 @@ const Navbar = () => {
 
 
             <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-4 mt-2">
-              <Link to="/wishlist" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg">
+              <Link to="/wishlist" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                 <Heart size={16} /> Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
               </Link>
-              <Link to="/shop" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded-lg">Shop All</Link>
+              <Link to="/shop" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold text-white bg-[var(--color-primary)] rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors">Shop All</Link>
             </div>
           </div>
         </div>

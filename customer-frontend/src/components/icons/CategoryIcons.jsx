@@ -76,26 +76,35 @@ export const SoundSystemIcon = ({ size = 24, className = "" }) => (
 
 export const DishwasherIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    {/* Outer Box */}
-    <rect x="2" y="2" width="20" height="20" rx="2" />
-    {/* Control Panel Line */}
-    <line x1="2" y1="7" x2="22" y2="7" />
+    {/* Inner Box */}
+    <path d="M 4 11 V 3 H 20 V 11" />
+    <line x1="4" y1="6" x2="20" y2="6" />
+    
     {/* Control Panel Circles */}
-    <circle cx="6" cy="4.5" r="1" />
-    <circle cx="10" cy="4.5" r="1" />
-    {/* Control Panel Screen */}
-    <rect x="14" y="3.5" width="5" height="2" rx="0.5" />
-    {/* Inner Tub Frame */}
-    <path d="M 4 7 V 20 H 20 V 7" />
-    {/* Wavy Water Line */}
-    <path d="M 4 10 Q 6 8.5 8 10 T 12 10 T 16 10 T 20 10" />
-    {/* Wine Glass */}
-    <path d="M 6 12 H 10 V 14 Q 10 16 8 16 Q 6 16 6 14 Z" />
-    <line x1="8" y1="16" x2="8" y2="20" />
-    <line x1="6.5" y1="20" x2="9.5" y2="20" />
+    <circle cx="9.5" cy="4.5" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="4.5" r="0.8" fill="currentColor" stroke="none" />
+    <circle cx="14.5" cy="4.5" r="0.8" fill="currentColor" stroke="none" />
+    
     {/* Plate */}
-    <circle cx="15.5" cy="15.5" r="3.5" />
-    <circle cx="15.5" cy="15.5" r="1.5" />
+    <path d="M 5.5 11 A 3.5 3.5 0 0 1 12.5 11" />
+    <path d="M 7 11 A 2 2 0 0 1 11 11" />
+    
+    {/* Cup */}
+    <path d="M 13.5 11 L 14 7.5 C 14 7 16 7 16 7.5 L 16.5 11" />
+    <path d="M 14 7.5 C 14 8 16 8 16 7.5" />
+    
+    {/* Fork */}
+    <path d="M 17.5 7 V 8.5 A 0.75 0.75 0 0 0 19 8.5 V 7" />
+    <line x1="18.25" y1="7" x2="18.25" y2="11" />
+    
+    {/* Tub Rim */}
+    <rect x="2" y="11" width="20" height="2" />
+    
+    {/* Tub Body */}
+    <path d="M 3 13 L 5 21 H 19 L 21 13 Z" />
+    
+    {/* Tub Handle */}
+    <line x1="10" y1="16" x2="14" y2="16" />
   </svg>
 );
 

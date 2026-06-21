@@ -9,7 +9,7 @@ const Footer = () => {
   const catCol2 = CATEGORIES.slice(6, 12);
 
   return (
-    <footer className="bg-[var(--color-secondary)] text-gray-300 pt-16 pb-8">
+    <footer className="bg-[var(--color-secondary)] text-gray-300 pt-20 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
 
@@ -24,6 +24,7 @@ const Footer = () => {
             <p className="text-gray-400 text-sm leading-relaxed mt-4">
               Your trusted partner for premium home appliances & electronics. Quality products, competitive prices, and exceptional service since 1995.
             </p>
+            <p className="text-[11px] text-gray-500 mt-2 uppercase tracking-wider font-medium">Trusted by families across Gujarat</p>
             <div className="flex space-x-4 pt-2">
               <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white transition-colors"><Facebook size={20} /></a>
               <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-[var(--color-primary)] hover:text-white transition-colors"><Twitter size={20} /></a>
@@ -95,7 +96,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+        <div className="border-t border-gray-800 pt-8 mt-4 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
           <p>&copy; {new Date().getFullYear()} Satguru Electricals. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
