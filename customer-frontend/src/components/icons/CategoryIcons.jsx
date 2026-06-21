@@ -75,26 +75,50 @@ export const SoundSystemIcon = ({ size = 24, className = "" }) => (
 );
 
 export const DishwasherIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
-    <path d="M4 6h16"></path>
-    <circle cx="18" cy="4" r="0.5"></circle>
-    <circle cx="16" cy="4" r="0.5"></circle>
-    <circle cx="14" cy="4" r="0.5"></circle>
-    <path d="M8 10h8"></path>
-    <path d="M8 14h8"></path>
-    <path d="M8 18h8"></path>
+  <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
+    {/* Outer Box */}
+    <rect x="10" y="10" width="80" height="80" rx="8" />
+    {/* Control Panel Line */}
+    <line x1="10" y1="30" x2="90" y2="30" />
+    {/* Control Panel Circles */}
+    <circle cx="26" cy="20" r="4" />
+    <circle cx="42" cy="20" r="4" />
+    {/* Control Panel Screen */}
+    <rect x="58" y="16" width="22" height="8" rx="2" />
+    {/* Inner Tub Frame */}
+    <path d="M 18 30 V 82 H 82 V 30" />
+    {/* Wavy Water Line */}
+    <path d="M 18 42 Q 26 36 34 42 T 50 42 T 66 42 T 82 42" />
+    {/* Wine Glass */}
+    <path d="M 26 50 H 42 V 58 Q 42 68 34 68 Q 26 68 26 58 Z" />
+    <line x1="34" y1="68" x2="34" y2="82" />
+    <line x1="28" y1="82" x2="40" y2="82" />
+    {/* Plate */}
+    <circle cx="64" cy="65" r="14" />
+    <circle cx="64" cy="65" r="7" />
   </svg>
 );
 
 // Custom matching thin-line styles for the rest of categories
 export const FanIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <circle cx="12" cy="12" r="3"></circle>
-    <path d="M12 9c-2-3-1-7 3-7 2 0 4 2 2 5s-5 2-5 2z"></path>
-    <path d="M15 12c3-2 7-1 7 3 0 2-2 4-5 2s-2-5-2-5z"></path>
-    <path d="M12 15c2 3 1 7-3 7-2 0-4-2-2-5s5-2 5-2z"></path>
-    <path d="M9 12c-3 2-7 1-7-3 0-2 2-4 5-2s2 5 2 5z"></path>
+  <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="currentColor">
+    {/* Center Ring */}
+    <circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" strokeWidth="8" />
+    <g transform="translate(50, 50)">
+      {/* Blade 1 */}
+      <path d="M 8 -8 C 20 -35, 40 -40, 45 -20 C 35 -5, 20 -5, 12 -4 Z" />
+      <path d="M 12 -42 C 35 -48, 55 -25, 45 5 C 55 -25, 35 -42, 12 -42 Z" />
+      {/* Blade 2 */}
+      <g transform="rotate(120)">
+        <path d="M 8 -8 C 20 -35, 40 -40, 45 -20 C 35 -5, 20 -5, 12 -4 Z" />
+        <path d="M 12 -42 C 35 -48, 55 -25, 45 5 C 55 -25, 35 -42, 12 -42 Z" />
+      </g>
+      {/* Blade 3 */}
+      <g transform="rotate(240)">
+        <path d="M 8 -8 C 20 -35, 40 -40, 45 -20 C 35 -5, 20 -5, 12 -4 Z" />
+        <path d="M 12 -42 C 35 -48, 55 -25, 45 5 C 55 -25, 35 -42, 12 -42 Z" />
+      </g>
+    </g>
   </svg>
 );
 
@@ -136,10 +160,24 @@ export const GasStoveIcon = ({ size = 24, className = "" }) => (
 );
 
 export const GharGhantiIcon = ({ size = 24, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <path d="M6 2L4 8v14h16V8L18 2H6z"></path>
-    <path d="M4 8h16"></path>
-    <circle cx="12" cy="14" r="3"></circle>
-    <path d="M10 18h4"></path>
+  <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round">
+    {/* Hopper Top */}
+    <rect x="22" y="16" width="40" height="12" />
+    {/* Hopper Funnel */}
+    <path d="M26 28 L36 45 H48 L58 28" />
+    {/* Lid */}
+    <line x1="15" y1="45" x2="69" y2="45" />
+    {/* Mid Band */}
+    <line x1="15" y1="58" x2="69" y2="58" />
+    {/* Base Band */}
+    <line x1="15" y1="80" x2="69" y2="80" />
+    {/* Body Left */}
+    <line x1="18" y1="45" x2="18" y2="80" />
+    {/* Body Right */}
+    <line x1="66" y1="45" x2="66" y2="80" />
+    {/* Crank Shaft */}
+    <path d="M 66 51 H 78 V 30 H 84" />
+    {/* Crank Knob */}
+    <rect x="84" y="26" width="12" height="8" rx="4" fill="currentColor" stroke="none" />
   </svg>
 );
