@@ -28,24 +28,35 @@ export const RefrigeratorIcon = ({ size = 24, className = "" }) => (
 
 export const AcIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <rect x="2" y="5" width="20" height="8" rx="2" ry="2"></rect>
-    <path d="M4 9h16"></path>
-    <path d="M17 7h2"></path>
-    <path d="M6 16v3"></path>
-    <path d="M10 16v4"></path>
-    <path d="M14 16v4"></path>
-    <path d="M18 16v3"></path>
+    {/* AC Wall Unit Body */}
+    <path d="M3 6h18a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
+    {/* Vent lines */}
+    <line x1="3" y1="10" x2="21" y2="10" />
+    {/* LED / Dial on right */}
+    <circle cx="19" cy="8" r="0.5" fill="currentColor" />
+    {/* Air flow lines blowing downwards */}
+    <path d="M6 15c0 1.5-1 3-2 3" />
+    <path d="M10 15c0 2-1 4-2 4" />
+    <path d="M14 15c0 2 1 4 2 4" />
+    <path d="M18 15c0 1.5 1 3 2 3" />
   </svg>
 );
 
 export const WashingMachineIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
-    <circle cx="12" cy="13" r="5"></circle>
-    <path d="M4 6h16"></path>
-    <circle cx="16" cy="4" r="0.5"></circle>
-    <circle cx="18" cy="4" r="0.5"></circle>
-    <path d="M6 4h4"></path>
+    {/* Body */}
+    <rect x="4" y="3" width="16" height="18" rx="2" ry="2" />
+    {/* Control Panel Line */}
+    <line x1="4" y1="7" x2="20" y2="7" />
+    {/* Drum Outer */}
+    <circle cx="12" cy="14" r="5" />
+    {/* Drum Inner / Glass */}
+    <circle cx="12" cy="14" r="3" />
+    {/* Dial */}
+    <circle cx="8" cy="5" r="1" />
+    {/* Buttons */}
+    <line x1="16" y1="5" x2="18" y2="5" />
+    <line x1="13" y1="5" x2="14" y2="5" />
   </svg>
 );
 
@@ -77,24 +88,22 @@ export const SoundSystemIcon = ({ size = 24, className = "" }) => (
 export const DishwasherIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
     {/* Main Body */}
-    <path d="M 3 20 V 4 A 2 2 0 0 1 5 2 H 19 A 2 2 0 0 1 21 4 V 20 Z" />
+    <path d="M 4 3 A 1 1 0 0 1 5 2 H 19 A 1 1 0 0 1 20 3 V 19 H 4 Z" />
+    
+    {/* Kickplate / Base */}
+    <path d="M 5 19 V 21 A 1 1 0 0 0 6 22 H 18 A 1 1 0 0 0 19 21 V 19" />
     
     {/* Control Panel Separator */}
-    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="4" y1="7" x2="20" y2="7" />
     
-    {/* 3 Dots */}
-    <circle cx="5.5" cy="4" r="0.8" fill="currentColor" stroke="none" />
-    <circle cx="8" cy="4" r="0.8" fill="currentColor" stroke="none" />
-    <circle cx="10.5" cy="4" r="0.8" fill="currentColor" stroke="none" />
+    {/* Controls */}
+    <line x1="6" y1="4.5" x2="9" y2="4.5" />
+    <line x1="10.5" y1="4.5" x2="13.5" y2="4.5" />
+    <circle cx="16" cy="4.5" r="1" />
+    <circle cx="18" cy="4.5" r="1" />
     
-    {/* Right Trapezoid Display */}
-    <path d="M 14.5 6 L 15.5 3.5 H 18.5 L 19.5 6" />
-    
-    {/* Door Handle */}
-    <rect x="6.5" y="8.5" width="11" height="2" rx="1" />
-    
-    {/* Bottom Base */}
-    <path d="M 4 20 V 22 H 20 V 20" />
+    {/* Handle (Trapezoid) */}
+    <path d="M 8 10 L 16 10 L 15 13 L 9 13 Z" strokeLinejoin="round" />
   </svg>
 );
 
@@ -214,17 +223,17 @@ export const VacuumCleanerIcon = ({ size = 24, className = "" }) => (
 
 export const GeyserIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    {/* Main tank */}
-    <rect x="6" y="3" width="12" height="15" rx="4"></rect>
-    {/* Temperature dial / display */}
-    <circle cx="12" cy="10" r="2"></circle>
-    <path d="M12 9v1"></path>
-    {/* In / Out Pipes */}
-    <path d="M8 18v3"></path>
-    <path d="M16 18v3"></path>
+    {/* Cylindrical Tank */}
+    <path d="M7 6a5 5 0 0 1 10 0v8a5 5 0 0 1-10 0V6z" />
+    {/* Control Dial/Display */}
+    <path d="M11 11h2" />
+    <circle cx="12" cy="11" r="2" />
+    {/* Pipes */}
+    <line x1="9" y1="18.5" x2="9" y2="21" />
+    <line x1="15" y1="18.5" x2="15" y2="21" />
     {/* Drops */}
-    <circle cx="8" cy="22" r="0.5"></circle>
-    <circle cx="16" cy="22" r="0.5"></circle>
+    <circle cx="9" cy="23" r="0.5" fill="currentColor" stroke="none" />
+    <circle cx="15" cy="23" r="0.5" fill="currentColor" stroke="none" />
   </svg>
 );
 

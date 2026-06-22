@@ -16,6 +16,7 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAllMobile, setShowAllMobile] = useState(false);
   const { categories, loading: categoriesLoading } = useCategory();
 
   useEffect(() => {
@@ -66,28 +67,43 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-4 gap-y-6 sm:gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-x-4 gap-y-6 sm:gap-6">
             {categoriesLoading ? (
-              Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="flex flex-col items-center gap-2.5 w-full">
+              Array.from({ length: 16 }).map((_, i) => (
+                <div key={i} className={`flex flex-col items-center gap-2.5 w-full ${!showAllMobile && i >= 15 ? 'hidden sm:flex' : 'flex'}`}>
                   <div className="w-full aspect-square rounded-2xl bg-gray-100 animate-pulse max-w-[110px] mx-auto" />
                   <div className="h-3 bg-gray-100 animate-pulse rounded w-16" />
                 </div>
               ))
             ) : (
-              categories.map((cat) => (
-                <div key={cat.slug} className="flex flex-col items-center gap-2.5 w-full group">
-                  <Link
-                    to={`/shop?category=${cat.slug}`}
-                    className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[110px] mx-auto ring-1 ring-black/5`}
-                  >
-                    {React.cloneElement(cat.icon, { size: 38, className: "text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
-                  </Link>
-                  <span className="font-semibold text-gray-700 text-[11px] sm:text-xs text-center leading-tight">{cat.name}</span>
-                </div>
-              ))
+              categories.map((cat, idx) => {
+                const isHiddenMobile = !showAllMobile && idx >= 15;
+                return (
+                  <div key={cat.slug} className={`flex-col items-center gap-2.5 w-full group ${isHiddenMobile ? 'hidden sm:flex' : 'flex'}`}>
+                    <Link
+                      to={`/shop?category=${cat.slug}`}
+                      className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[110px] mx-auto ring-1 ring-black/5`}
+                    >
+                      {React.cloneElement(cat.icon, { size: 38, className: "text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
+                    </Link>
+                    <span className="font-semibold text-gray-700 text-[11px] sm:text-xs text-center leading-tight">{cat.name}</span>
+                  </div>
+                );
+              })
             )}
           </div>
+          
+          {/* Mobile View More / View Less Toggle */}
+          {!categoriesLoading && categories.length > 15 && (
+            <div className="mt-8 flex justify-center sm:hidden">
+              <button 
+                onClick={() => setShowAllMobile(!showAllMobile)}
+                className="px-6 py-2 border border-gray-200 rounded-full text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm"
+              >
+                {showAllMobile ? 'View Less' : 'View More'}
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
