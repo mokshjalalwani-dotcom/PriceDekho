@@ -59,20 +59,20 @@ const Home = () => {
           </div>
 
           {/* Category Grid — 4 cols mobile, 8 cols desktop for 16 categories in 2 rows */}
-          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 sm:gap-4">
+          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2 sm:gap-4 lg:gap-6">
             {CATEGORIES.map((cat, index) => (
               <Link
                 key={cat.slug}
                 to={`/shop?category=${cat.slug}`}
-                className="category-card group flex flex-col items-center gap-2 p-2 sm:p-3 rounded-xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all duration-300"
+                className="category-card group flex flex-col items-center gap-2 p-1 transition-all duration-300"
                 style={{ animationDelay: `${index * 30}ms` }}
               >
                 {/* Icon circle with gradient */}
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-sm`}>
-                  {React.cloneElement(cat.icon, { size: 26, className: "text-white stroke-[1.5]" })}
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-[18px] bg-gradient-to-br ${cat.color} flex items-center justify-center group-hover:-translate-y-1 group-hover:shadow-lg transition-all duration-300 shadow-sm`}>
+                  {React.cloneElement(cat.icon, { size: 28, className: "text-white stroke-[1.5]" })}
                 </div>
                 {/* Name */}
-                <span className="font-semibold text-gray-700 text-[10px] sm:text-[11px] text-center leading-tight line-clamp-2 min-h-[28px] flex items-center">
+                <span className="font-medium text-gray-700 text-[10px] sm:text-[12px] text-center leading-tight line-clamp-2 px-1">
                   {cat.name}
                 </span>
               </Link>
