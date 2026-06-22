@@ -309,10 +309,10 @@ Please share more details.`;
               
               {product.additionalContent && (
                 <div 
-                  className={`text-xs font-semibold px-3 py-1 rounded cursor-pointer transition-all duration-300 select-none ${
+                  className={`text-xs px-3 py-1 cursor-pointer transition-all duration-300 select-none ${
                     showRealPrice 
-                      ? 'bg-gray-100 text-gray-600 border border-gray-200' 
-                      : 'text-transparent bg-transparent border border-transparent'
+                      ? 'text-gray-400' 
+                      : 'text-transparent bg-transparent'
                   }`}
                   onClick={() => setShowRealPrice(!showRealPrice)}
                 >
