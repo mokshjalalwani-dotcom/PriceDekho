@@ -5,7 +5,7 @@ import Category from '../models/Category.js';
 // @access  Public
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}).sort({ displayOrder: 1 });
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });

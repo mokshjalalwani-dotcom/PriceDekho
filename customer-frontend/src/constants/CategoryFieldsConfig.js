@@ -205,6 +205,71 @@ export const CATEGORY_FIELDS = {
     ],
     filterFields: ['placeSettings', 'numberOfWashPrograms', 'installationType'],
   },
+
+  projector: {
+    label: 'Projector',
+    fields: [
+      { key: 'projectionTechnology', label: 'Projection Technology', type: 'select', options: ['DLP', 'LCD', 'LED', 'Laser', 'LCoS'], required: true },
+      { key: 'lumens', label: 'Brightness (Lumens)', type: 'select', options: ['1000-2000', '2000-3000', '3000-4000', '4000-5000', '5000+'] },
+      { key: 'resolution', label: 'Native Resolution', type: 'select', options: ['SVGA (800x600)', 'XGA (1024x768)', 'WXGA (1280x800)', 'Full HD (1920x1080)', '4K (3840x2160)'] },
+      { key: 'throwDistance', label: 'Throw Type', type: 'select', options: ['Short Throw', 'Standard Throw', 'Long Throw', 'Ultra Short Throw'] },
+      { key: 'screenSize', label: 'Max Screen Size', type: 'text', placeholder: 'e.g. 120 inch' },
+      { key: 'connectivity', label: 'Connectivity', type: 'text', placeholder: 'e.g. HDMI, USB, WiFi, Bluetooth' },
+      { key: 'lampLife', label: 'Lamp Life (hours)', type: 'text', placeholder: 'e.g. 20000' },
+      { key: 'keystoneCorrection', label: 'Keystone Correction', type: 'boolean' },
+      { key: 'builtInSpeaker', label: 'Built-in Speaker', type: 'boolean' },
+      { key: 'portableDesign', label: 'Portable', type: 'boolean' },
+    ],
+    filterFields: ['projectionTechnology', 'lumens', 'resolution'],
+  },
+
+  'vacuum-cleaner': {
+    label: 'Vacuum Cleaner',
+    fields: [
+      { key: 'vacuumType', label: 'Type', type: 'select', options: ['Upright', 'Canister', 'Stick', 'Handheld', 'Robot', 'Wet & Dry'], required: true },
+      { key: 'suctionPower', label: 'Suction Power', type: 'text', placeholder: 'e.g. 2000 Pa' },
+      { key: 'dustBagCapacity', label: 'Dust Bag/Bin Capacity', type: 'text', placeholder: 'e.g. 1.5L' },
+      { key: 'hepaFilter', label: 'HEPA Filter', type: 'boolean' },
+      { key: 'cordless', label: 'Cordless', type: 'boolean' },
+      { key: 'batteryLife', label: 'Battery Life', type: 'text', placeholder: 'e.g. 60 minutes' },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 1600W' },
+      { key: 'weight', label: 'Weight', type: 'text', placeholder: 'e.g. 4.5 kg' },
+      { key: 'noiseLevel', label: 'Noise Level', type: 'text', placeholder: 'e.g. 72 dB' },
+    ],
+    filterFields: ['vacuumType', 'cordless', 'hepaFilter'],
+  },
+
+  geyser: {
+    label: 'Geyser',
+    fields: [
+      { key: 'geyserType', label: 'Type', type: 'select', options: ['Instant', 'Storage', 'Gas', 'Solar', 'Heat Pump'], required: true },
+      { key: 'capacityLitres', label: 'Capacity (Litres)', type: 'select', options: ['1L', '3L', '5L', '6L', '10L', '15L', '25L', '35L', '50L'], required: true },
+      { key: 'heatingElement', label: 'Heating Element', type: 'select', options: ['Copper', 'Glass-Lined', 'Incoloy', 'Stainless Steel'] },
+      { key: 'energyRating', label: 'Energy Rating', type: 'select', options: ['1 Star', '2 Star', '3 Star', '4 Star', '5 Star'] },
+      { key: 'pressureRating', label: 'Pressure Rating', type: 'text', placeholder: 'e.g. 6.5 Bar' },
+      { key: 'innerTankMaterial', label: 'Inner Tank Material', type: 'select', options: ['Stainless Steel', 'Copper', 'Glass-Lined', 'Polymer Coated'] },
+      { key: 'temperatureControl', label: 'Temperature Control', type: 'boolean' },
+      { key: 'autoShutOff', label: 'Auto Shut-Off', type: 'boolean' },
+      { key: 'multipleProtection', label: 'Multiple Safety Protection', type: 'boolean' },
+    ],
+    filterFields: ['geyserType', 'capacityLitres', 'energyRating'],
+  },
+
+  'personal-care': {
+    label: 'Personal Care',
+    fields: [
+      { key: 'productType', label: 'Product Type', type: 'select', options: ['Trimmer', 'One Blade', 'Body Groomer', 'Nose/Ear/Eyebrow Trimmer', 'Hair Straightener', 'Hair Dryer', 'Hair Straightening Brush', 'Styler', 'Epilator', 'Shaver', 'Female Trimmer', 'Hair Clipper'], required: true },
+      { key: 'runtime', label: 'Runtime', type: 'text', placeholder: 'e.g. 120 minutes' },
+      { key: 'chargingTime', label: 'Charging Time', type: 'text', placeholder: 'e.g. 1 hour' },
+      { key: 'waterproof', label: 'Waterproof', type: 'boolean' },
+      { key: 'cordlessCordedUse', label: 'Usage Type', type: 'select', options: ['Cordless', 'Corded', 'Cordless & Corded'] },
+      { key: 'bladeType', label: 'Blade/Element Type', type: 'text', placeholder: 'e.g. Self-sharpening Steel Blades' },
+      { key: 'numberOfAttachments', label: 'Number of Attachments', type: 'text', placeholder: 'e.g. 5' },
+      { key: 'travelLock', label: 'Travel Lock', type: 'boolean' },
+      { key: 'displayType', label: 'Display', type: 'select', options: ['LED', 'LCD', 'None'] },
+    ],
+    filterFields: ['productType', 'waterproof', 'cordlessCordedUse'],
+  },
 };
 
 // Helper: Get category config by slug

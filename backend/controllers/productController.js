@@ -77,7 +77,7 @@ export const getProducts = async (req, res) => {
     const categoryFieldFilters = {};
     const reservedKeys = [
       'page', 'pageSize', 'keyword', 'category', 'brand', 'sortBy',
-      'minPrice', 'maxPrice', 'availability', 'color'
+      'minPrice', 'maxPrice', 'availability', 'color', 'subCategory'
     ];
     Object.keys(req.query).forEach(key => {
       if (!reservedKeys.includes(key) && req.query[key]) {
@@ -85,6 +85,12 @@ export const getProducts = async (req, res) => {
         categoryFieldFilters[`categoryFields.${key}`] = { $regex: req.query[key], $options: 'i' };
       }
     });
+
+    // --- SubCategory filter ---
+    let subCategoryFilter = {};
+    if (req.query.subCategory) {
+      subCategoryFilter = { subCategory: req.query.subCategory };
+    }
 
     // --- Color filter ---
     let colorFilter = {};
@@ -108,6 +114,7 @@ export const getProducts = async (req, res) => {
       ...keyword,
       ...categoryFilter,
       ...brandFilter,
+      ...subCategoryFilter,
       ...availabilityFilter,
       ...visibilityFilter,
       ...colorFilter,
@@ -240,10 +247,17 @@ export const getProductsByCategory = async (req, res) => {
     const brandIds = await Product.distinct('brand', { category: category._id });
     const brands = await Brand.find({ _id: { $in: brandIds } }).select('name slug');
 
+    // Get distinct subCategory values for this category
+    const subCategories = await Product.distinct('subCategory', {
+      category: category._id,
+      subCategory: { $nin: [null, ''] }
+    });
+
     res.json({
       category,
       products,
       brands,
+      subCategories,
       page,
       pages: Math.ceil(count / pageSize),
       total: count

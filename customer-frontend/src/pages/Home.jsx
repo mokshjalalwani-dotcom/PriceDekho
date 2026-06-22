@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ArrowRight, Zap, ShieldCheck, Truck, Clock, ChevronRight, Star, Headphones } from 'lucide-react';
+import { ArrowRight, Zap, ShieldCheck, Truck, ChevronRight, Star, Headphones } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { CATEGORIES } from '../constants/categories';
 
@@ -45,36 +45,43 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      {/* Shop by Category */}
-      <section className="pt-10 pb-12 bg-white">
+      {/* ─── Shop by Category ─── */}
+      <section className="pt-8 pb-10 bg-white">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="section-heading">What do you want to buy today?</h2>
-              <p className="text-sm text-gray-500 mt-1.5">Browse from our wide range of home appliances</p>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">Shop by Category</h2>
+              <p className="text-sm text-gray-500 mt-1">Browse from our wide range of home appliances</p>
             </div>
             <Link to="/shop" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
               View All <ChevronRight size={14} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-4 gap-y-6 sm:gap-6">
-            {CATEGORIES.map((cat) => (
-              <div key={cat.slug} className="flex flex-col items-center gap-2.5 w-full group">
-                <Link
-                  to={`/shop?category=${cat.slug}`}
-                  className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[110px] mx-auto ring-1 ring-black/5`}
-                >
-                  {React.cloneElement(cat.icon, { size: 38, className: "text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
-                </Link>
-                <span className="font-semibold text-gray-700 text-[11px] sm:text-xs text-center leading-tight">{cat.name}</span>
-              </div>
+          {/* Category Grid — 4 cols mobile, 8 cols desktop for 16 categories in 2 rows */}
+          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 sm:gap-4">
+            {CATEGORIES.map((cat, index) => (
+              <Link
+                key={cat.slug}
+                to={`/shop?category=${cat.slug}`}
+                className="category-card group flex flex-col items-center gap-2 p-2 sm:p-3 rounded-xl bg-white border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all duration-300"
+                style={{ animationDelay: `${index * 30}ms` }}
+              >
+                {/* Icon circle with gradient */}
+                <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${cat.color} flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-sm`}>
+                  {React.cloneElement(cat.icon, { size: 26, className: "text-white stroke-[1.5]" })}
+                </div>
+                {/* Name */}
+                <span className="font-semibold text-gray-700 text-[10px] sm:text-[11px] text-center leading-tight line-clamp-2 min-h-[28px] flex items-center">
+                  {cat.name}
+                </span>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* USP Trust Badges */}
+      {/* ─── USP Trust Badges ─── */}
       <section className="py-5 bg-gray-50/80 border-y border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -98,20 +105,20 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Trending Products */}
-      <section className="py-12 bg-white">
+      {/* ─── Trending Products ─── */}
+      <section className="py-10 bg-white">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="section-heading">Trending Products</h2>
-              <p className="text-sm text-gray-500 mt-1.5">Top-rated picks from our store</p>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">Trending Products</h2>
+              <p className="text-sm text-gray-500 mt-1">Top-rated picks from our store</p>
             </div>
             <Link to="/shop?sortBy=rating_desc" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
               View All <ChevronRight size={14} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
             ) : (
@@ -123,20 +130,20 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Latest Arrivals */}
-      <section className="py-12 bg-[var(--color-background)]">
+      {/* ─── Latest Arrivals ─── */}
+      <section className="py-10 bg-[var(--color-background)]">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="section-heading">Latest Arrivals</h2>
-              <p className="text-sm text-gray-500 mt-1.5">Freshly added to our inventory</p>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">Latest Arrivals</h2>
+              <p className="text-sm text-gray-500 mt-1">Freshly added to our inventory</p>
             </div>
             <Link to="/shop?sortBy=newest" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
               View All <ChevronRight size={14} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
             ) : (
