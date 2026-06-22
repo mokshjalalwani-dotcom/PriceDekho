@@ -24,6 +24,7 @@ const ProductDetails = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
   const [settings, setSettings] = useState(null);
+  const [showRealPrice, setShowRealPrice] = useState(false);
 
   const { dispatch: cartDispatch } = useCart();
   const { isWishlisted, dispatch: wishlistDispatch } = useWishlist();
@@ -297,11 +298,27 @@ Please share more details.`;
 
           {/* Product Info */}
           <div className="space-y-5">
-            {/* Brand + Model */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
-              {product.modelNumber && (
-                <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
+            {/* Brand + Model & Real Price */}
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
+                <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
+                {product.modelNumber && (
+                  <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
+                )}
+              </div>
+              
+              {product.additionalContent && (
+                <div 
+                  className={`text-xs font-semibold px-3 py-1 rounded cursor-pointer transition-all duration-300 ${
+                    showRealPrice 
+                      ? 'bg-orange-100 text-orange-800 border border-orange-200' 
+                      : 'bg-gray-50 text-gray-400 border border-gray-200 hover:bg-gray-100'
+                  }`}
+                  onClick={() => setShowRealPrice(!showRealPrice)}
+                  title="Click to reveal real price"
+                >
+                  {showRealPrice ? product.additionalContent : "Tap to View Real Price"}
+                </div>
               )}
             </div>
 

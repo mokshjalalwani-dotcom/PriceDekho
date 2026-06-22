@@ -528,8 +528,8 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 <input type="text" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} className={inputCls} placeholder="https://www.youtube.com/watch?v=XXXXXXXX" />
               </div>
               <div>
-                <label className={labelCls}>Additional Content / Footer</label>
-                <textarea name="additionalContent" value={formData.additionalContent} onChange={handleChange} rows="4" className={inputCls} placeholder="Enter additional product information, buying guidance, specifications, warranty notes, SEO content, etc." />
+                <label className={labelCls}>REAL PRICE</label>
+                <input type="text" name="additionalContent" value={formData.additionalContent} onChange={handleChange} className={inputCls} placeholder="e.g. ₹22,500" />
               </div>
             </div>
           )}
