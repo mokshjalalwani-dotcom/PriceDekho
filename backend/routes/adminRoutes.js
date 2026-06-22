@@ -7,6 +7,7 @@ import Category from '../models/Category.js';
 import Brand from '../models/Brand.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { convertToNLC } from '../utils/nlcConverter.js';
+import { validateBrandCategory } from '../services/brandService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,14 +64,11 @@ router.post('/products', protect, admin, async (req, res) => {
   try {
     const productData = { ...req.body };
 
-    // Validation for Brand -> Category mapping
+    // Validation for Brand -> Category mapping using reusable service
     if (productData.category && productData.brand) {
-      const brandObj = await Brand.findById(productData.brand);
-      if (!brandObj) {
-        return res.status(400).json({ message: 'Invalid Brand selected.' });
-      }
-      if (!brandObj.categories.includes(productData.category)) {
-        return res.status(400).json({ message: 'The selected Brand does not belong to the selected Category.' });
+      const validation = await validateBrandCategory(productData.brand, productData.category);
+      if (!validation.isValid) {
+        return res.status(400).json({ message: validation.error });
       }
     }
 
@@ -112,12 +110,9 @@ router.put('/products/:id', protect, admin, async (req, res) => {
     const newBrand = updateData.brand || currentProduct.brand;
     
     if (newCategory && newBrand) {
-      const brandObj = await Brand.findById(newBrand);
-      if (!brandObj) {
-        return res.status(400).json({ message: 'Invalid Brand selected.' });
-      }
-      if (!brandObj.categories.includes(newCategory)) {
-        return res.status(400).json({ message: 'The selected Brand does not belong to the selected Category.' });
+      const validation = await validateBrandCategory(newBrand, newCategory);
+      if (!validation.isValid) {
+        return res.status(400).json({ message: validation.error });
       }
     }
 
