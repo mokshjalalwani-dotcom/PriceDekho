@@ -311,7 +311,7 @@ Please share more details.`;
                 <div 
                   className={`text-xs font-semibold px-3 py-1 rounded cursor-pointer transition-all duration-300 select-none ${
                     showRealPrice 
-                      ? 'bg-orange-100 text-orange-800 border border-orange-200' 
+                      ? 'bg-gray-100 text-gray-600 border border-gray-200' 
                       : 'text-transparent bg-transparent border border-transparent'
                   }`}
                   onClick={() => setShowRealPrice(!showRealPrice)}
