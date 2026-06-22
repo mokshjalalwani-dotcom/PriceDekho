@@ -28,14 +28,14 @@ export const CATEGORY_ICONS_MAP = {
   'water-purifier': <WaterPurifierIcon size={52} className="text-white" />,
   'ghar-ghanti': <GharGhantiIcon size={52} className="text-white" />,
   'sound-system': <SoundSystemIcon size={52} className="text-white" />,
-  'air-conditioners': <AcIcon size={52} className="text-white" />,
-  'washing-machines': <WashingMachineIcon size={52} className="text-white" />,
+  ac: <AcIcon size={52} className="text-white" />,
+  'washing-machine': <WashingMachineIcon size={52} className="text-white" />,
   oven: <MicrowaveIcon size={52} className="text-white" />,
   'gas-stove': <GasStoveIcon size={52} className="text-white" />,
-  dishwashers: <DishwasherIcon size={52} className="text-white" />,
+  dishwasher: <DishwasherIcon size={52} className="text-white" />,
   projector: <ProjectorIcon size={52} className="text-white" />,
   'vacuum-cleaner': <VacuumCleanerIcon size={52} className="text-white" />,
-  gyser: <GeyserIcon size={52} className="text-white" />,
+  geyser: <GeyserIcon size={52} className="text-white" />,
   'personal-care': <PersonalCareIcon size={52} className="text-white" />,
   default: <Grid size={52} className="text-white" strokeWidth={1} />
 };

@@ -16,12 +16,13 @@ export const CategoryProvider = ({ children }) => {
         // Tier 1: Live API
         const res = await axios.get('/api/categories');
         
-        // Map the backend data to include the React icon components and colors
         const mappedCategories = res.data.map(cat => {
           const fallback = HARDCODED_FALLBACK_CATEGORIES.find(hc => hc.slug === cat.slug) || {};
+          const resolvedIconKey = cat.iconKey || cat.slug;
+          const resolvedIcon = CATEGORY_ICONS_MAP[resolvedIconKey] || CATEGORY_ICONS_MAP['default'];
           return {
             ...cat,
-            icon: CATEGORY_ICONS_MAP[cat.iconKey] || CATEGORY_ICONS_MAP['default'],
+            icon: resolvedIcon,
             color: fallback.color || 'from-gray-400 to-gray-500',
             smallColor: fallback.smallColor || 'bg-gray-400'
           };
@@ -38,10 +39,14 @@ export const CategoryProvider = ({ children }) => {
           if (cached) {
             const parsed = JSON.parse(cached);
             if (Array.isArray(parsed) && parsed.length > 0) {
-              const mappedCached = parsed.map(cat => ({
-                ...cat,
-                icon: CATEGORY_ICONS_MAP[cat.iconKey] || CATEGORY_ICONS_MAP['default']
-              }));
+              const mappedCached = parsed.map(cat => {
+                const resolvedIconKey = cat.iconKey || cat.slug;
+                const resolvedIcon = CATEGORY_ICONS_MAP[resolvedIconKey] || CATEGORY_ICONS_MAP['default'];
+                return {
+                  ...cat,
+                  icon: resolvedIcon
+                };
+              });
               setCategories(mappedCached);
               return; // Exit if cache succeeded
             }

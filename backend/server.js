@@ -3,6 +3,11 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dns from 'dns';
+
+// Fix for MongoDB Atlas ECONNREFUSED SRV errors on some Windows environments
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 import connectDB from './config/db.js';
 
 import productRoutes from './routes/productRoutes.js';

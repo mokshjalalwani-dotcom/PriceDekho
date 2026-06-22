@@ -30,6 +30,13 @@ const ProductDetails = () => {
   const { isInCompare, isFull, dispatch: compareDispatch } = useCompare();
   const { addToast } = useToast();
 
+  useSEO({
+    title: product ? product.name : (loading ? 'Loading...' : 'Product Not Found'),
+    description: product ? (product.shortDescription || product.name) : '',
+    image: product ? product.mainImage : '',
+    url: window.location.href
+  });
+
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
@@ -100,13 +107,6 @@ const ProductDetails = () => {
   const uniqueImages = [...new Set(allImages)];
   const categorySlug = product.category?.slug || '';
   const categoryConfig = CATEGORY_FIELDS[categorySlug] || null;
-
-  useSEO({
-    title: product ? product.name : (loading ? 'Loading...' : 'Product Not Found'),
-    description: product ? (product.shortDescription || product.name) : '',
-    image: product ? product.mainImage : '',
-    url: window.location.href
-  });
 
   const structuredData = product ? {
     "@context": "https://schema.org/",
