@@ -9,24 +9,24 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const targetMappings = {
-  "tv": ["Samsung", "Sony", "VU", "TCL", "Hisense", "Wobble"],
-  "projector": ["Zebronics"],
-  "sound-system": ["Zebronics", "Samsung", "Sony", "JBL"],
-  "refrigerator": ["Samsung", "Haier"],
-  "washing-machines": ["Samsung", "Haier", "IFB"],
-  "dishwashers": ["IFB", "Bosch", "Toshiba"],
-  "air-conditioners": ["Daikin", "Mitsubishi Heavy Duty", "Mitsubishi Electric", "Onida", "Samsung", "Haier", "Panasonic", "Hisense", "Wybor", "Hitachi", "Voltas", "Lloyd"],
-  "fan": ["Crompton", "Orient", "Symphony", "Wybor"],
-  "vacuum-cleaner": ["Eureka Forbes"],
-  "ghar-ghanti": ["Mycrofine"],
-  "oven": ["Samsung", "Haier", "IFB"],
-  "water-purifier": ["Aquaguard", "H2O"],
-  "mixer": ["Philips", "Sujata", "Usha", "Agaro", "Boss", "Haier", "Maharaja", "Lee Star", "Wonderchef", "Lifelong", "Morphy Richards"],
-  "gas-stove": ["Elicas", "Sunshine", "Sujata"],
-  "geyser": ["Bajaj", "Haier", "Havells", "Benchmark"],
-  "personal-care": ["Philips"]
-};
+const targetMappings = [
+  { match: ['tv', 'television'], brands: ["Samsung", "Sony", "VU", "TCL", "Hisense", "Wobble"] },
+  { match: ['projector'], brands: ["Zebronics"] },
+  { match: ['audio', 'sound'], brands: ["Zebronics", "Samsung", "Sony", "JBL"] },
+  { match: ['refrigerator', 'fridge'], brands: ["Samsung", "Haier"] },
+  { match: ['washing'], brands: ["Samsung", "Haier", "IFB"] },
+  { match: ['dish'], brands: ["IFB", "Bosch", "Toshiba"] },
+  { match: ['air condition', 'ac'], brands: ["Daikin", "Mitsubishi Heavy Duty", "Mitsubishi Electric", "Onida", "Samsung", "Haier", "Panasonic", "Hisense", "Wybor", "Hitachi", "Voltas", "Lloyd"] },
+  { match: ['fan', 'cooler'], brands: ["Crompton", "Orient", "Symphony", "Wybor"] },
+  { match: ['vacuum'], brands: ["Eureka Forbes"] },
+  { match: ['ghar ghanti', 'aata'], brands: ["Mycrofine"] },
+  { match: ['oven', 'microwave'], brands: ["Samsung", "Haier", "IFB"] },
+  { match: ['water pur', 'ro'], brands: ["Aquaguard", "H2O"] },
+  { match: ['kitchen', 'mixer'], brands: ["Philips", "Sujata", "Usha", "Agaro", "Boss", "Haier", "Maharaja", "Lee Star", "Wonderchef", "Lifelong", "Morphy Richards"] },
+  { match: ['gas', 'chimney'], brands: ["Elicas", "Sunshine", "Sujata"] },
+  { match: ['geyser'], brands: ["Bajaj", "Haier", "Havells", "Benchmark"] },
+  { match: ['personal care', 'trimmer'], brands: ["Philips"] }
+];
 
 const runAuditAndFix = async () => {
   try {
@@ -70,40 +70,40 @@ const runAuditAndFix = async () => {
     let addedCount = 0;
     let unchangedCount = 0;
 
-    // We will dynamically map Samsung to any category that looks like an electronic/appliance
-    const electronicsKeywords = ['tv', 'television', 'audio', 'sound', 'refrigerator', 'washing', 'ac', 'air', 'oven', 'smart', 'electronic', 'appliance', 'mobile', 'phone'];
-    const dynamicSamsungCategories = categories.filter(c => 
-      electronicsKeywords.some(kw => c.name.toLowerCase().includes(kw) || c.slug.toLowerCase().includes(kw))
-    );
+    // Apply strict target mappings with flexible keyword matching
+    for (const mapping of targetMappings) {
+      // Find all matching categories
+      const matchedCategories = categories.filter(c => 
+        mapping.match.some(kw => c.name.toLowerCase().includes(kw) || c.slug.toLowerCase().includes(kw))
+      );
 
-    // Apply strict target mappings
-    for (const [slug, brandNames] of Object.entries(targetMappings)) {
-      const category = categories.find(c => c.slug === slug);
-      if (!category) {
-        console.log(`[SKIP] Category slug '${slug}' not found in DB.`);
+      if (matchedCategories.length === 0) {
+        console.log(`[SKIP] No categories found matching keywords: ${mapping.match.join(', ')}`);
         continue;
       }
 
-      for (const brandName of brandNames) {
-        let brand = await Brand.findOne({ name: { $regex: new RegExp(`^${brandName}$`, 'i') } });
-        
-        if (!brand) {
-          console.log(`[CREATE] Brand '${brandName}' not found. Creating safely...`);
-          brand = new Brand({
-            name: brandName,
-            slug: brandName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-            categories: []
-          });
-          await brand.save(); // Save to generate ID
-        }
+      for (const category of matchedCategories) {
+        for (const brandName of mapping.brands) {
+          let brand = await Brand.findOne({ name: { $regex: new RegExp(`^${brandName}$`, 'i') } });
+          
+          if (!brand) {
+            console.log(`[CREATE] Brand '${brandName}' not found. Creating safely...`);
+            brand = new Brand({
+              name: brandName,
+              slug: brandName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+              categories: []
+            });
+            await brand.save(); // Save to generate ID
+          }
 
-        if (!brand.categories.includes(category._id)) {
-          brand.categories.push(category._id);
-          await brand.save(); // pre-save hook will deduplicate
-          console.log(`[ADDED] Mapped '${brand.name}' -> '${category.name}'`);
-          addedCount++;
-        } else {
-          unchangedCount++;
+          if (!brand.categories.includes(category._id)) {
+            brand.categories.push(category._id);
+            await brand.save(); // pre-save hook will deduplicate & filter orphans
+            console.log(`[ADDED] Mapped '${brand.name}' -> '${category.name}'`);
+            addedCount++;
+          } else {
+            unchangedCount++;
+          }
         }
       }
     }

@@ -17,11 +17,10 @@ brandSchema.pre('save', async function (next) {
   if (this.categories && this.categories.length > 0) {
     this.categories = [...new Set(this.categories.map(c => c.toString()))];
 
-    // Verify all referenced ObjectIds exist in Category collection
+    // Verify all referenced ObjectIds exist in Category collection, and auto-remove orphaned IDs
     const existingCategories = await Category.find({ _id: { $in: this.categories } });
-    if (existingCategories.length !== this.categories.length) {
-      return next(new Error('One or more referenced Category ObjectIds do not exist in the database.'));
-    }
+    const existingIds = existingCategories.map(c => c._id.toString());
+    this.categories = this.categories.filter(c => existingIds.includes(c));
   }
   next();
 });
