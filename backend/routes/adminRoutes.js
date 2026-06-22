@@ -63,6 +63,17 @@ router.post('/products', protect, admin, async (req, res) => {
   try {
     const productData = { ...req.body };
 
+    // Validation for Brand -> Category mapping
+    if (productData.category && productData.brand) {
+      const brandObj = await Brand.findById(productData.brand);
+      if (!brandObj) {
+        return res.status(400).json({ message: 'Invalid Brand selected.' });
+      }
+      if (!brandObj.categories.includes(productData.category)) {
+        return res.status(400).json({ message: 'The selected Brand does not belong to the selected Category.' });
+      }
+    }
+
     // Convert NLC field (additionalContent) safely
     if (productData.additionalContent !== undefined) {
       productData.additionalContent = convertToNLC(productData.additionalContent);
@@ -90,6 +101,25 @@ router.post('/products', protect, admin, async (req, res) => {
 router.put('/products/:id', protect, admin, async (req, res) => {
   try {
     const updateData = { ...req.body };
+
+    // Validation for Brand -> Category mapping
+    const currentProduct = await Product.findById(req.params.id);
+    if (!currentProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    const newCategory = updateData.category || currentProduct.category;
+    const newBrand = updateData.brand || currentProduct.brand;
+    
+    if (newCategory && newBrand) {
+      const brandObj = await Brand.findById(newBrand);
+      if (!brandObj) {
+        return res.status(400).json({ message: 'Invalid Brand selected.' });
+      }
+      if (!brandObj.categories.includes(newCategory)) {
+        return res.status(400).json({ message: 'The selected Brand does not belong to the selected Category.' });
+      }
+    }
 
     // Convert NLC field (additionalContent) safely
     if (updateData.additionalContent !== undefined) {

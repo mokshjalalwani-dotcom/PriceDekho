@@ -6,6 +6,9 @@ import Brand from '../models/Brand.js';
 export const getBrands = async (req, res) => {
   try {
     const filter = req.query.all ? {} : { isActive: true };
+    if (req.query.category) {
+      filter.categories = req.query.category;
+    }
     const brands = await Brand.find(filter).sort({ name: 1 });
     res.json(brands);
   } catch (error) {
