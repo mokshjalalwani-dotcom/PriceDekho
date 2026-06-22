@@ -120,7 +120,7 @@ const Shop = () => {
   };
 
   // Active filters count
-  const reservedKeys = ['page', 'pageSize', 'sortBy'];
+  const reservedKeys = ['page', 'pageSize', 'sortBy', 'subCategory'];
   const activeFilters = [...searchParams.entries()].filter(([k]) => !reservedKeys.includes(k));
 
   /* Skeleton card for loading states */
@@ -190,6 +190,35 @@ const Shop = () => {
             </select>
           </div>
         </div>
+
+        {/* Subcategory Chips */}
+        {currentCategory?.subCategories && currentCategory.subCategories.length > 0 && (() => {
+          const activeSubCategories = currentCategory.subCategories
+            .map(sub => typeof sub === 'string' ? { name: sub, isActive: true } : sub)
+            .filter(sub => sub.isActive !== false); // fallback true
+
+          if (activeSubCategories.length === 0) return null;
+
+          return (
+            <div className="flex gap-2 mb-5 overflow-x-auto pb-2 scrollbar-hide">
+              <button
+                onClick={() => updateParam('subCategory', '')}
+                className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${!searchParams.get('subCategory') ? 'bg-orange-500 text-white border-orange-500 shadow-sm' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}
+              >
+                All
+              </button>
+              {activeSubCategories.map((sub) => (
+                <button
+                  key={sub.name}
+                  onClick={() => updateParam('subCategory', sub.name)}
+                  className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${searchParams.get('subCategory') === sub.name ? 'bg-orange-500 text-white border-orange-500 shadow-sm' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-300'}`}
+                >
+                  {sub.name}
+                </button>
+              ))}
+            </div>
+          );
+        })()}
 
         {/* Active Filter Pills */}
         {activeFilters.length > 0 && (

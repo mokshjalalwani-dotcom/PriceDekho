@@ -13,7 +13,8 @@ const AdminCategories = ({ products = [] }) => {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [displayOrder, setDisplayOrder] = useState('');
-  const [subCategoriesStr, setSubCategoriesStr] = useState('');
+  const [subCategories, setSubCategories] = useState([]);
+  const [newSubName, setNewSubName] = useState('');
 
   const token = localStorage.getItem('adminToken');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
@@ -50,14 +51,51 @@ const AdminCategories = ({ products = [] }) => {
       setName(category.name);
       setSlug(category.slug);
       setDisplayOrder(category.displayOrder);
-      setSubCategoriesStr((category.subCategories || []).join(', '));
+      // Map strings or objects to standard object format for UI state
+      setSubCategories(
+        (category.subCategories || []).map((sub, idx) => {
+          if (typeof sub === 'string') return { name: sub, isActive: true, displayOrder: idx + 1 };
+          return sub;
+        })
+      );
     } else {
       setName('');
       setSlug('');
       setDisplayOrder(categories.length > 0 ? categories[categories.length - 1].displayOrder + 1 : 1);
-      setSubCategoriesStr('');
+      setSubCategories([]);
     }
+    setNewSubName('');
     setIsModalOpen(true);
+  };
+
+  const handleAddSubCategory = () => {
+    if (!newSubName.trim()) return;
+    const isDuplicate = subCategories.some(sub => sub.name.toLowerCase() === newSubName.trim().toLowerCase());
+    if (isDuplicate) {
+      alert('This subcategory name already exists.');
+      return;
+    }
+    setSubCategories([
+      ...subCategories,
+      { name: newSubName.trim(), isActive: true, displayOrder: subCategories.length + 1 }
+    ]);
+    setNewSubName('');
+  };
+
+  const handleRemoveSubCategory = (index) => {
+    // In a real app, we should check if products use it before removing, 
+    // but the backend will block it if we try to remove an in-use one later (or we can just soft delete).
+    // For now, we'll allow removing from UI if it's new or rely on backend validation.
+    // A better approach is to just toggle isActive.
+    const newSubs = [...subCategories];
+    newSubs.splice(index, 1);
+    setSubCategories(newSubs);
+  };
+
+  const handleToggleSubCategoryActive = (index) => {
+    const newSubs = [...subCategories];
+    newSubs[index].isActive = !newSubs[index].isActive;
+    setSubCategories(newSubs);
   };
 
   const handleSave = async (e) => {
@@ -67,7 +105,7 @@ const AdminCategories = ({ products = [] }) => {
         name,
         slug,
         displayOrder: Number(displayOrder),
-        subCategories: subCategoriesStr.split(',').map(s => s.trim()).filter(Boolean)
+        subCategories
       };
 
       if (selectedCategory) {
@@ -200,13 +238,51 @@ const AdminCategories = ({ products = [] }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Subcategories (Comma separated)</label>
-                <textarea 
-                  value={subCategoriesStr} 
-                  onChange={e => setSubCategoriesStr(e.target.value)} 
-                  placeholder="e.g. Fan, Air Cooler, Exhaust Fan"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 h-24 resize-none text-sm" 
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Subcategories</label>
+                <div className="flex gap-2 mb-3">
+                  <input 
+                    type="text" 
+                    value={newSubName} 
+                    onChange={e => setNewSubName(e.target.value)} 
+                    onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddSubCategory())}
+                    placeholder="e.g. Air Cooler"
+                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200" 
+                  />
+                  <button 
+                    type="button" 
+                    onClick={handleAddSubCategory}
+                    className="px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200"
+                  >
+                    Add
+                  </button>
+                </div>
+                
+                {subCategories.length > 0 && (
+                  <div className="space-y-2 max-h-40 overflow-y-auto border border-gray-100 rounded-lg p-2 bg-gray-50">
+                    {subCategories.map((sub, idx) => (
+                      <div key={idx} className={`flex items-center justify-between p-2 bg-white rounded border border-gray-200 ${!sub.isActive ? 'opacity-60' : ''}`}>
+                        <span className="text-sm font-medium text-gray-700">{sub.name}</span>
+                        <div className="flex items-center gap-2">
+                          <button 
+                            type="button" 
+                            onClick={() => handleToggleSubCategoryActive(idx)}
+                            className={`text-xs px-2 py-1 rounded ${sub.isActive ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
+                          >
+                            {sub.isActive ? 'Active' : 'Disabled'}
+                          </button>
+                          <button 
+                            type="button" 
+                            onClick={() => handleRemoveSubCategory(idx)}
+                            className="text-gray-400 hover:text-red-500 p-1"
+                            title="Remove"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">

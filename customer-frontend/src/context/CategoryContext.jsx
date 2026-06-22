@@ -52,7 +52,8 @@ export const CategoryProvider = ({ children }) => {
             }
           }
         } catch (e) {
-          console.error('Cache parsing failed:', e);
+          console.error('Cache parsing failed, clearing corrupt cache:', e);
+          localStorage.removeItem('satguru_categories');
         }
         
         // Tier 3: Hardcoded Fallback

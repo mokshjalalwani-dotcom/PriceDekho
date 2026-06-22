@@ -109,13 +109,30 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-      slug: name === 'name' && !product
-        ? value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-        : prev.slug
-    }));
+    setFormData(prev => {
+      const nextState = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+        slug: name === 'name' && !product
+          ? value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
+          : prev.slug
+      };
+
+      // Reset brand if category changes and current brand is not valid for new category
+      if (name === 'category' && prev.brand) {
+        const validBrands = brands.filter(b => b.categories?.includes(value));
+        if (!validBrands.find(b => b._id === prev.brand)) {
+          nextState.brand = '';
+        }
+      }
+
+      // Reset subcategory if category changes
+      if (name === 'category') {
+        nextState.subCategory = '';
+      }
+
+      return nextState;
+    });
   };
 
   const handleCategoryFieldChange = (key, value) => {
@@ -421,13 +438,22 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   <input type="text" name="color" value={formData.color} onChange={handleChange} className={inputCls} placeholder="e.g. Black, Silver" />
                 </div>
                 <div>
-                  <label className={labelCls}>Sub-Category</label>
+                  <label className={labelCls}>
+                    Sub-Category {selectedCategoryObj?.subCategories?.length > 0 && <span className="text-red-400">*</span>}
+                  </label>
                   {selectedCategoryObj?.subCategories?.length > 0 ? (
-                    <select name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls}>
-                      <option value="">No Subcategory</option>
-                      {selectedCategoryObj.subCategories.map(sub => (
-                        <option key={sub} value={sub}>{sub}</option>
-                      ))}
+                    <select 
+                      name="subCategory" 
+                      value={formData.subCategory} 
+                      onChange={handleChange} 
+                      required={true}
+                      className={inputCls}
+                    >
+                      <option value="">Select Subcategory</option>
+                      {selectedCategoryObj.subCategories.map(sub => {
+                        const subName = typeof sub === 'string' ? sub : sub.name;
+                        return <option key={subName} value={subName}>{subName}</option>;
+                      })}
                     </select>
                   ) : (
                     <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />

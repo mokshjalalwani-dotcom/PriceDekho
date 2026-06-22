@@ -333,7 +333,28 @@ router.put('/categories/:id', protect, admin, async (req, res) => {
     }
     
     if (displayOrder !== undefined) category.displayOrder = displayOrder;
-    if (subCategories !== undefined) category.subCategories = subCategories;
+    
+    if (subCategories !== undefined) {
+      // Check for removed subcategories
+      if (category.subCategories && category.subCategories.length > 0) {
+        const incomingNames = subCategories.map(s => s.name);
+        const removedSubs = category.subCategories.filter(s => {
+          const sName = typeof s === 'string' ? s : s.name;
+          return !incomingNames.includes(sName);
+        });
+
+        if (removedSubs.length > 0) {
+          for (const sub of removedSubs) {
+            const subName = typeof sub === 'string' ? sub : sub.name;
+            const inUseCount = await Product.countDocuments({ category: category._id, subCategory: subName });
+            if (inUseCount > 0) {
+              return res.status(400).json({ message: `Cannot delete subcategory '${subName}'. It is used by ${inUseCount} product(s). Please move them or disable the subcategory instead.` });
+            }
+          }
+        }
+      }
+      category.subCategories = subCategories;
+    }
     
     const updated = await category.save();
     res.json(updated);
