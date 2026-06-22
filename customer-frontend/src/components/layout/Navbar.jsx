@@ -37,11 +37,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 h-[68px]">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm ring-1 ring-gray-100 group-hover:shadow-md transition-shadow p-0.5">
+          <Link to="/" className="flex items-center gap-2 md:gap-2.5 group shrink-0 min-w-0">
+            <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm ring-1 ring-gray-100 group-hover:shadow-md transition-shadow p-0.5">
               <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-[800] text-lg tracking-tight text-[#242933] hidden sm:inline">
+            <span className="font-[800] text-[15px] sm:text-lg tracking-tight text-[#242933] truncate">
               Satguru<span style={{ color: 'rgb(123,63,0)' }}>Electricals</span>
             </span>
           </Link>
@@ -95,9 +95,9 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-1.5 shrink-0">
             <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
-              <ShoppingCart size={22} />
+              <ShoppingCart size={20} />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {cartCount > 9 ? '9+' : cartCount}
@@ -105,9 +105,28 @@ const Navbar = () => {
               )}
             </Link>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
+        </div>
+
+        {/* Mobile Search Bar - Rendered below main navbar header */}
+        <div className="md:hidden px-4 pb-3">
+          <form onSubmit={handleSearch} className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-orange-300 focus-within:bg-white transition-all h-[40px]">
+            <div className="flex items-center pl-3 text-gray-400">
+              <Search size={16} />
+            </div>
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full py-2 pl-2 pr-3 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400"
+            />
+            <button type="submit" className="bg-[#242933] hover:bg-black text-white px-4 flex items-center justify-center transition-colors">
+              <Search size={16} />
+            </button>
+          </form>
         </div>
       </nav>
 
@@ -116,23 +135,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-100 shadow-xl absolute w-full z-40 animate-fade-in-up">
           <div className="px-4 pt-2 pb-6 space-y-1 max-h-[80vh] overflow-y-auto">
-            <form onSubmit={handleSearch} className="relative mt-2 mb-4">
-              <div className="flex items-center bg-gray-50 border border-gray-200 rounded-full overflow-hidden focus-within:border-orange-300 focus-within:ring-2 focus-within:ring-orange-100">
-                <div className="pl-4 text-gray-400">
-                  <Search size={16} />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-2.5 pl-3 pr-4 bg-transparent outline-none text-sm"
-                />
-                <button type="submit" className="pr-4">
-                  <Search size={16} className="text-gray-400" />
-                </button>
-              </div>
-            </form>
+            {/* Mobile Menu Links */}
               {categories.map(cat => (
               <Link
                 key={cat.slug}

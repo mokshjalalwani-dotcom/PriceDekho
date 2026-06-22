@@ -399,55 +399,64 @@ Please share more details.`;
             )}
 
             {/* Quantity & Action Buttons */}
-            <div className="flex items-center gap-3 pt-2 flex-wrap">
-              <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shrink-0 bg-white">
-                <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={15} /></button>
-                <span className="w-10 text-center text-sm font-bold border-x border-gray-100">{qty}</span>
-                <button onClick={() => setQty(q => q + 1)} className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Plus size={15} /></button>
+            <div className="flex flex-col gap-3 pt-2">
+              {/* Row 1: Qty + Add to Cart */}
+              <div className="flex items-center gap-3 w-full">
+                <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shrink-0 bg-white">
+                  <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={15} /></button>
+                  <span className="w-10 text-center text-sm font-bold border-x border-gray-100">{qty}</span>
+                  <button onClick={() => setQty(q => q + 1)} className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Plus size={15} /></button>
+                </div>
+
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 text-sm font-bold"
+                >
+                  <ShoppingCart size={18} />
+                  Add to Cart
+                </button>
               </div>
 
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 text-sm font-bold"
-              >
-                <ShoppingCart size={18} />
-                Add to Cart
-              </button>
+              {/* Row 2: Secondary Actions */}
+              <div className="grid grid-cols-3 gap-3 w-full">
+                <button
+                  onClick={handleToggleWishlist}
+                  className={`w-full py-2.5 flex items-center justify-center gap-1.5 rounded-lg border-2 transition-colors ${isWishlisted(product._id) ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-400'}`}
+                >
+                  <Heart size={16} fill={isWishlisted(product._id) ? 'currentColor' : 'none'} />
+                  <span className="text-xs font-semibold">Wishlist</span>
+                </button>
 
-              <button
-                onClick={handleToggleWishlist}
-                className={`w-12 h-12 flex items-center justify-center rounded-lg border-2 transition-colors ${isWishlisted(product._id) ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-red-400'}`}
-              >
-                <Heart size={20} fill={isWishlisted(product._id) ? 'currentColor' : 'none'} />
-              </button>
-
-              <button onClick={handleShare} className="w-12 h-12 flex items-center justify-center rounded-lg border-2 border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors">
-                <Share2 size={18} />
-              </button>
-
-              <button
-                onClick={() => {
-                  if (isInCompare(product._id)) {
-                    compareDispatch({ type: 'REMOVE', payload: product._id });
-                    addToast('Removed from compare', 'info');
-                  } else {
-                    if (isFull) {
-                      addToast('Compare list is full (max 4). Remove one first.', 'error');
-                      return;
+                <button
+                  onClick={() => {
+                    if (isInCompare(product._id)) {
+                      compareDispatch({ type: 'REMOVE', payload: product._id });
+                      addToast('Removed from compare', 'info');
+                    } else {
+                      if (isFull) {
+                        addToast('Compare list is full (max 4). Remove one first.', 'error');
+                        return;
+                      }
+                      compareDispatch({ type: 'ADD', payload: product });
+                      addToast('Added to compare');
                     }
-                    compareDispatch({ type: 'ADD', payload: product });
-                    addToast('Added to compare');
-                  }
-                }}
-                className={`w-12 h-12 flex items-center justify-center rounded-lg border-2 transition-colors ${
-                  isInCompare(product._id)
-                    ? 'bg-blue-50 border-blue-200 text-blue-500'
-                    : 'border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-blue-400'
-                }`}
-                title={isInCompare(product._id) ? 'Remove from compare' : 'Add to compare'}
-              >
-                <GitCompare size={18} />
-              </button>
+                  }}
+                  className={`w-full py-2.5 flex items-center justify-center gap-1.5 rounded-lg border-2 transition-colors ${
+                    isInCompare(product._id)
+                      ? 'bg-blue-50 border-blue-200 text-blue-500'
+                      : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-blue-400'
+                  }`}
+                  title={isInCompare(product._id) ? 'Remove from compare' : 'Add to compare'}
+                >
+                  <GitCompare size={16} />
+                  <span className="text-xs font-semibold">Compare</span>
+                </button>
+
+                <button onClick={handleShare} className="w-full py-2.5 flex items-center justify-center gap-1.5 rounded-lg border-2 border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
+                  <Share2 size={16} />
+                  <span className="text-xs font-semibold">Share</span>
+                </button>
+              </div>
             </div>
 
             {/* WhatsApp Enquiry */}
@@ -462,7 +471,7 @@ Please share more details.`;
             </div>
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-2 gap-3 pt-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
               {[
                 { icon: ShieldCheck, label: 'Genuine Product', color: 'text-green-500', bg: 'bg-green-50' },
                 { icon: Truck, label: 'Fast Delivery', color: 'text-blue-500', bg: 'bg-blue-50' },
