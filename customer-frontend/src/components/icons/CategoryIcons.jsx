@@ -157,13 +157,50 @@ export const WaterPurifierIcon = ({ size = 24, className = "" }) => (
 
 export const GasStoveIcon = ({ size = 24, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
-    <rect x="2" y="10" width="20" height="6" rx="1"></rect>
-    <path d="M4 16v2"></path>
-    <path d="M20 16v2"></path>
-    <circle cx="8" cy="13" r="1.5"></circle>
-    <circle cx="16" cy="13" r="1.5"></circle>
-    <path d="M6 10c0-2 1-3 2-5 1 2 2 3 2 5"></path>
-    <path d="M14 10c0-2 1-3 2-5 1 2 2 3 2 5"></path>
+    {/* --- CHIMNEY --- */}
+    <rect x="9.5" y="1" width="5" height="3" />
+    <rect x="7.5" y="4" width="9" height="1.5" />
+    
+    <path d="M 9.5 5.5 v 2 h 5 v -2" />
+    <path d="M 3 8 Q 12 5.5 21 8" />
+    
+    <line x1="10.2" y1="6.7" x2="11" y2="6.7" strokeWidth="0.8" />
+    <circle cx="12" cy="6.7" r="0.6" fill="none" strokeWidth="0.8" />
+    <line x1="13" y1="6.7" x2="13.8" y2="6.7" strokeWidth="0.8" />
+    
+    {/* --- WAVY SUCTION LINES --- */}
+    <path d="M 9.5 9.5 q -1.2 1.2 0 2 t 0 2" strokeWidth="1" />
+    <path d="M 12 9.5 q -1.2 1.2 0 2 t 0 2" strokeWidth="1" />
+    <path d="M 14.5 9.5 q -1.2 1.2 0 2 t 0 2" strokeWidth="1" />
+    
+    {/* --- GAS STOVE --- */}
+    <rect x="3.5" y="19.5" width="17" height="3" fill="currentColor" stroke="none" />
+    
+    <rect x="5" y="22.5" width="1.5" height="0.5" fill="currentColor" stroke="none" />
+    <rect x="17.5" y="22.5" width="1.5" height="0.5" fill="currentColor" stroke="none" />
+    
+    <rect x="5" y="18.5" width="6" height="1" fill="currentColor" stroke="none" />
+    <rect x="13" y="18.5" width="6" height="1" fill="currentColor" stroke="none" />
+    
+    <path d="M 6 18.5 L 5.5 17.5" strokeWidth="0.8" />
+    <path d="M 10 18.5 L 10.5 17.5" strokeWidth="0.8" />
+    <path d="M 8 18.5 L 8 17.5" strokeWidth="0.8" />
+    
+    <path d="M 14 18.5 L 13.5 17.5" strokeWidth="0.8" />
+    <path d="M 18 18.5 L 18.5 17.5" strokeWidth="0.8" />
+    <path d="M 16 18.5 L 16 17.5" strokeWidth="0.8" />
+    
+    <path d="M 7.5 18 c -1.5 -1.2 0.5 -2.5 0.5 -3.5 c 1.5 1 2 2 0.5 3.5 Z" fill="currentColor" stroke="none" />
+    <path d="M 9 18 c -0.5 -0.8 0.5 -1.5 0.5 -2.5 c 1 0.5 1 1.2 0 2.5 Z" fill="currentColor" stroke="none" />
+    
+    <path d="M 15.5 18 c -1.5 -1.2 0.5 -2.5 0.5 -3.5 c 1.5 1 2 2 0.5 3.5 Z" fill="currentColor" stroke="none" />
+    <path d="M 17 18 c -0.5 -0.8 0.5 -1.5 0.5 -2.5 c 1 0.5 1 1.2 0 2.5 Z" fill="currentColor" stroke="none" />
+    
+    <circle cx="8" cy="21" r="0.9" fill="#fff" stroke="none" />
+    <line x1="7.5" y1="21.5" x2="8.5" y2="20.5" stroke="#333" strokeWidth="0.6" />
+    
+    <circle cx="16" cy="21" r="0.9" fill="#fff" stroke="none" />
+    <line x1="15.5" y1="21.5" x2="16.5" y2="20.5" stroke="#333" strokeWidth="0.6" />
   </svg>
 );
 
