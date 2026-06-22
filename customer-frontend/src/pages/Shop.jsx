@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import { Filter, SlidersHorizontal, ChevronRight, ChevronLeft, X, Search } from 'lucide-react';
-import { CATEGORIES } from '../constants/categories';
+import { useCategory } from '../context/CategoryContext';
 import { CATEGORY_FIELDS, getFilterFields } from '../constants/CategoryFieldsConfig';
+import useSEO from '../hooks/useSEO';
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -30,7 +31,16 @@ const Shop = () => {
     return getFilterFields(categoryParam);
   }, [categoryParam]);
 
-  const currentCategory = CATEGORIES.find(c => c.slug === categoryParam);
+  const { categories } = useCategory();
+  const currentCategory = categories.find(c => c.slug === categoryParam);
+
+  useSEO({
+    title: currentCategory ? currentCategory.name : (keywordParam ? `Search: ${keywordParam}` : 'Shop All Products'),
+    description: currentCategory 
+      ? `Buy the best ${currentCategory.name} at great prices.` 
+      : 'Browse our extensive range of home appliances and electronics.',
+    url: window.location.href
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -256,7 +266,7 @@ const Shop = () => {
                   >
                     All Categories
                   </button>
-                  {CATEGORIES.map((cat) => (
+                  {categories.map((cat) => (
                     <button
                       key={cat.slug}
                       onClick={() => handleCategoryChange(cat.slug)}

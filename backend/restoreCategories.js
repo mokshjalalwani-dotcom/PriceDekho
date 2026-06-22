@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import dns from 'dns';
+
+// Fix for MongoDB Atlas ECONNREFUSED SRV errors
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 import Category from './models/Category.js';
 import Brand from './models/Brand.js';
@@ -39,7 +43,18 @@ async function run() {
 
     console.log(`Restoring ${data.products.length} Products...`);
     await Product.deleteMany({});
-    if (data.products.length > 0) await Product.insertMany(data.products);
+    if (data.products.length > 0) {
+      // Validate strict ObjectIds to prevent mixed references
+      for (const p of data.products) {
+        if (p.category && !mongoose.Types.ObjectId.isValid(p.category)) {
+          throw new Error(`Migration Validation Failed: Product "${p.name}" has invalid Category reference "${p.category}". Must be ObjectId.`);
+        }
+        if (p.brand && !mongoose.Types.ObjectId.isValid(p.brand)) {
+          throw new Error(`Migration Validation Failed: Product "${p.name}" has invalid Brand reference "${p.brand}". Must be ObjectId.`);
+        }
+      }
+      await Product.insertMany(data.products);
+    }
 
     console.log('\n[SUCCESS] Restoration Complete!');
     process.exit(0);

@@ -1,0 +1,1413 @@
+{
+  "timestamp": "2026-06-22T17:24:58.489Z",
+  "categories": [
+    {
+      "_id": "6a2b00b2345d2e4909b302ba",
+      "name": "Televisions",
+      "slug": "tv",
+      "icon": "Tv",
+      "description": "",
+      "displayOrder": 1,
+      "createdAt": "2026-06-11T18:38:42.295Z",
+      "updatedAt": "2026-06-11T18:38:42.295Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302bc",
+      "name": "Refrigerator",
+      "slug": "refrigerator",
+      "icon": "Refrigerator",
+      "description": "",
+      "displayOrder": 2,
+      "createdAt": "2026-06-11T18:38:42.423Z",
+      "updatedAt": "2026-06-11T18:38:42.423Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302be",
+      "name": "Fan",
+      "slug": "fan",
+      "icon": "Fan",
+      "description": "",
+      "displayOrder": 3,
+      "createdAt": "2026-06-11T18:38:42.449Z",
+      "updatedAt": "2026-06-11T18:38:42.449Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302c0",
+      "name": "Mixer",
+      "slug": "mixer",
+      "icon": "Blend",
+      "description": "",
+      "displayOrder": 4,
+      "createdAt": "2026-06-11T18:38:42.479Z",
+      "updatedAt": "2026-06-11T18:38:42.479Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302c2",
+      "name": "Water Purifier",
+      "slug": "water-purifier",
+      "icon": "Droplets",
+      "description": "",
+      "displayOrder": 5,
+      "createdAt": "2026-06-11T18:38:42.507Z",
+      "updatedAt": "2026-06-11T18:38:42.507Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302c5",
+      "name": "Ghar Ghanti",
+      "slug": "ghar-ghanti",
+      "icon": "Settings2",
+      "description": "",
+      "displayOrder": 6,
+      "createdAt": "2026-06-11T18:38:42.666Z",
+      "updatedAt": "2026-06-11T18:38:42.666Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302c8",
+      "name": "Sound System",
+      "slug": "sound-system",
+      "icon": "Speaker",
+      "description": "",
+      "displayOrder": 7,
+      "createdAt": "2026-06-11T18:38:42.700Z",
+      "updatedAt": "2026-06-11T18:38:42.700Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302cb",
+      "name": "Air Conditioner",
+      "slug": "air-conditioners",
+      "icon": "AirVent",
+      "description": "",
+      "displayOrder": 8,
+      "createdAt": "2026-06-11T18:38:42.831Z",
+      "updatedAt": "2026-06-11T18:38:42.831Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302cd",
+      "name": "Washing Machine",
+      "slug": "washing-machines",
+      "icon": "WashingMachine",
+      "description": "",
+      "displayOrder": 9,
+      "createdAt": "2026-06-11T18:38:42.869Z",
+      "updatedAt": "2026-06-11T18:38:42.869Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b2345d2e4909b302d0",
+      "name": "Oven",
+      "slug": "oven",
+      "icon": "Microwave",
+      "description": "",
+      "displayOrder": 10,
+      "createdAt": "2026-06-11T18:38:42.913Z",
+      "updatedAt": "2026-06-11T18:38:42.913Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302d3",
+      "name": "Gas Stove",
+      "slug": "gas-stove",
+      "icon": "Flame",
+      "description": "",
+      "displayOrder": 11,
+      "createdAt": "2026-06-11T18:38:43.057Z",
+      "updatedAt": "2026-06-11T18:38:43.057Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302d6",
+      "name": "Dishwasher",
+      "slug": "dishwashers",
+      "icon": "Box",
+      "description": "",
+      "displayOrder": 12,
+      "createdAt": "2026-06-11T18:38:43.089Z",
+      "updatedAt": "2026-06-11T18:38:43.089Z",
+      "__v": 0
+    }
+  ],
+  "brands": [
+    {
+      "_id": "6a2b00b3345d2e4909b302d8",
+      "name": "Samsung",
+      "slug": "samsung",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.123Z",
+      "updatedAt": "2026-06-11T18:38:43.123Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302da",
+      "name": "Sony",
+      "slug": "sony",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.295Z",
+      "updatedAt": "2026-06-11T18:38:43.295Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302dc",
+      "name": "Bosch",
+      "slug": "bosch",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.445Z",
+      "updatedAt": "2026-06-11T18:38:43.445Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302de",
+      "name": "Natraj",
+      "slug": "natraj",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.490Z",
+      "updatedAt": "2026-06-11T18:38:43.490Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302e0",
+      "name": "Kent",
+      "slug": "kent",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.514Z",
+      "updatedAt": "2026-06-11T18:38:43.514Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302e2",
+      "name": "Prestige",
+      "slug": "prestige",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.650Z",
+      "updatedAt": "2026-06-11T18:38:43.650Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302e4",
+      "name": "Havells",
+      "slug": "havells",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.709Z",
+      "updatedAt": "2026-06-11T18:38:43.709Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302e6",
+      "name": "JBL",
+      "slug": "jbl",
+      "logo": "",
+      "createdAt": "2026-06-11T18:38:43.855Z",
+      "updatedAt": "2026-06-11T18:38:43.855Z",
+      "__v": 0
+    }
+  ],
+  "products": [
+    {
+      "_id": "6a2b00b3345d2e4909b30320",
+      "name": "JBL Bar 300 Soundbar with Subwoofer",
+      "slug": "jbl-bar-300-soundbar",
+      "brand": "6a2b00b3345d2e4909b302e6",
+      "category": "6a2b00b2345d2e4909b302c8",
+      "modelNumber": "BAR-300",
+      "color": "Black",
+      "subCategory": "",
+      "sellingPrice": 24990,
+      "mrp": 34990,
+      "discountPercentage": 29,
+      "price": 24990,
+      "countInStock": 9999,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "5.0 Channel, 260W Output, Dolby Atmos, Bluetooth.",
+      "fullDescription": "JBL Bar 300 delivers immersive cinematic sound with Dolby Atmos and MultiBeam surround technology. 5.0-channel system with 260W total output power for room-filling audio.",
+      "highlights": [
+        "5.0 Channel Dolby Atmos",
+        "260W Total Output",
+        "MultiBeam Surround",
+        "Bluetooth 5.0",
+        "HDMI eARC"
+      ],
+      "boxContents": [
+        "Soundbar",
+        "Power Adapter",
+        "HDMI Cable",
+        "Remote Control",
+        "User Manual",
+        "Wall Mount Kit"
+      ],
+      "warrantyDetails": "1 Year JBL Warranty",
+      "tags": [
+        "soundbar",
+        "jbl",
+        "sound system",
+        "dolby atmos",
+        "bluetooth",
+        "speaker"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/21EEX54X8GL._SY300_SX300_QL70_FMwebp_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/21EEX54X8GL._SY300_SX300_QL70_FMwebp_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "Audio",
+          "fields": [
+            {
+              "fieldName": "Channels",
+              "fieldValue": "5.0 Channel",
+              "_id": "6a2b00b3345d2e4909b30322"
+            },
+            {
+              "fieldName": "Output",
+              "fieldValue": "260W",
+              "_id": "6a2b00b3345d2e4909b30323"
+            },
+            {
+              "fieldName": "Surround",
+              "fieldValue": "Dolby Atmos, MultiBeam",
+              "_id": "6a2b00b3345d2e4909b30324"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30321"
+        },
+        {
+          "groupName": "Connectivity",
+          "fields": [
+            {
+              "fieldName": "Bluetooth",
+              "fieldValue": "5.0",
+              "_id": "6a2b00b3345d2e4909b30326"
+            },
+            {
+              "fieldName": "HDMI",
+              "fieldValue": "eARC",
+              "_id": "6a2b00b3345d2e4909b30327"
+            },
+            {
+              "fieldName": "WiFi",
+              "fieldValue": "Yes",
+              "_id": "6a2b00b3345d2e4909b30328"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30325"
+        }
+      ],
+      "specifications": {
+        "Channels": "5.0 Channel",
+        "Output": "260W",
+        "Surround": "Dolby Atmos, MultiBeam",
+        "Bluetooth": "5.0",
+        "HDMI": "eARC",
+        "WiFi": "Yes"
+      },
+      "categoryFields": {
+        "remoteControl": "Yes",
+        "speakerType": "Soundbar",
+        "channelConfiguration": "5.1",
+        "outputPower": "260W",
+        "bluetooth": "Yes",
+        "usbSupport": "Yes",
+        "hdmiArcSupport": "Yes",
+        "subwooferIncluded": "Yes"
+      },
+      "isFeatured": true,
+      "isBestSeller": false,
+      "rating": 4.6,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-21T01:40:11.479Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b3031a",
+      "name": "Havells Stealth Air 1200mm Ceiling Fan",
+      "slug": "havells-stealth-air-ceiling-fan",
+      "brand": "6a2b00b3345d2e4909b302e4",
+      "category": "6a2b00b2345d2e4909b302be",
+      "modelNumber": "FHCSA1200",
+      "color": "Metallic Brown",
+      "subCategory": "",
+      "sellingPrice": 2890,
+      "mrp": 3750,
+      "discountPercentage": 23,
+      "price": 2890,
+      "countInStock": 50,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "1200mm Sweep, High Speed, Low Noise, Energy Efficient.",
+      "fullDescription": "Havells Stealth Air Ceiling Fan with 1200mm sweep for powerful air circulation. Features aerodynamic blade design for high air delivery with low noise. Suitable for rooms up to 150 sq ft.",
+      "highlights": [
+        "1200mm Sweep Size",
+        "High Speed Motor",
+        "Low Noise - 55 dB",
+        "Aerodynamic Blades",
+        "2 Year Warranty"
+      ],
+      "boxContents": [
+        "Fan Unit",
+        "Blade Set (3)",
+        "Down Rod",
+        "Canopy",
+        "Screws"
+      ],
+      "warrantyDetails": "2 Years Comprehensive Warranty",
+      "tags": [
+        "fan",
+        "ceiling fan",
+        "havells",
+        "1200mm",
+        "high speed"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/41SsJfk6I9L._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/41SsJfk6I9L._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Sweep Size",
+              "fieldValue": "1200 mm",
+              "_id": "6a2b00b3345d2e4909b3031c"
+            },
+            {
+              "fieldName": "Speed",
+              "fieldValue": "370 RPM",
+              "_id": "6a2b00b3345d2e4909b3031d"
+            },
+            {
+              "fieldName": "Power",
+              "fieldValue": "75W",
+              "_id": "6a2b00b3345d2e4909b3031e"
+            },
+            {
+              "fieldName": "Blades",
+              "fieldValue": "3 - Aluminium",
+              "_id": "6a2b00b3345d2e4909b3031f"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b3031b"
+        }
+      ],
+      "specifications": {
+        "Sweep Size": "1200 mm",
+        "RPM": "370",
+        "Power": "75W"
+      },
+      "categoryFields": {
+        "fanType": "Ceiling Fan",
+        "sweepSize": "1200 mm",
+        "speedSettings": "3 Speed",
+        "rpm": "370",
+        "powerConsumption": "75W",
+        "bladeMaterial": "Aluminium",
+        "numberOfBlades": "3",
+        "remoteControl": "No",
+        "noiseLevel": "55 dB"
+      },
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.3,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b3032f",
+      "name": "Prestige Magic 3 Burner Glass Top Gas Stove",
+      "slug": "prestige-magic-3-burner-gas-stove",
+      "brand": "6a2b00b3345d2e4909b302e2",
+      "category": "6a2b00b3345d2e4909b302d3",
+      "modelNumber": "GTM03L",
+      "color": "Black",
+      "subCategory": "",
+      "sellingPrice": 3490,
+      "mrp": 5195,
+      "discountPercentage": 33,
+      "price": 3490,
+      "countInStock": 35,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "3 Burner, Toughened Glass Top, ISI Certified, Ergonomic Knobs.",
+      "fullDescription": "Prestige Magic 3 Burner Gas Stove with toughened black glass top for durability and elegance. Features ISI certified brass burners with efficient flame distribution and ergonomic knobs.",
+      "highlights": [
+        "3 Brass Burners",
+        "Toughened Glass Top",
+        "ISI Certified",
+        "Ergonomic Knobs",
+        "Heavy Duty Pan Support"
+      ],
+      "boxContents": [
+        "Gas Stove Unit",
+        "Rubber Pipe",
+        "User Manual",
+        "Warranty Card"
+      ],
+      "warrantyDetails": "2 Years Comprehensive Warranty",
+      "tags": [
+        "gas stove",
+        "prestige",
+        "3 burner",
+        "glass top",
+        "cooktop"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/61u4GbrSR+L._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/61u4GbrSR+L._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Burners",
+              "fieldValue": "3 (1 Small + 1 Medium + 1 Large)",
+              "_id": "6a2b00b3345d2e4909b30331"
+            },
+            {
+              "fieldName": "Body",
+              "fieldValue": "Toughened Glass Top",
+              "_id": "6a2b00b3345d2e4909b30332"
+            },
+            {
+              "fieldName": "Ignition",
+              "fieldValue": "Manual",
+              "_id": "6a2b00b3345d2e4909b30333"
+            },
+            {
+              "fieldName": "ISI Certified",
+              "fieldValue": "Yes",
+              "_id": "6a2b00b3345d2e4909b30334"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30330"
+        }
+      ],
+      "specifications": {
+        "Burners": "3",
+        "Body": "Glass Top",
+        "ISI Certified": "Yes"
+      },
+      "categoryFields": {
+        "bodyMaterial": "Toughened Glass",
+        "numberOfBurners": "3 Burner",
+        "burnerMaterial": "Brass",
+        "ignitionType": "Manual",
+        "glassTop": "Yes",
+        "isiCertified": "Yes",
+        "panSupportMaterial": "Heavy Duty Pan Support",
+        "spillTray": "Yes"
+      },
+      "isFeatured": false,
+      "isBestSeller": false,
+      "rating": 4.4,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302e8",
+      "name": "Samsung 253L 3 Star Inverter Frost Free Double Door Refrigerator",
+      "slug": "samsung-253l-3-star-fridge",
+      "brand": "6a2b00b3345d2e4909b302d8",
+      "category": "6a2b00b2345d2e4909b302bc",
+      "modelNumber": "RT28T3453S8",
+      "color": "Elegant Inox",
+      "subCategory": "",
+      "sellingPrice": 24990,
+      "mrp": 31990,
+      "discountPercentage": 22,
+      "price": 24990,
+      "countInStock": 15,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "Digital Inverter, Convertible 5-in-1, Elegant Inox Design.",
+      "fullDescription": "Samsung 253L Double Door Refrigerator with Digital Inverter Technology for energy efficiency and less noise. Features Convertible 5-in-1 modes, Twin Cooling Plus, and Power Cool.",
+      "highlights": [
+        "Digital Inverter Technology",
+        "Convertible 5-in-1",
+        "Twin Cooling Plus",
+        "Power Cool",
+        "Stabilizer Free Operation"
+      ],
+      "boxContents": [
+        "Refrigerator Unit",
+        "Ice Tray",
+        "Egg Tray",
+        "User Manual",
+        "Warranty Card"
+      ],
+      "warrantyDetails": "1 Year + 20 Years on Digital Inverter Compressor",
+      "tags": [
+        "fridge",
+        "refrigerator",
+        "samsung",
+        "double door",
+        "frost free",
+        "inverter"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/71I3Rk8K3hL._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/71I3Rk8K3hL._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Capacity",
+              "fieldValue": "253 Litres",
+              "_id": "6a2b00b3345d2e4909b302ea"
+            },
+            {
+              "fieldName": "Door Type",
+              "fieldValue": "Double Door",
+              "_id": "6a2b00b3345d2e4909b302eb"
+            },
+            {
+              "fieldName": "Star Rating",
+              "fieldValue": "3 Star",
+              "_id": "6a2b00b3345d2e4909b302ec"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b302e9"
+        },
+        {
+          "groupName": "Technology",
+          "fields": [
+            {
+              "fieldName": "Compressor",
+              "fieldValue": "Digital Inverter",
+              "_id": "6a2b00b3345d2e4909b302ee"
+            },
+            {
+              "fieldName": "Defrosting",
+              "fieldValue": "Frost Free",
+              "_id": "6a2b00b3345d2e4909b302ef"
+            },
+            {
+              "fieldName": "Cooling",
+              "fieldValue": "Twin Cooling Plus",
+              "_id": "6a2b00b3345d2e4909b302f0"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b302ed"
+        }
+      ],
+      "specifications": {
+        "Capacity": "253L",
+        "Star Rating": "3 Star",
+        "Type": "Double Door",
+        "Defrosting Type": "Frost Free",
+        "Compressor Type": "Digital Inverter"
+      },
+      "categoryFields": {
+        "capacityLitres": "253",
+        "doorType": "Double Door",
+        "energyStarRating": "3 Star",
+        "compressorType": "Digital Inverter",
+        "inverterTechnology": "Yes",
+        "coolingTechnology": "Twin Cooling Plus",
+        "defrostType": "Frost Free",
+        "shelfType": "Toughened Glass",
+        "stabilizerRequired": "No"
+      },
+      "isFeatured": true,
+      "isBestSeller": false,
+      "rating": 4.6,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.923Z",
+      "updatedAt": "2026-06-11T18:38:43.923Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b3030b",
+      "name": "Natraj Viva Ghar Ghanti Automatic Flour Mill",
+      "slug": "natraj-viva-ghar-ghanti",
+      "brand": "6a2b00b3345d2e4909b302de",
+      "category": "6a2b00b2345d2e4909b302c5",
+      "modelNumber": "VIVA-1HP",
+      "color": "Stainless Steel",
+      "subCategory": "",
+      "sellingPrice": 18500,
+      "mrp": 22000,
+      "discountPercentage": 16,
+      "price": 18500,
+      "countInStock": 20,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "Fully Automatic, 100% Fresh Flour, Silk Finish Design.",
+      "fullDescription": "Natraj Viva Ghar Ghanti produces 100% fresh and nutritious flour at home. Features automatic operation with 1 HP motor, natural stone grinding for authentic taste, and elegant design.",
+      "highlights": [
+        "1 HP Powerful Motor",
+        "Natural Stone Grinding",
+        "7-10 kg/hr Capacity",
+        "Fully Automatic",
+        "Low Noise Operation"
+      ],
+      "boxContents": [
+        "Flour Mill Unit",
+        "Hopper",
+        "Collection Box",
+        "User Manual"
+      ],
+      "warrantyDetails": "1 Year Motor Warranty",
+      "tags": [
+        "ghar ghanti",
+        "flour mill",
+        "natraj",
+        "atta chakki",
+        "automatic"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/71K8k8O3WGL._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/71K8k8O3WGL._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Grinding Capacity",
+              "fieldValue": "7-10 kg/hr",
+              "_id": "6a2b00b3345d2e4909b3030d"
+            },
+            {
+              "fieldName": "Motor Power",
+              "fieldValue": "1 HP",
+              "_id": "6a2b00b3345d2e4909b3030e"
+            },
+            {
+              "fieldName": "Type",
+              "fieldValue": "Automatic",
+              "_id": "6a2b00b3345d2e4909b3030f"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b3030c"
+        }
+      ],
+      "specifications": {
+        "Grinding Capacity": "7-10 kg/hr",
+        "Motor Power": "1 HP",
+        "Type": "Automatic"
+      },
+      "categoryFields": {
+        "motorPower": "1 HP",
+        "grindingCapacity": "7-10 kg/hr",
+        "hopperCapacity": "5 kg",
+        "stoneType": "Emery Stone",
+        "cabinetMaterial": "Stainless Steel",
+        "automaticOperation": "Yes",
+        "suitableGrains": "Wheat, Rice, Corn, Spices"
+      },
+      "isFeatured": false,
+      "isBestSeller": false,
+      "rating": 4.5,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b30310",
+      "name": "Kent Grand Plus RO+UV+UF Water Purifier",
+      "slug": "kent-grand-plus-water-purifier",
+      "brand": "6a2b00b3345d2e4909b302e0",
+      "category": "6a2b00b2345d2e4909b302c2",
+      "modelNumber": "11099",
+      "color": "White",
+      "subCategory": "",
+      "sellingPrice": 17500,
+      "mrp": 19500,
+      "discountPercentage": 10,
+      "price": 17500,
+      "countInStock": 25,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "9L Tank, TDS Controller, Multi-stage Purification.",
+      "fullDescription": "Kent Grand Plus provides multi-stage purification using RO+UV+UF+TDS Controller technology. 9L storage capacity ensures purified water is always available. Wall-mountable design with UV LED tank for 24/7 purity.",
+      "highlights": [
+        "RO+UV+UF+TDS Controller",
+        "9L Storage Tank",
+        "Wall Mounted",
+        "UV LED in Tank",
+        "Multi-stage Purification"
+      ],
+      "boxContents": [
+        "Purifier Unit",
+        "Installation Kit",
+        "User Manual",
+        "Warranty Card"
+      ],
+      "warrantyDetails": "1 Year Comprehensive + 3 Years on RO Membrane",
+      "tags": [
+        "water purifier",
+        "kent",
+        "ro",
+        "uv",
+        "uf",
+        "tds",
+        "purifier"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/81K8k8O3WHL._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/81K8k8O3WHL._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "Purification",
+          "fields": [
+            {
+              "fieldName": "Technology",
+              "fieldValue": "RO+UV+UF+TDS Controller",
+              "_id": "6a2b00b3345d2e4909b30312"
+            },
+            {
+              "fieldName": "Storage",
+              "fieldValue": "9 Litres",
+              "_id": "6a2b00b3345d2e4909b30313"
+            },
+            {
+              "fieldName": "Mounting",
+              "fieldValue": "Wall-mounted",
+              "_id": "6a2b00b3345d2e4909b30314"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30311"
+        }
+      ],
+      "specifications": {
+        "Capacity": "9L",
+        "Purification": "RO+UV+UF+TDS",
+        "Mounting": "Wall-mounted"
+      },
+      "categoryFields": {
+        "purificationTechnology": "RO+UV+UF+TDS",
+        "storageCapacity": "9L",
+        "tdsController": "Yes",
+        "installationType": "Wall Mounted",
+        "waterSource": "Both",
+        "indicatorAvailability": "Yes"
+      },
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.8,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b30329",
+      "name": "Samsung 28L Convection Microwave Oven",
+      "slug": "samsung-28l-convection-microwave-oven",
+      "brand": "6a2b00b3345d2e4909b302d8",
+      "category": "6a2b00b2345d2e4909b302d0",
+      "modelNumber": "MC28A5013AK",
+      "color": "Black",
+      "subCategory": "",
+      "sellingPrice": 13990,
+      "mrp": 18990,
+      "discountPercentage": 26,
+      "price": 13990,
+      "countInStock": 15,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "Convection, Grill, Auto Cook, Ceramic Enamel Cavity.",
+      "fullDescription": "Samsung 28L Convection Microwave Oven with Slim Fry technology for healthier cooking. Features 200+ auto cook menus, ceramic enamel cavity for easy cleaning, and Tandoor technology.",
+      "highlights": [
+        "28L Capacity",
+        "Convection + Grill + Solo",
+        "200+ Auto Cook Menus",
+        "Ceramic Enamel Cavity",
+        "Tandoor Technology"
+      ],
+      "boxContents": [
+        "Microwave Oven",
+        "Turntable",
+        "Crusty Plate",
+        "Wire Rack",
+        "User Manual"
+      ],
+      "warrantyDetails": "1 Year + 5 Years on Magnetron",
+      "tags": [
+        "oven",
+        "microwave",
+        "samsung",
+        "convection",
+        "28l",
+        "otg"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/71Xv8VOqrML._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/71Xv8VOqrML._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Type",
+              "fieldValue": "Convection Microwave",
+              "_id": "6a2b00b3345d2e4909b3032b"
+            },
+            {
+              "fieldName": "Capacity",
+              "fieldValue": "28 Litres",
+              "_id": "6a2b00b3345d2e4909b3032c"
+            },
+            {
+              "fieldName": "Power",
+              "fieldValue": "1400W",
+              "_id": "6a2b00b3345d2e4909b3032d"
+            },
+            {
+              "fieldName": "Auto Cook Menus",
+              "fieldValue": "200+",
+              "_id": "6a2b00b3345d2e4909b3032e"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b3032a"
+        }
+      ],
+      "specifications": {
+        "Capacity": "28L",
+        "Type": "Convection Microwave",
+        "Power": "1400W"
+      },
+      "categoryFields": {
+        "powerConsumption": "1400W",
+        "ovenType": "Convection Microwave",
+        "capacityLitresOven": "28L",
+        "autoCookMenu": "Yes",
+        "grillFunction": "Yes",
+        "convectionFunction": "Yes",
+        "timer": "99 minutes",
+        "temperatureControl": "100-250°C",
+        "turntable": "Yes"
+      },
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.5,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b30315",
+      "name": "Prestige Iris 750W Mixer Grinder",
+      "slug": "prestige-iris-mixer-grinder",
+      "brand": "6a2b00b3345d2e4909b302e2",
+      "category": "6a2b00b2345d2e4909b302c0",
+      "modelNumber": "IRIS-750",
+      "color": "White & Purple",
+      "subCategory": "",
+      "sellingPrice": 2990,
+      "mrp": 4500,
+      "discountPercentage": 34,
+      "price": 2990,
+      "countInStock": 30,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "3 Stainless Steel Jars + 1 Juicer Jar, Powerful 750W Motor.",
+      "fullDescription": "Prestige Iris Mixer Grinder with powerful 750W motor handles all your grinding and blending needs. Comes with 3 stainless steel jars and 1 juicer jar for versatile kitchen usage.",
+      "highlights": [
+        "750W Powerful Motor",
+        "4 Jars Included",
+        "Stainless Steel Blades",
+        "3 Speed Control",
+        "Overload Protection"
+      ],
+      "boxContents": [
+        "Motor Unit",
+        "Wet Grinding Jar",
+        "Dry Grinding Jar",
+        "Chutney Jar",
+        "Juicer Jar",
+        "User Manual"
+      ],
+      "warrantyDetails": "2 Years Comprehensive Warranty",
+      "tags": [
+        "mixer",
+        "grinder",
+        "prestige",
+        "750w",
+        "juicer",
+        "kitchen"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/61K8k8O3WIL._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/61K8k8O3WIL._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Power",
+              "fieldValue": "750 Watt",
+              "_id": "6a2b00b3345d2e4909b30317"
+            },
+            {
+              "fieldName": "Jars",
+              "fieldValue": "4 Jars (3 SS + 1 Juicer)",
+              "_id": "6a2b00b3345d2e4909b30318"
+            },
+            {
+              "fieldName": "Type",
+              "fieldValue": "Mixer Grinder",
+              "_id": "6a2b00b3345d2e4909b30319"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30316"
+        }
+      ],
+      "specifications": {
+        "Power": "750 Watt",
+        "Jars": "4 Jars",
+        "Type": "Mixer Grinder"
+      },
+      "categoryFields": {
+        "motorPowerWatts": "750",
+        "numberOfJars": "4",
+        "jarMaterial": "Stainless Steel",
+        "overloadProtection": "Yes",
+        "bladeType": "Stainless Steel",
+        "bodyMaterial": "ABS Plastic",
+        "suitableFor": "Grinding, Juicing, Mixing",
+        "safetyLock": "Yes"
+      },
+      "isFeatured": false,
+      "isBestSeller": true,
+      "rating": 4.4,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302f1",
+      "name": "Sony Bravia 55 inch 4K Ultra HD Smart LED TV",
+      "slug": "sony-bravia-55-4k-smart-tv",
+      "brand": "6a2b00b3345d2e4909b302da",
+      "category": "6a2b00b2345d2e4909b302ba",
+      "modelNumber": "KD-55X80L",
+      "color": "Black",
+      "subCategory": "",
+      "sellingPrice": 57990,
+      "mrp": 99900,
+      "discountPercentage": 42,
+      "price": 57990,
+      "countInStock": 8,
+      "availability": "In Stock",
+      "isVisible": false,
+      "shortDescription": "Google TV, 4K Processor X1, Dolby Audio, Alexa Compatibility.",
+      "fullDescription": "Experience stunning visuals with the Sony Bravia 55 inch 4K Ultra HD Smart LED TV. Powered by Google TV with built-in Chromecast. Features 4K Processor X1 for vivid, lifelike picture quality, Dolby Audio, and Alexa compatibility.",
+      "highlights": [
+        "4K Ultra HD (3840x2160)",
+        "Google TV with Chromecast",
+        "4K Processor X1",
+        "Dolby Audio & DTS Digital Surround",
+        "3 HDMI + 2 USB Ports"
+      ],
+      "boxContents": [
+        "TV Unit",
+        "Remote Control",
+        "Batteries",
+        "AC Power Cord",
+        "Quick Setup Guide",
+        "Table Top Stand"
+      ],
+      "warrantyDetails": "1 Year Comprehensive Warranty",
+      "tags": [
+        "tv",
+        "sony",
+        "bravia",
+        "4k",
+        "smart tv",
+        "55 inch",
+        "google tv",
+        "led"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/81I6o6P6v6L._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/81I6o6P6v6L._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "Display",
+          "fields": [
+            {
+              "fieldName": "Screen Size",
+              "fieldValue": "55 inch",
+              "_id": "6a2b00b3345d2e4909b302f3"
+            },
+            {
+              "fieldName": "Resolution",
+              "fieldValue": "4K Ultra HD (3840x2160)",
+              "_id": "6a2b00b3345d2e4909b302f4"
+            },
+            {
+              "fieldName": "Display Type",
+              "fieldValue": "LED",
+              "_id": "6a2b00b3345d2e4909b302f5"
+            },
+            {
+              "fieldName": "Refresh Rate",
+              "fieldValue": "60 Hz",
+              "_id": "6a2b00b3345d2e4909b302f6"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b302f2"
+        },
+        {
+          "groupName": "Smart Features",
+          "fields": [
+            {
+              "fieldName": "Smart TV",
+              "fieldValue": "Yes - Google TV",
+              "_id": "6a2b00b3345d2e4909b302f8"
+            },
+            {
+              "fieldName": "Audio",
+              "fieldValue": "Dolby Audio, 20W Output",
+              "_id": "6a2b00b3345d2e4909b302f9"
+            },
+            {
+              "fieldName": "HDMI Ports",
+              "fieldValue": "3",
+              "_id": "6a2b00b3345d2e4909b302fa"
+            },
+            {
+              "fieldName": "USB Ports",
+              "fieldValue": "2",
+              "_id": "6a2b00b3345d2e4909b302fb"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b302f7"
+        }
+      ],
+      "specifications": {
+        "Screen Size": "55 inch",
+        "Resolution": "4K Ultra HD",
+        "Smart TV": "Google TV",
+        "Refresh Rate": "60 Hz",
+        "Audio": "Dolby Audio"
+      },
+      "categoryFields": {
+        "screenSize": "55 inch",
+        "displayType": "LED",
+        "resolution": "4K Ultra HD",
+        "smartTv": "Yes",
+        "operatingSystem": "Google TV",
+        "refreshRate": "60 Hz",
+        "hdmiPorts": "3",
+        "usbPorts": "2",
+        "speakerOutput": "20W",
+        "connectivity": "WiFi, Bluetooth, Ethernet",
+        "wallMountIncluded": "No",
+        "energyRating": "3 Star"
+      },
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.9,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T20:44:37.247Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b30302",
+      "name": "Samsung 8 kg 5 Star Eco Bubble Fully Automatic Front Load",
+      "slug": "samsung-8kg-front-load-washing-machine",
+      "brand": "6a2b00b3345d2e4909b302d8",
+      "category": "6a2b00b2345d2e4909b302cd",
+      "modelNumber": "WW80T4040CE",
+      "color": "Silver",
+      "subCategory": "",
+      "sellingPrice": 36990,
+      "mrp": 50900,
+      "discountPercentage": 27,
+      "price": 36990,
+      "countInStock": 12,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "AI Control, Hygiene Steam, Digital Inverter Technology.",
+      "fullDescription": "Samsung 8 kg Front Load Washing Machine with Eco Bubble technology that mixes air, water, and detergent to create bubbles that penetrate fabric faster. Features Hygiene Steam for deep cleaning and AI Control for smart wash.",
+      "highlights": [
+        "Eco Bubble Technology",
+        "AI Control",
+        "Hygiene Steam",
+        "Digital Inverter Motor",
+        "5 Star Energy Rating"
+      ],
+      "boxContents": [
+        "Washing Machine",
+        "Inlet Hose",
+        "Drain Hose",
+        "User Manual",
+        "Warranty Card"
+      ],
+      "warrantyDetails": "2 Years + 20 Years on Digital Inverter Motor",
+      "tags": [
+        "washing machine",
+        "samsung",
+        "front load",
+        "8 kg",
+        "fully automatic",
+        "inverter"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/71X8k8O3WFL._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/71X8k8O3WFL._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Capacity",
+              "fieldValue": "8 kg",
+              "_id": "6a2b00b3345d2e4909b30304"
+            },
+            {
+              "fieldName": "Star Rating",
+              "fieldValue": "5 Star",
+              "_id": "6a2b00b3345d2e4909b30305"
+            },
+            {
+              "fieldName": "Type",
+              "fieldValue": "Front Load - Fully Automatic",
+              "_id": "6a2b00b3345d2e4909b30306"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30303"
+        },
+        {
+          "groupName": "Technology",
+          "fields": [
+            {
+              "fieldName": "Wash Technology",
+              "fieldValue": "Eco Bubble",
+              "_id": "6a2b00b3345d2e4909b30308"
+            },
+            {
+              "fieldName": "Motor",
+              "fieldValue": "Digital Inverter",
+              "_id": "6a2b00b3345d2e4909b30309"
+            },
+            {
+              "fieldName": "Drum",
+              "fieldValue": "Diamond Drum - Stainless Steel",
+              "_id": "6a2b00b3345d2e4909b3030a"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b30307"
+        }
+      ],
+      "specifications": {
+        "Capacity": "8 kg",
+        "Star Rating": "5 Star",
+        "Type": "Front Load",
+        "Technology": "Eco Bubble"
+      },
+      "categoryFields": {
+        "rpm": "1200",
+        "capacityKg": "8 kg",
+        "washerType": "Fully Automatic",
+        "loadType": "Front Load",
+        "washPrograms": "15 programs",
+        "inverterMotor": "Yes",
+        "drumMaterial": "Stainless Steel",
+        "waterLevelSelection": "Yes",
+        "childLock": "Yes",
+        "dryerFunction": "No"
+      },
+      "isFeatured": true,
+      "isBestSeller": true,
+      "rating": 4.7,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a2b00b3345d2e4909b302fc",
+      "name": "Bosch 13 Place Settings Dishwasher",
+      "slug": "bosch-13-place-settings-dishwasher",
+      "brand": "6a2b00b3345d2e4909b302dc",
+      "category": "6a2b00b3345d2e4909b302d6",
+      "modelNumber": "SMS6ITI01I",
+      "color": "Silver Inox",
+      "subCategory": "",
+      "sellingPrice": 42990,
+      "mrp": 54990,
+      "discountPercentage": 22,
+      "price": 42990,
+      "countInStock": 5,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "EcoSilence Drive, Intensive 70 Degree, Silver Inox.",
+      "fullDescription": "Bosch Free Standing 13 Place Settings Dishwasher with EcoSilence Drive for quiet performance. Features 6 wash programs, Glass Protection technology, and dosage assist for optimal detergent usage.",
+      "highlights": [
+        "13 Place Settings",
+        "EcoSilence Drive",
+        "6 Wash Programs",
+        "Glass Protection",
+        "Dosage Assist"
+      ],
+      "boxContents": [
+        "Dishwasher Unit",
+        "Water Inlet Hose",
+        "Drain Hose",
+        "User Manual"
+      ],
+      "warrantyDetails": "2 Years Comprehensive Warranty",
+      "tags": [
+        "dishwasher",
+        "bosch",
+        "13 place",
+        "freestanding"
+      ],
+      "mainImage": "https://m.media-amazon.com/images/I/61F0O8O3WDL._SX679_.jpg",
+      "galleryImages": [],
+      "images": [
+        "https://m.media-amazon.com/images/I/61F0O8O3WDL._SX679_.jpg"
+      ],
+      "variants": [],
+      "specGroups": [
+        {
+          "groupName": "General",
+          "fields": [
+            {
+              "fieldName": "Capacity",
+              "fieldValue": "13 Place Settings",
+              "_id": "6a2b00b3345d2e4909b302fe"
+            },
+            {
+              "fieldName": "Water Usage",
+              "fieldValue": "10 Litres",
+              "_id": "6a2b00b3345d2e4909b302ff"
+            },
+            {
+              "fieldName": "Type",
+              "fieldValue": "Freestanding",
+              "_id": "6a2b00b3345d2e4909b30300"
+            },
+            {
+              "fieldName": "Programs",
+              "fieldValue": "6 Wash Programs",
+              "_id": "6a2b00b3345d2e4909b30301"
+            }
+          ],
+          "_id": "6a2b00b3345d2e4909b302fd"
+        }
+      ],
+      "specifications": {
+        "Capacity": "13 Place Settings",
+        "Water Usage": "10 Litres",
+        "Type": "Freestanding"
+      },
+      "categoryFields": {
+        "installationType": "Free Standing",
+        "childLock": "Yes",
+        "placeSettings": "13 Place",
+        "numberOfWashPrograms": "6",
+        "waterConsumption": "10 Litres",
+        "halfLoadOption": "Yes",
+        "dryingFeature": "Yes"
+      },
+      "isFeatured": false,
+      "isBestSeller": false,
+      "rating": 4.7,
+      "numReviews": 0,
+      "__v": 0,
+      "createdAt": "2026-06-11T18:38:43.924Z",
+      "updatedAt": "2026-06-11T18:38:43.924Z"
+    },
+    {
+      "_id": "6a3732c5c6ff090321870686",
+      "name": "Samsung 43 inch 4K Smart TV",
+      "slug": "samsung-43-inch-4k-smart-tv",
+      "brand": "6a2b00b3345d2e4909b302d8",
+      "category": "6a2b00b2345d2e4909b302ba",
+      "modelNumber": "UA43U8400FULXL",
+      "color": "BLACK",
+      "subCategory": "",
+      "sellingPrice": 36999,
+      "mrp": 44999,
+      "discountPercentage": 18,
+      "price": 36999,
+      "countInStock": 9999,
+      "availability": "In Stock",
+      "isVisible": true,
+      "shortDescription": "",
+      "fullDescription": "Top 6 Features\n43 inch 4K UHD Display\n3840 × 2160 resolution for sharp picture quality.\nCrystal Processor 4K\nImproves clarity, color, and upscales content to 4K.\nPurColor + HDR10+\nBetter colors, brightness, and contrast.\nTizen Smart TV OS\nSupports apps like YouTube, Netflix, Prime Video, etc.\nSamsung TV Plus + Voice Assistants\nFree TV channels, Bixby, Alexa, and Google Assistant support.\n3 HDMI Ports + Bluetooth 5.2\nEasy connection for set-top box, gaming console, soundbar, and wireless devices.",
+      "highlights": [],
+      "boxContents": [],
+      "warrantyDetails": "1 YEAR",
+      "tags": [],
+      "mainImage": "https://images.samsung.com/is/image/samsung/p6pim/in/ua43u8400fulxl/energylabel/in-energylabel-product-ua43u8400fulxl-550203028?$1164_776_PNG$",
+      "galleryImages": [],
+      "images": [
+        "https://images.samsung.com/is/image/samsung/p6pim/in/ua43u8400fulxl/energylabel/in-energylabel-product-ua43u8400fulxl-550203028?$1164_776_PNG$"
+      ],
+      "variants": [],
+      "specGroups": [],
+      "specifications": {},
+      "isFeatured": false,
+      "isBestSeller": false,
+      "rating": 0,
+      "numReviews": 0,
+      "createdAt": "2026-06-21T00:39:33.808Z",
+      "updatedAt": "2026-06-21T11:06:25.599Z",
+      "__v": 0,
+      "categoryFields": {
+        "screenSize": "43 inch",
+        "displayType": "LED",
+        "resolution": "4K Ultra HD",
+        "smartTv": "Yes",
+        "operatingSystem": "Tizen",
+        "refreshRate": "60 Hz",
+        "hdmiPorts": "3",
+        "usbPorts": "1",
+        "speakerOutput": "20W",
+        "connectivity": "3 HDMI ports, 1 USB-A port, Bluetooth 5.2",
+        "wallMountIncluded": "Yes",
+        "energyRating": "1 Star"
+      },
+      "offerPrice": 36999
+    }
+  ]
+}

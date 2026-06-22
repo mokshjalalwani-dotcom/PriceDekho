@@ -40,11 +40,19 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   const [openSections, setOpenSections] = useState(['basic', 'pricing']);
 
   // Find category slug from selected category ID
-  const selectedCategorySlug = useMemo(() => {
-    if (!formData.category) return '';
-    const cat = categories.find(c => c._id === formData.category);
-    return cat?.slug || '';
+  // Find category slug and object from selected category ID
+  const selectedCategoryObj = useMemo(() => {
+    if (!formData.category) return null;
+    return categories.find(c => c._id === formData.category) || null;
   }, [formData.category, categories]);
+
+  const selectedCategorySlug = selectedCategoryObj?.slug || '';
+  const [showAllBrands, setShowAllBrands] = useState(false);
+
+  const availableBrands = useMemo(() => {
+    if (showAllBrands || !formData.category) return brands;
+    return brands.filter(b => b.categories?.includes(formData.category));
+  }, [brands, formData.category, showAllBrands]);
 
   const categoryConfig = useMemo(() => {
     return CATEGORY_FIELDS[selectedCategorySlug] || null;
@@ -378,11 +386,19 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   </select>
                 </div>
                 <div>
-                  <label className={labelCls}>Brand <span className="text-red-400">*</span></label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className={labelCls}>Brand <span className="text-red-400">*</span></label>
+                    <button type="button" onClick={() => setShowAllBrands(!showAllBrands)} className="text-[10px] text-blue-600 font-medium hover:underline">
+                      {showAllBrands ? 'Show Mapped Only' : 'Show All'}
+                    </button>
+                  </div>
                   <select name="brand" value={formData.brand} onChange={handleChange} required className={inputCls}>
                     <option value="">Select Brand</option>
-                    {brands.map(b => <option key={b._id} value={b._id}>{b.name}</option>)}
+                    {availableBrands.map(b => <option key={b._id} value={b._id}>{b.name}</option>)}
                   </select>
+                  {!showAllBrands && formData.category && availableBrands.length === 0 && (
+                    <p className="text-[10px] text-orange-500 mt-1">No brands mapped to this category. Click 'Show All'.</p>
+                  )}
                 </div>
                 <div>
                   <label className={labelCls}>Model Number</label>
@@ -396,7 +412,16 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 </div>
                 <div>
                   <label className={labelCls}>Sub-Category</label>
-                  <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" />
+                  {selectedCategoryObj?.subCategories?.length > 0 ? (
+                    <select name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls}>
+                      <option value="">No Subcategory</option>
+                      {selectedCategoryObj.subCategories.map(sub => (
+                        <option key={sub} value={sub}>{sub}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />
+                  )}
                 </div>
                 <div className="flex items-end gap-4 pb-1">
                   <label className="flex items-center gap-2 cursor-pointer">

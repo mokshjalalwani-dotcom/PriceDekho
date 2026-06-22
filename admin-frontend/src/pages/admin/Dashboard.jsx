@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import ProductModal from './ProductModal';
 import AdminSettings from './AdminSettings';
+import AdminCategories from './Categories';
+import AdminBrands from './Brands';
 
 const statusColors = {
   Pending: 'bg-yellow-100 text-yellow-700',
@@ -159,6 +161,8 @@ const AdminDashboard = () => {
 
   const sidebarItems = [
     { key: 'products', label: 'Products', icon: Package },
+    { key: 'categories', label: 'Categories', icon: Tag },
+    { key: 'brands', label: 'Brands', icon: ShoppingBag },
     { key: 'orders', label: 'Orders', icon: ShoppingBag },
     { key: 'settings', label: 'Settings', icon: Settings },
   ];
@@ -210,7 +214,10 @@ const AdminDashboard = () => {
         {/* Header */}
         <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm z-10">
           <h2 className="text-xl font-bold text-gray-800">
-            {activeTab === 'products' ? 'Product Management' : activeTab === 'orders' ? 'Order Management' : 'Store Settings'}
+            {activeTab === 'products' ? 'Product Management' : 
+             activeTab === 'categories' ? 'Category Management' : 
+             activeTab === 'brands' ? 'Brand Management' : 
+             activeTab === 'orders' ? 'Order Management' : 'Store Settings'}
           </h2>
           <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-[var(--color-primary)] font-bold">A</div>
         </header>
@@ -396,6 +403,16 @@ const AdminDashboard = () => {
                 </table>
               </div>
             </div>
+          )}
+
+          {/* Categories Tab */}
+          {activeTab === 'categories' && (
+            <AdminCategories products={products} />
+          )}
+
+          {/* Brands Tab */}
+          {activeTab === 'brands' && (
+            <AdminBrands products={products} categories={categories} />
           )}
 
           {/* Settings Tab */}

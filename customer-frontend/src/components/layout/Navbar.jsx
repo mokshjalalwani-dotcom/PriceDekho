@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, X, Search, Heart, GitCompare, User } from 'lucide-react';
-import { CATEGORIES } from '../../constants/categories';
+import { useCategory } from '../../context/CategoryContext';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCompare } from '../../context/CompareContext';
@@ -11,6 +11,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const { categories } = useCategory();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { compareCount } = useCompare();
@@ -132,7 +133,7 @@ const Navbar = () => {
                 </button>
               </div>
             </form>
-              {CATEGORIES.map(cat => (
+              {categories.map(cat => (
               <Link
                 key={cat.slug}
                 to={`/shop?category=${cat.slug}`}

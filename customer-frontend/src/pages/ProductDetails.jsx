@@ -11,6 +11,7 @@ import { useCompare } from '../context/CompareContext';
 import { useToast } from '../context/ToastContext';
 import ProductCard from '../components/ProductCard';
 import { CATEGORY_FIELDS } from '../constants/CategoryFieldsConfig';
+import useSEO from '../hooks/useSEO';
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -99,6 +100,31 @@ const ProductDetails = () => {
   const uniqueImages = [...new Set(allImages)];
   const categorySlug = product.category?.slug || '';
   const categoryConfig = CATEGORY_FIELDS[categorySlug] || null;
+
+  useSEO({
+    title: product ? product.name : (loading ? 'Loading...' : 'Product Not Found'),
+    description: product ? (product.shortDescription || product.name) : '',
+    image: product ? product.mainImage : '',
+    url: window.location.href
+  });
+
+  const structuredData = product ? {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": uniqueImages,
+    "description": product.shortDescription || product.name,
+    "sku": product.modelNumber || product._id,
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "INR",
+      "price": price,
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "https://schema.org/InStock"
+    }
+  } : null;
 
   const handleAddToCart = () => {
     cartDispatch({
@@ -194,6 +220,9 @@ Please share more details.`;
 
   return (
     <div className="min-h-screen bg-[var(--color-background)]">
+      {structuredData && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      )}
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3">

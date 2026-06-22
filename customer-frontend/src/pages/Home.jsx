@@ -3,12 +3,20 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight, Zap, ShieldCheck, Truck, Clock, ChevronRight, Star, Headphones } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { CATEGORIES } from '../constants/categories';
+import { useCategory } from '../context/CategoryContext';
+import useSEO from '../hooks/useSEO';
 
 const Home = () => {
+  useSEO({
+    title: 'Home',
+    description: 'Welcome to Satguru Electronics - The best place to buy home appliances and electronics at unbeatable prices.',
+    url: window.location.href
+  });
+
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { categories, loading: categoriesLoading } = useCategory();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,17 +67,26 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-x-4 gap-y-6 sm:gap-6">
-            {CATEGORIES.map((cat) => (
-              <div key={cat.slug} className="flex flex-col items-center gap-2.5 w-full group">
-                <Link
-                  to={`/shop?category=${cat.slug}`}
-                  className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[110px] mx-auto ring-1 ring-black/5`}
-                >
-                  {React.cloneElement(cat.icon, { size: 38, className: "text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
-                </Link>
-                <span className="font-semibold text-gray-700 text-[11px] sm:text-xs text-center leading-tight">{cat.name}</span>
-              </div>
-            ))}
+            {categoriesLoading ? (
+              Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="flex flex-col items-center gap-2.5 w-full">
+                  <div className="w-full aspect-square rounded-2xl bg-gray-100 animate-pulse max-w-[110px] mx-auto" />
+                  <div className="h-3 bg-gray-100 animate-pulse rounded w-16" />
+                </div>
+              ))
+            ) : (
+              categories.map((cat) => (
+                <div key={cat.slug} className="flex flex-col items-center gap-2.5 w-full group">
+                  <Link
+                    to={`/shop?category=${cat.slug}`}
+                    className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[110px] mx-auto ring-1 ring-black/5`}
+                  >
+                    {React.cloneElement(cat.icon, { size: 38, className: "text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
+                  </Link>
+                  <span className="font-semibold text-gray-700 text-[11px] sm:text-xs text-center leading-tight">{cat.name}</span>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

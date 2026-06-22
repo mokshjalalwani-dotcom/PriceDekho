@@ -5,7 +5,8 @@ import Category from '../models/Category.js';
 // @access  Public
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const filter = req.query.all ? {} : { isActive: true };
+    const categories = await Category.find(filter).sort({ displayOrder: 1 });
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });

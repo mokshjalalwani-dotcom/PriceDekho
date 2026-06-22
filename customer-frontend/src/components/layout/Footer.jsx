@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
-import { CATEGORIES } from '../../constants/categories';
+import { useCategory } from '../../context/CategoryContext';
 
 const Footer = () => {
+  const { categories } = useCategory();
   // Split categories into two columns
-  const catCol1 = CATEGORIES.slice(0, 6);
-  const catCol2 = CATEGORIES.slice(6, 12);
+  const catCol1 = categories.slice(0, 6);
+  const catCol2 = categories.slice(6, 12);
 
   return (
     <footer className="bg-[var(--color-secondary)] text-gray-300 pt-20 pb-8">

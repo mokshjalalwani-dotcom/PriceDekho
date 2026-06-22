@@ -6,7 +6,7 @@ const categorySchema = new mongoose.Schema({
   image: { type: String },
   icon: { type: String, default: '' },
   description: { type: String, default: '' },
-  displayOrder: { type: Number, default: 0 },
+  displayOrder: { type: Number, default: 0, unique: true },
   subCategories: [{ type: String }],
   isActive: { type: Boolean, default: true },
   iconKey: { 

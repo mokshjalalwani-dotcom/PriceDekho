@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dns from 'dns';
+
+// Fix for MongoDB Atlas ECONNREFUSED SRV errors
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 import Category from './models/Category.js';
 import Brand from './models/Brand.js';
@@ -74,9 +78,12 @@ async function run() {
     const allCategories = await Category.find().lean();
     const allBrands = await Brand.find().lean();
     const allProducts = await Product.find().lean();
+    
+    const beforeCatCount = allCategories.length;
+    const beforeBrandCount = allBrands.length;
     const beforeProductCount = allProducts.length;
     
-    console.log(`\nFound ${allCategories.length} Categories, ${allBrands.length} Brands, ${beforeProductCount} Products.`);
+    console.log(`\nFound ${beforeCatCount} Categories, ${beforeBrandCount} Brands, ${beforeProductCount} Products.`);
 
     const backupData = {
       timestamp: new Date().toISOString(),
@@ -223,18 +230,37 @@ async function run() {
     }
 
     // --- Verification ---
+    const afterCatCount = await Category.countDocuments();
+    const afterBrandCount = await Brand.countDocuments();
     const afterProductCount = await Product.countDocuments();
-    console.log(`\n=== POST MIGRATION VERIFICATION ===`);
-    console.log(`Products Before: ${beforeProductCount}`);
-    console.log(`Products After: ${afterProductCount}`);
-    
-    if (beforeProductCount !== afterProductCount) {
-      console.error(`[CRITICAL ERROR] Product counts do not match! Please run restoreCategories.js using backup: ${backupFile}`);
-      process.exit(1);
-    }
 
-    console.log(`\n[SUCCESS] Migration completed safely.`);
-    process.exit(0);
+    console.log(`\n=== POST MIGRATION VERIFICATION ===`);
+    console.log(`Before:`);
+    console.log(`Categories: ${beforeCatCount}`);
+    console.log(`Brands: ${beforeBrandCount}`);
+    console.log(`Products: ${beforeProductCount}\n`);
+    
+    console.log(`After:`);
+    console.log(`Categories: ${afterCatCount}`);
+    console.log(`Brands: ${afterBrandCount}`);
+    console.log(`Products: ${afterProductCount}\n`);
+
+    const hasMismatch = beforeCatCount !== afterCatCount || beforeBrandCount !== afterBrandCount || beforeProductCount !== afterProductCount;
+
+    if (hasMismatch) {
+      console.log(`Validation Status: FAILED\n`);
+      console.log(`Difference:`);
+      if (beforeCatCount !== afterCatCount) console.log(`Categories: ${afterCatCount > beforeCatCount ? '+' : ''}${afterCatCount - beforeCatCount}`);
+      if (beforeBrandCount !== afterBrandCount) console.log(`Brands: ${afterBrandCount > beforeBrandCount ? '+' : ''}${afterBrandCount - beforeBrandCount}`);
+      if (beforeProductCount !== afterProductCount) console.log(`Products: ${afterProductCount > beforeProductCount ? '+' : ''}${afterProductCount - beforeProductCount}\n`);
+      
+      console.log(`Recommended Action:\nRun node restoreCategories.js ${path.basename(backupFile)}`);
+      process.exit(1);
+    } else {
+      console.log(`Validation Status: PASSED`);
+      console.log(`\n[SUCCESS] Migration completed safely.`);
+      process.exit(0);
+    }
     
   } catch (err) {
     console.error('Migration failed:', err);

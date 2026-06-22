@@ -3,6 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Product from '../models/Product.js';
+import Category from '../models/Category.js';
+import Brand from '../models/Brand.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,6 +12,11 @@ const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
+const CORE_SLUGS = [
+  'tv', 'projector', 'sound-system', 'refrigerator', 'washing-machines', 
+  'dishwashers', 'air-conditioners', 'fan', 'vacuum-cleaner', 'ghar-ghanti', 
+  'oven', 'water-purifier', 'mixer', 'gas-stove', 'geyser', 'personal-care'
+];
 // --- Multer config for image uploads ---
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -261,6 +268,148 @@ router.delete('/products/:id/specs/:gid', protect, admin, async (req, res) => {
     await product.save();
 
     res.json({ message: 'Spec group deleted', specGroups: product.specGroups });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// =====================================================
+// CATEGORIES
+// =====================================================
+
+// Admin: Add Category
+router.post('/categories', protect, admin, async (req, res) => {
+  try {
+    const { name, slug, iconKey, displayOrder, subCategories } = req.body;
+    
+    // Auto-shift display order logic
+    if (displayOrder !== undefined) {
+      await Category.updateMany(
+        { displayOrder: { $gte: displayOrder } },
+        { $inc: { displayOrder: 1 } }
+      );
+    }
+    
+    const category = await Category.create({
+      name, slug, iconKey, displayOrder, subCategories, isActive: true
+    });
+    
+    res.status(201).json(category);
+  } catch (error) {
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      return res.status(400).json({ message: `Category with this ${field} already exists.` });
+    }
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Update Category
+router.put('/categories/:id', protect, admin, async (req, res) => {
+  try {
+    const { name, slug, iconKey, displayOrder, subCategories } = req.body;
+    
+    const category = await Category.findById(req.params.id);
+    if (!category) return res.status(404).json({ message: 'Category not found' });
+    
+    if (displayOrder !== undefined && displayOrder !== category.displayOrder) {
+      // Auto-shift logic
+      await Category.updateMany(
+        { displayOrder: { $gte: displayOrder } },
+        { $inc: { displayOrder: 1 } }
+      );
+    }
+    
+    category.name = name || category.name;
+    
+    // Core categories protection
+    if (CORE_SLUGS.includes(category.slug)) {
+      if ((slug && slug !== category.slug) || (iconKey !== undefined && iconKey !== category.iconKey)) {
+        return res.status(400).json({ message: 'Cannot modify slug or iconKey of core system categories.' });
+      }
+    } else {
+      category.slug = slug || category.slug;
+      if (iconKey !== undefined) category.iconKey = iconKey;
+    }
+    
+    if (displayOrder !== undefined) category.displayOrder = displayOrder;
+    if (subCategories !== undefined) category.subCategories = subCategories;
+    
+    const updated = await category.save();
+    res.json(updated);
+  } catch (error) {
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      return res.status(400).json({ message: `Category with this ${field} already exists.` });
+    }
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Toggle Category Active Status (Soft Delete)
+router.patch('/categories/:id/toggle', protect, admin, async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) return res.status(404).json({ message: 'Category not found' });
+    
+    category.isActive = !category.isActive;
+    await category.save();
+    res.json({ message: `Category ${category.isActive ? 'enabled' : 'disabled'}`, category });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// =====================================================
+// BRANDS
+// =====================================================
+
+// Admin: Add Brand
+router.post('/brands', protect, admin, async (req, res) => {
+  try {
+    const { name, slug, categories } = req.body;
+    const brand = await Brand.create({ name, slug, categories, isActive: true });
+    res.status(201).json(brand);
+  } catch (error) {
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      return res.status(400).json({ message: `Brand with this ${field} already exists.` });
+    }
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Update Brand
+router.put('/brands/:id', protect, admin, async (req, res) => {
+  try {
+    const { name, slug, categories } = req.body;
+    const brand = await Brand.findById(req.params.id);
+    if (!brand) return res.status(404).json({ message: 'Brand not found' });
+    
+    if (name) brand.name = name;
+    if (slug) brand.slug = slug;
+    if (categories !== undefined) brand.categories = categories;
+    
+    const updated = await brand.save();
+    res.json(updated);
+  } catch (error) {
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      return res.status(400).json({ message: `Brand with this ${field} already exists.` });
+    }
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Toggle Brand Active Status (Soft Delete)
+router.patch('/brands/:id/toggle', protect, admin, async (req, res) => {
+  try {
+    const brand = await Brand.findById(req.params.id);
+    if (!brand) return res.status(404).json({ message: 'Brand not found' });
+    
+    brand.isActive = !brand.isActive;
+    await brand.save();
+    res.json({ message: `Brand ${brand.isActive ? 'enabled' : 'disabled'}`, brand });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
