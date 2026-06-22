@@ -186,7 +186,7 @@ const productSchema = new mongoose.Schema({
   detailedDescription: { type: String },
 
   youtubeUrl: { type: String, default: '' },
-  footerDescription: { type: String, default: '' },
+  additionalContent: { type: String, default: '' },
 
   highlights: [{ type: String }],
   boxContents: [{ type: String }],

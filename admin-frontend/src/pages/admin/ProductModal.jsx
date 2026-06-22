@@ -21,7 +21,7 @@ const emptyForm = {
   sellingPrice: '', mrp: '', discountPercentage: '', offerPrice: '',
   countInStock: 0, availability: 'In Stock', isVisible: true,
   shortDescription: '', fullDescription: '',
-  youtubeUrl: '', footerDescription: '',
+  youtubeUrl: '', additionalContent: '',
   highlights: [''], boxContents: [''], warrantyDetails: '',
   tags: '',
   mainImage: '', galleryImages: [],
@@ -84,7 +84,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
           brand: p.brand?._id || p.brand || '',
           sellingPrice: p.sellingPrice || p.price || '',
           youtubeUrl: p.youtubeUrl || '',
-          footerDescription: p.footerDescription || '',
+          additionalContent: p.additionalContent || '',
           highlights: p.highlights?.length > 0 ? p.highlights : [''],
           boxContents: p.boxContents?.length > 0 ? p.boxContents : [''],
           tags: (p.tags || []).join(', '),
@@ -528,8 +528,8 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 <input type="text" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} className={inputCls} placeholder="https://www.youtube.com/watch?v=XXXXXXXX" />
               </div>
               <div>
-                <label className={labelCls}>Footer Description</label>
-                <textarea name="footerDescription" value={formData.footerDescription} onChange={handleChange} rows="4" className={inputCls} placeholder="Enter additional product information, buying guidance, specifications, warranty notes, SEO content, etc." />
+                <label className={labelCls}>Additional Content / Footer</label>
+                <textarea name="additionalContent" value={formData.additionalContent} onChange={handleChange} rows="4" className={inputCls} placeholder="Enter additional product information, buying guidance, specifications, warranty notes, SEO content, etc." />
               </div>
             </div>
           )}

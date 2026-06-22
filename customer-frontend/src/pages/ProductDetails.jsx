@@ -586,11 +586,11 @@ Please share more details.`;
           </div>
         )}
 
-        {/* Footer Description */}
-        {product.footerDescription && (
+        {/* Additional Content */}
+        {product.additionalContent && (
           <div className="mb-12 max-w-4xl mx-auto px-4">
             <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-wrap">
-              {product.footerDescription}
+              {product.additionalContent}
             </p>
           </div>
         )}
