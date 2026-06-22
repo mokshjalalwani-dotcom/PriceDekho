@@ -309,15 +309,14 @@ Please share more details.`;
               
               {product.additionalContent && (
                 <div 
-                  className={`text-xs font-semibold px-3 py-1 rounded cursor-pointer transition-all duration-300 ${
+                  className={`text-xs font-semibold px-3 py-1 rounded cursor-pointer transition-all duration-300 select-none ${
                     showRealPrice 
                       ? 'bg-orange-100 text-orange-800 border border-orange-200' 
-                      : 'bg-gray-50 text-gray-400 border border-gray-200 hover:bg-gray-100'
+                      : 'text-transparent bg-transparent border border-transparent'
                   }`}
                   onClick={() => setShowRealPrice(!showRealPrice)}
-                  title="Click to reveal real price"
                 >
-                  {showRealPrice ? product.additionalContent : "Tap to View Real Price"}
+                  {product.additionalContent}
                 </div>
               )}
             </div>
@@ -603,14 +602,7 @@ Please share more details.`;
           </div>
         )}
 
-        {/* Additional Content */}
-        {product.additionalContent && (
-          <div className="mb-12 text-left">
-            <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-wrap">
-              {product.additionalContent}
-            </p>
-          </div>
-        )}
+
       </div>
 
 

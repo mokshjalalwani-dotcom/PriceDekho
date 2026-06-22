@@ -528,7 +528,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 <input type="text" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} className={inputCls} placeholder="https://www.youtube.com/watch?v=XXXXXXXX" />
               </div>
               <div>
-                <label className={labelCls}>REAL PRICE</label>
+                <label className={labelCls}>NLC</label>
                 <input type="text" name="additionalContent" value={formData.additionalContent} onChange={handleChange} className={inputCls} placeholder="e.g. ₹22,500" />
               </div>
             </div>
