@@ -588,7 +588,7 @@ Please share more details.`;
 
         {/* Additional Content */}
         {product.additionalContent && (
-          <div className="mb-12 max-w-4xl mx-auto px-4">
+          <div className="mb-12 text-left">
             <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-wrap">
               {product.additionalContent}
             </p>
