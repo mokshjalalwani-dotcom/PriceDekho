@@ -134,6 +134,15 @@ const ProductDetails = () => {
     addToast(`${product.name} added to cart!`);
   };
 
+  const getEmbedUrl = (url) => {
+    if (!url) return '';
+    let videoId = '';
+    if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+    else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1].split('&')[0];
+    else if (url.includes('embed/')) return url;
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+  };
+
   const handleToggleWishlist = () => {
     wishlistDispatch({ type: 'TOGGLE', payload: product });
     addToast(isWishlisted(product._id) ? 'Removed from wishlist' : 'Added to wishlist');
@@ -543,6 +552,23 @@ Please share more details.`;
           </div>
         </div>
 
+        {/* Product Video Section */}
+        {product.youtubeUrl && getEmbedUrl(product.youtubeUrl) && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden mb-12 p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">Product Video</h2>
+            <div className="relative w-full overflow-hidden rounded-xl bg-gray-100" style={{ paddingBottom: '56.25%' }}>
+              <iframe
+                src={getEmbedUrl(product.youtubeUrl)}
+                title="Product Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full border-0"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        )}
+
         {/* Similar Products */}
         {similarProducts.length > 0 && (
           <div className="mb-12">
@@ -557,6 +583,15 @@ Please share more details.`;
                 <ProductCard key={p._id} product={p} />
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Footer Description */}
+        {product.footerDescription && (
+          <div className="mb-12 max-w-4xl mx-auto px-4">
+            <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-wrap">
+              {product.footerDescription}
+            </p>
           </div>
         )}
       </div>

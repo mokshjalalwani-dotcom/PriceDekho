@@ -21,6 +21,7 @@ const emptyForm = {
   sellingPrice: '', mrp: '', discountPercentage: '', offerPrice: '',
   countInStock: 0, availability: 'In Stock', isVisible: true,
   shortDescription: '', fullDescription: '',
+  youtubeUrl: '', footerDescription: '',
   highlights: [''], boxContents: [''], warrantyDetails: '',
   tags: '',
   mainImage: '', galleryImages: [],
@@ -82,6 +83,8 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
           category: p.category?._id || p.category || '',
           brand: p.brand?._id || p.brand || '',
           sellingPrice: p.sellingPrice || p.price || '',
+          youtubeUrl: p.youtubeUrl || '',
+          footerDescription: p.footerDescription || '',
           highlights: p.highlights?.length > 0 ? p.highlights : [''],
           boxContents: p.boxContents?.length > 0 ? p.boxContents : [''],
           tags: (p.tags || []).join(', '),
@@ -219,6 +222,13 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
       if (!formData.category) throw new Error('Category is required');
       if (!formData.brand) throw new Error('Brand is required');
       if (!formData.sellingPrice || Number(formData.sellingPrice) <= 0) throw new Error('Valid price is required');
+
+      if (formData.youtubeUrl) {
+        const ytRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+        if (!ytRegex.test(formData.youtubeUrl)) {
+          throw new Error('Please enter a valid YouTube URL.');
+        }
+      }
 
       const allImages = [formData.mainImage, ...(formData.galleryImages || [])].filter(Boolean);
 
@@ -512,6 +522,14 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
               <div>
                 <label className={labelCls}>Full Description</label>
                 <textarea name="fullDescription" value={formData.fullDescription} onChange={handleChange} rows="4" className={inputCls} placeholder="Detailed product description..." />
+              </div>
+              <div>
+                <label className={labelCls}>Product YouTube Video</label>
+                <input type="text" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} className={inputCls} placeholder="https://www.youtube.com/watch?v=XXXXXXXX" />
+              </div>
+              <div>
+                <label className={labelCls}>Footer Description</label>
+                <textarea name="footerDescription" value={formData.footerDescription} onChange={handleChange} rows="4" className={inputCls} placeholder="Enter additional product information, buying guidance, specifications, warranty notes, SEO content, etc." />
               </div>
             </div>
           )}

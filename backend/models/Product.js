@@ -185,6 +185,9 @@ const productSchema = new mongoose.Schema({
   // Legacy field alias
   detailedDescription: { type: String },
 
+  youtubeUrl: { type: String, default: '' },
+  footerDescription: { type: String, default: '' },
+
   highlights: [{ type: String }],
   boxContents: [{ type: String }],
   warrantyDetails: { type: String, default: '' },
