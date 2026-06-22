@@ -4,7 +4,7 @@ const useSEO = ({ title, description, url, image }) => {
   useEffect(() => {
     // Basic SEO
     if (title) {
-      document.title = `${title} | Satguru Electronics`;
+      document.title = `${title} | Satguru Electricals`;
       
       const ogTitle = document.querySelector('meta[property="og:title"]');
       if (ogTitle) ogTitle.setAttribute('content', title);

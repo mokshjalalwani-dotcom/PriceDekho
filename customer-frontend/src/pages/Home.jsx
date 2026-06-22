@@ -9,7 +9,7 @@ import useSEO from '../hooks/useSEO';
 const Home = () => {
   useSEO({
     title: 'Home',
-    description: 'Welcome to Satguru Electronics - The best place to buy home appliances and electronics at unbeatable prices.',
+    description: 'Welcome to Satguru Electricals - The best place to buy home appliances and electronics at unbeatable prices.',
     url: window.location.href
   });
 

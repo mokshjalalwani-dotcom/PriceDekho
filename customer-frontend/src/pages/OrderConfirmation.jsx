@@ -70,7 +70,7 @@ const OrderConfirmation = () => {
               <MessageSquareText size={20} />
             </div>
             <div>
-              <h3 className="font-bold text-blue-900 text-sm mb-1">Message from Satguru Electronics</h3>
+              <h3 className="font-bold text-blue-900 text-sm mb-1">Message from Satguru Electricals</h3>
               <p className="text-blue-800 text-sm">{order.adminMessage}</p>
             </div>
           </div>
