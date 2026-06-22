@@ -306,19 +306,6 @@ Please share more details.`;
                   <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
                 )}
               </div>
-              
-              {product.additionalContent && (
-                <div 
-                  className={`text-xs px-3 py-1 cursor-pointer transition-all duration-300 select-none ${
-                    showRealPrice 
-                      ? 'text-gray-200' 
-                      : 'text-transparent bg-transparent'
-                  }`}
-                  onClick={() => setShowRealPrice(!showRealPrice)}
-                >
-                  {product.additionalContent}
-                </div>
-              )}
             </div>
 
             {/* Title */}
@@ -339,15 +326,30 @@ Please share more details.`;
 
             {/* Price Section */}
             <div className="bg-orange-50/60 rounded-xl p-5 border border-orange-100/50">
-              <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
-                {mrp > price && (
-                  <>
-                    <span className="text-lg text-gray-400 line-through">₹{mrp.toLocaleString('en-IN')}</span>
-                    <span className="text-sm font-bold text-green-600 bg-green-100 px-2.5 py-1 rounded-md">
-                      Save ₹{(mrp - price).toLocaleString('en-IN')} ({discount}%)
-                    </span>
-                  </>
+              <div className="flex items-baseline justify-between gap-3 flex-wrap">
+                <div className="flex items-baseline gap-3 flex-wrap">
+                  <span className="text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
+                  {mrp > price && (
+                    <>
+                      <span className="text-lg text-gray-400 line-through">₹{mrp.toLocaleString('en-IN')}</span>
+                      <span className="text-sm font-bold text-green-600 bg-green-100 px-2.5 py-1 rounded-md">
+                        Save ₹{(mrp - price).toLocaleString('en-IN')} ({discount}%)
+                      </span>
+                    </>
+                  )}
+                </div>
+                
+                {product.additionalContent && (
+                  <div 
+                    className={`text-xs px-3 py-1 cursor-pointer transition-all duration-300 select-none ${
+                      showRealPrice 
+                        ? 'text-gray-200' 
+                        : 'text-transparent bg-transparent'
+                    }`}
+                    onClick={() => setShowRealPrice(!showRealPrice)}
+                  >
+                    {product.additionalContent}
+                  </div>
                 )}
               </div>
               <p className="text-xs text-gray-500 mt-1.5">Inclusive of all taxes</p>
