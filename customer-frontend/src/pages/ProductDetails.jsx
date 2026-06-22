@@ -299,18 +299,20 @@ Please share more details.`;
           {/* Product Info */}
           <div className="space-y-5">
             {/* Brand + Model & Real Price */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
-              {product.modelNumber && (
-                <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
-              )}
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
+                <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
+                {product.modelNumber && (
+                  <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
+                )}
+              </div>
               
               {product.additionalContent && (
                 <div 
-                  className={`text-xs font-semibold px-2 py-0.5 rounded cursor-pointer transition-all duration-300 select-none ${
+                  className={`text-xs font-semibold px-3 py-1 rounded cursor-pointer transition-all duration-300 select-none ${
                     showRealPrice 
                       ? 'bg-gray-100 text-gray-600 border border-gray-200' 
-                      : 'text-gray-200 bg-transparent border border-transparent hover:text-gray-300'
+                      : 'text-transparent bg-transparent border border-transparent'
                   }`}
                   onClick={() => setShowRealPrice(!showRealPrice)}
                 >

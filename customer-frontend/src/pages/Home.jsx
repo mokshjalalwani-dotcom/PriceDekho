@@ -70,14 +70,14 @@ const Home = () => {
           <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-x-4 gap-y-6 sm:gap-6">
             {categoriesLoading ? (
               Array.from({ length: 16 }).map((_, i) => (
-                <div key={i} className={`flex flex-col items-center gap-2.5 w-full ${!showAllMobile && i >= 15 ? 'hidden sm:flex' : 'flex'}`}>
+                <div key={i} className={`flex flex-col items-center gap-2.5 w-full ${!showAllMobile && i >= 12 ? 'hidden sm:flex' : 'flex'}`}>
                   <div className="w-full aspect-square rounded-2xl bg-gray-100 animate-pulse max-w-[110px] mx-auto" />
                   <div className="h-3 bg-gray-100 animate-pulse rounded w-16" />
                 </div>
               ))
             ) : (
               categories.map((cat, idx) => {
-                const isHiddenMobile = !showAllMobile && idx >= 15;
+                const isHiddenMobile = !showAllMobile && idx >= 12;
                 return (
                   <div key={cat.slug} className={`flex-col items-center gap-2.5 w-full group ${isHiddenMobile ? 'hidden sm:flex' : 'flex'}`}>
                     <Link
@@ -94,7 +94,7 @@ const Home = () => {
           </div>
           
           {/* Mobile View More / View Less Toggle */}
-          {!categoriesLoading && categories.length > 15 && (
+          {!categoriesLoading && categories.length > 12 && (
             <div className="mt-8 flex justify-center sm:hidden">
               <button 
                 onClick={() => setShowAllMobile(!showAllMobile)}
@@ -106,7 +106,7 @@ const Home = () => {
           )}
         </div>
       </section>
-
+      
       {/* USP Trust Badges */}
       <section className="py-5 bg-gray-50/80 border-y border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
