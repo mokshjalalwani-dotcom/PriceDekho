@@ -367,6 +367,35 @@ const Shop = () => {
 
           {/* Main Content - Product Grid */}
           <div className="flex-1 min-w-0">
+            {/* Dynamic Subcategory Chips */}
+            {currentCategory?.subCategories?.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                <button
+                  onClick={() => updateParam('subCategory', '')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!searchParams.get('subCategory') ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
+                >
+                  All
+                </button>
+                {/* Note: subCategories is currently an array of strings in DB, will be array of objects later */}
+                {currentCategory.subCategories.map((sub) => {
+                  const subName = typeof sub === 'string' ? sub : sub.name;
+                  const isActive = typeof sub === 'string' ? true : sub.isActive !== false;
+                  
+                  if (!isActive) return null;
+                  
+                  return (
+                    <button
+                      key={subName}
+                      onClick={() => updateParam('subCategory', subName)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${searchParams.get('subCategory') === subName ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
+                    >
+                      {subName}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
                 {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}

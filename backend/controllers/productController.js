@@ -73,10 +73,16 @@ export const getProducts = async (req, res) => {
     // --- Visibility filter (public always sees visible only) ---
     const visibilityFilter = { isVisible: { $ne: false } };
 
+    // --- Subcategory filter ---
+    let subCategoryFilter = {};
+    if (req.query.subCategory) {
+      subCategoryFilter = { subCategory: req.query.subCategory };
+    }
+
     // --- Category-specific field filters ---
     const categoryFieldFilters = {};
     const reservedKeys = [
-      'page', 'pageSize', 'keyword', 'category', 'brand', 'sortBy',
+      'page', 'pageSize', 'keyword', 'category', 'subCategory', 'brand', 'sortBy',
       'minPrice', 'maxPrice', 'availability', 'color'
     ];
     Object.keys(req.query).forEach(key => {
@@ -107,6 +113,7 @@ export const getProducts = async (req, res) => {
     const finalQuery = {
       ...keyword,
       ...categoryFilter,
+      ...subCategoryFilter,
       ...brandFilter,
       ...availabilityFilter,
       ...visibilityFilter,
