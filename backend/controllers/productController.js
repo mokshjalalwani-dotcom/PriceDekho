@@ -235,6 +235,26 @@ export const getProductsByCategory = async (req, res) => {
 
     const query = { category: category._id, isVisible: { $ne: false } };
 
+    // Apply subCategory filter if provided
+    if (req.query.subCategory) {
+      query.subCategory = req.query.subCategory;
+    }
+
+    // Apply brand filter if provided (supports comma-separated slugs or IDs)
+    if (req.query.brand) {
+      const brandSlugs = req.query.brand.split(',');
+      const brandsMatch = await Brand.find({ slug: { $in: brandSlugs } });
+      if (brandsMatch.length > 0) {
+        query.brand = { $in: brandsMatch.map(b => b._id) };
+      } else {
+        // Try as IDs
+        const validIds = brandSlugs.filter(id => mongoose.Types.ObjectId.isValid(id));
+        if (validIds.length > 0) {
+          query.brand = { $in: validIds };
+        }
+      }
+    }
+
     const count = await Product.countDocuments(query);
     const products = await Product.find(query)
       .populate('category', 'name slug icon')
