@@ -311,7 +311,7 @@ Please share more details.`;
                 <div 
                   className={`text-xs px-3 py-1 cursor-pointer transition-all duration-300 select-none ${
                     showRealPrice 
-                      ? 'text-gray-400' 
+                      ? 'text-gray-200' 
                       : 'text-transparent bg-transparent'
                   }`}
                   onClick={() => setShowRealPrice(!showRealPrice)}
