@@ -12,7 +12,7 @@ const brandSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-brandSchema.pre('save', async function (next) {
+brandSchema.pre('save', async function () {
   // Prevent duplicate category references
   if (this.categories && this.categories.length > 0) {
     this.categories = [...new Set(this.categories.map(c => c.toString()))];
@@ -22,7 +22,6 @@ brandSchema.pre('save', async function (next) {
     const existingIds = existingCategories.map(c => c._id.toString());
     this.categories = this.categories.filter(c => existingIds.includes(c));
   }
-  next();
 });
 
 const Brand = mongoose.model('Brand', brandSchema);
