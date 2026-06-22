@@ -24,6 +24,7 @@ const ProductDetails = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
   const [settings, setSettings] = useState(null);
+  const [showBrandModelMobile, setShowBrandModelMobile] = useState(false);
 
   const { dispatch: cartDispatch } = useCart();
   const { isWishlisted, dispatch: wishlistDispatch } = useWishlist();
@@ -298,7 +299,11 @@ Please share more details.`;
           {/* Product Info */}
           <div className="space-y-5">
             {/* Brand + Model */}
-            <div className="flex items-center gap-3 flex-wrap">
+            <div 
+              className={`flex items-center justify-end gap-3 flex-wrap cursor-pointer transition-opacity duration-300 md:opacity-100 ${showBrandModelMobile ? 'opacity-100' : 'opacity-0'}`}
+              onClick={() => setShowBrandModelMobile(!showBrandModelMobile)}
+              title="Tap to reveal brand"
+            >
               <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
               {product.modelNumber && (
                 <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
