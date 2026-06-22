@@ -38,7 +38,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [openSections, setOpenSections] = useState(['basic', 'pricing']);
+  const [openSections, setOpenSections] = useState(['basic', 'pricing', 'content']);
 
   // Find category slug from selected category ID
   // Find category slug and object from selected category ID
@@ -94,10 +94,10 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
           mainImage: p.mainImage || (p.images?.[0]) || '',
           galleryImages: p.galleryImages || p.images?.slice(1) || [],
         });
-        setOpenSections(['basic', 'pricing', 'category']);
+        setOpenSections(['basic', 'pricing', 'category', 'content']);
       } else {
         setFormData({ ...emptyForm });
-        setOpenSections(['basic', 'pricing']);
+        setOpenSections(['basic', 'pricing', 'content']);
       }
       setError(null);
     }
