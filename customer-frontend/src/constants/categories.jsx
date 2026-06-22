@@ -11,10 +11,14 @@ import {
   WashingMachineIcon,
   MicrowaveIcon,
   GasStoveIcon,
-  DishwasherIcon
+  DishwasherIcon,
+  ProjectorIcon,
+  VacuumCleanerIcon,
+  GeyserIcon,
+  PersonalCareIcon
 } from '../components/icons/CategoryIcons';
 
-import { Grid, Projector, Wind, Home, BriefcaseMedical } from 'lucide-react';
+import { Grid } from 'lucide-react';
 
 export const CATEGORY_ICONS_MAP = {
   tv: <TvIcon size={52} className="text-white" />,
@@ -29,10 +33,10 @@ export const CATEGORY_ICONS_MAP = {
   oven: <MicrowaveIcon size={52} className="text-white" />,
   'gas-stove': <GasStoveIcon size={52} className="text-white" />,
   dishwashers: <DishwasherIcon size={52} className="text-white" />,
-  projector: <Projector size={52} className="text-white" strokeWidth={1} />,
-  'vacuum-cleaner': <Wind size={52} className="text-white" strokeWidth={1} />,
-  gyser: <Home size={52} className="text-white" strokeWidth={1} />,
-  'personal-care': <BriefcaseMedical size={52} className="text-white" strokeWidth={1} />,
+  projector: <ProjectorIcon size={52} className="text-white" />,
+  'vacuum-cleaner': <VacuumCleanerIcon size={52} className="text-white" />,
+  gyser: <GeyserIcon size={52} className="text-white" />,
+  'personal-care': <PersonalCareIcon size={52} className="text-white" />,
   default: <Grid size={52} className="text-white" strokeWidth={1} />
 };
 

@@ -16,11 +16,16 @@ export const CategoryProvider = ({ children }) => {
         // Tier 1: Live API
         const res = await axios.get('/api/categories');
         
-        // Map the backend data to include the React icon components
-        const mappedCategories = res.data.map(cat => ({
-          ...cat,
-          icon: CATEGORY_ICONS_MAP[cat.iconKey] || CATEGORY_ICONS_MAP['default']
-        }));
+        // Map the backend data to include the React icon components and colors
+        const mappedCategories = res.data.map(cat => {
+          const fallback = HARDCODED_FALLBACK_CATEGORIES.find(hc => hc.slug === cat.slug) || {};
+          return {
+            ...cat,
+            icon: CATEGORY_ICONS_MAP[cat.iconKey] || CATEGORY_ICONS_MAP['default'],
+            color: fallback.color || 'from-gray-400 to-gray-500',
+            smallColor: fallback.smallColor || 'bg-gray-400'
+          };
+        });
 
         setCategories(mappedCategories);
         localStorage.setItem('satguru_categories', JSON.stringify(res.data)); // Cache raw data

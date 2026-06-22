@@ -180,3 +180,63 @@ export const GharGhantiIcon = ({ size = 24, className = "" }) => (
     <rect x="23" y="6" width="1" height="2" rx="0.5" fill="currentColor" stroke="none" />
   </svg>
 );
+
+export const ProjectorIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
+    {/* Body */}
+    <rect x="3" y="7" width="18" height="10" rx="2" ry="2"></rect>
+    {/* Lens */}
+    <circle cx="16" cy="12" r="3"></circle>
+    {/* Lens inner */}
+    <circle cx="16" cy="12" r="1.5"></circle>
+    {/* Buttons */}
+    <line x1="5" y1="10" x2="8" y2="10"></line>
+    <line x1="5" y1="12" x2="7" y2="12"></line>
+    <line x1="5" y1="14" x2="9" y2="14"></line>
+    {/* Stand / Feet */}
+    <line x1="6" y1="17" x2="6" y2="19"></line>
+    <line x1="18" y1="17" x2="18" y2="19"></line>
+  </svg>
+);
+
+export const VacuumCleanerIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
+    {/* Base/Head */}
+    <path d="M5 20h10l-1-4H8z"></path>
+    {/* Stick/Tube */}
+    <line x1="10" y1="16" x2="13" y2="6"></line>
+    {/* Handle */}
+    <path d="M13 6l2-2h3v3l-3 2"></path>
+    {/* Canister/Motor */}
+    <rect x="9" y="10" width="4" height="6" rx="1" transform="rotate(-15 11 13)"></rect>
+  </svg>
+);
+
+export const GeyserIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
+    {/* Main tank */}
+    <rect x="6" y="3" width="12" height="15" rx="4"></rect>
+    {/* Temperature dial / display */}
+    <circle cx="12" cy="10" r="2"></circle>
+    <path d="M12 9v1"></path>
+    {/* In / Out Pipes */}
+    <path d="M8 18v3"></path>
+    <path d="M16 18v3"></path>
+    {/* Drops */}
+    <circle cx="8" cy="22" r="0.5"></circle>
+    <circle cx="16" cy="22" r="0.5"></circle>
+  </svg>
+);
+
+export const PersonalCareIcon = ({ size = 24, className = "" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...commonProps}>
+    {/* Trimmer/Shaver Body */}
+    <path d="M9 8h6v10a3 3 0 0 1-6 0V8z"></path>
+    {/* Trimmer Head Base */}
+    <rect x="10" y="5" width="4" height="3"></rect>
+    {/* Blades */}
+    <path d="M9 5 L10 2 L14 2 L15 5"></path>
+    {/* Power Button */}
+    <circle cx="12" cy="13" r="1.5"></circle>
+  </svg>
+);
