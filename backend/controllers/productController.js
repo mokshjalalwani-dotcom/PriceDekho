@@ -77,7 +77,7 @@ export const getProducts = async (req, res) => {
     const categoryFieldFilters = {};
     const reservedKeys = [
       'page', 'pageSize', 'keyword', 'category', 'brand', 'sortBy',
-      'minPrice', 'maxPrice', 'availability', 'color', 'subCategory'
+      'minPrice', 'maxPrice', 'availability', 'color'
     ];
     Object.keys(req.query).forEach(key => {
       if (!reservedKeys.includes(key) && req.query[key]) {
@@ -85,12 +85,6 @@ export const getProducts = async (req, res) => {
         categoryFieldFilters[`categoryFields.${key}`] = { $regex: req.query[key], $options: 'i' };
       }
     });
-
-    // --- SubCategory filter ---
-    let subCategoryFilter = {};
-    if (req.query.subCategory) {
-      subCategoryFilter = { subCategory: req.query.subCategory };
-    }
 
     // --- Color filter ---
     let colorFilter = {};
@@ -114,7 +108,6 @@ export const getProducts = async (req, res) => {
       ...keyword,
       ...categoryFilter,
       ...brandFilter,
-      ...subCategoryFilter,
       ...availabilityFilter,
       ...visibilityFilter,
       ...colorFilter,
@@ -235,26 +228,6 @@ export const getProductsByCategory = async (req, res) => {
 
     const query = { category: category._id, isVisible: { $ne: false } };
 
-    // Apply subCategory filter if provided
-    if (req.query.subCategory) {
-      query.subCategory = req.query.subCategory;
-    }
-
-    // Apply brand filter if provided (supports comma-separated slugs or IDs)
-    if (req.query.brand) {
-      const brandSlugs = req.query.brand.split(',');
-      const brandsMatch = await Brand.find({ slug: { $in: brandSlugs } });
-      if (brandsMatch.length > 0) {
-        query.brand = { $in: brandsMatch.map(b => b._id) };
-      } else {
-        // Try as IDs
-        const validIds = brandSlugs.filter(id => mongoose.Types.ObjectId.isValid(id));
-        if (validIds.length > 0) {
-          query.brand = { $in: validIds };
-        }
-      }
-    }
-
     const count = await Product.countDocuments(query);
     const products = await Product.find(query)
       .populate('category', 'name slug icon')
@@ -267,17 +240,10 @@ export const getProductsByCategory = async (req, res) => {
     const brandIds = await Product.distinct('brand', { category: category._id });
     const brands = await Brand.find({ _id: { $in: brandIds } }).select('name slug');
 
-    // Get distinct subCategory values for this category
-    const subCategories = await Product.distinct('subCategory', {
-      category: category._id,
-      subCategory: { $nin: [null, ''] }
-    });
-
     res.json({
       category,
       products,
       brands,
-      subCategories,
       page,
       pages: Math.ceil(count / pageSize),
       total: count

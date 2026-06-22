@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import { Filter, SlidersHorizontal, ChevronRight, ChevronLeft, X, Search } from 'lucide-react';
-import { CATEGORIES, CATEGORY_DISPLAY_NAMES } from '../constants/categories';
+import { CATEGORIES } from '../constants/categories';
 import { CATEGORY_FIELDS, getFilterFields } from '../constants/CategoryFieldsConfig';
 
 const Shop = () => {
@@ -20,7 +20,6 @@ const Shop = () => {
   const searchParams = new URLSearchParams(location.search);
 
   const categoryParam = searchParams.get('category') || '';
-  const subCategoryParam = searchParams.get('subCategory') || '';
   const pageParam = searchParams.get('page') || 1;
   const sortParam = searchParams.get('sortBy') || '';
   const keywordParam = searchParams.get('keyword') || '';
@@ -31,20 +30,7 @@ const Shop = () => {
     return getFilterFields(categoryParam);
   }, [categoryParam]);
 
-  // Find category config from CATEGORIES array
   const currentCategory = CATEGORIES.find(c => c.slug === categoryParam);
-
-  // Display name: use override map or CATEGORIES name
-  const displayName = useMemo(() => {
-    if (!categoryParam) return '';
-    return CATEGORY_DISPLAY_NAMES[categoryParam] || currentCategory?.name || categoryParam;
-  }, [categoryParam, currentCategory]);
-
-  // Subcategories for the current category (from CATEGORIES constant)
-  const subCategories = useMemo(() => {
-    if (!currentCategory) return [];
-    return currentCategory.subCategories || [];
-  }, [currentCategory]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -108,17 +94,6 @@ const Shop = () => {
     }
   };
 
-  const handleSubCategoryChange = (subCat) => {
-    const params = new URLSearchParams(location.search);
-    if (subCat) {
-      params.set('subCategory', subCat);
-    } else {
-      params.delete('subCategory');
-    }
-    params.set('page', 1);
-    navigate(`/shop?${params.toString()}`);
-  };
-
   const handleSortChange = (e) => updateParam('sortBy', e.target.value);
 
   const handleSearchInCategory = (e) => {
@@ -164,16 +139,10 @@ const Shop = () => {
             <button onClick={() => navigate('/')} className="hover:text-orange-500 transition-colors">Home</button>
             <ChevronRight size={14} className="mx-1.5 text-gray-300" />
             <button onClick={() => navigate('/shop')} className="hover:text-orange-500 transition-colors">Shop</button>
-            {categoryParam && (
+            {currentCategory && (
               <>
                 <ChevronRight size={14} className="mx-1.5 text-gray-300" />
-                <span className="text-gray-900 font-medium">{displayName}</span>
-              </>
-            )}
-            {subCategoryParam && (
-              <>
-                <ChevronRight size={14} className="mx-1.5 text-gray-300" />
-                <span className="text-gray-900 font-medium">{subCategoryParam}</span>
+                <span className="text-gray-900 font-medium">{currentCategory.name}</span>
               </>
             )}
           </div>
@@ -182,10 +151,10 @@ const Shop = () => {
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         {/* Page Title */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {categoryParam ? displayName : keywordParam ? `Results for "${keywordParam}"` : 'All Products'}
+              {currentCategory ? currentCategory.name : keywordParam ? `Results for "${keywordParam}"` : 'All Products'}
             </h1>
             {!loading && <p className="text-sm text-gray-500 mt-1">{total} products found</p>}
           </div>
@@ -211,37 +180,6 @@ const Shop = () => {
             </select>
           </div>
         </div>
-
-        {/* Subcategory Tab Bar */}
-        {categoryParam && subCategories.length > 0 && (
-          <div className="mb-5 -mt-1">
-            <div className="flex items-center gap-1 overflow-x-auto scrollbar-hide pb-1">
-              <button
-                onClick={() => handleSubCategoryChange('')}
-                className={`subcategory-tab shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
-                  !subCategoryParam
-                    ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                }`}
-              >
-                All
-              </button>
-              {subCategories.map(sub => (
-                <button
-                  key={sub}
-                  onClick={() => handleSubCategoryChange(sub)}
-                  className={`subcategory-tab shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
-                    subCategoryParam === sub
-                      ? 'bg-gray-900 text-white border-gray-900 shadow-sm'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Active Filter Pills */}
         {activeFilters.length > 0 && (
@@ -275,7 +213,7 @@ const Shop = () => {
           )}
 
           {/* Sidebar Filters */}
-          <div className={`${mobileFiltersOpen ? 'fixed inset-y-0 left-0 z-40 w-72 animate-slide-in-left' : 'hidden'} md:relative md:block md:w-60 lg:w-64 shrink-0`}>
+          <div className={`${mobileFiltersOpen ? 'fixed inset-y-0 left-0 z-40 w-72 animate-slide-in-left' : 'hidden'} md:relative md:block md:w-64 lg:w-72 shrink-0`}>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200/60 p-5 md:sticky md:top-24 max-h-[calc(100vh-120px)] overflow-y-auto h-full md:h-auto">
               <div className="flex items-center justify-between mb-5 pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2">
@@ -420,7 +358,7 @@ const Shop = () => {
           {/* Main Content - Product Grid */}
           <div className="flex-1 min-w-0">
             {loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
                 {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
               </div>
             ) : products.length === 0 ? (
@@ -433,7 +371,7 @@ const Shop = () => {
                 <button onClick={clearAllFilters} className="btn-primary">Clear All Filters</button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}

@@ -2,8 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { X, Save, AlertCircle, Plus, Trash2, ChevronDown, ChevronUp, Image, Package, IndianRupee, FileText, Settings, Tag, Layers, List, Box } from 'lucide-react';
 import { CATEGORY_FIELDS } from '../../constants/CategoryFieldsConfig';
-import { CATEGORIES } from '../../constants/categories';
-import { CATEGORY_BRANDS } from '../../constants/BrandConfig';
 
 const SECTIONS = [
   { id: 'basic', label: 'Basic Info', icon: Package },
@@ -47,29 +45,6 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
     const cat = categories.find(c => c._id === formData.category);
     return cat?.slug || '';
   }, [formData.category, categories]);
-
-  const availableSubCategories = useMemo(() => {
-    const catConfig = CATEGORIES.find(c => c.slug === selectedCategorySlug);
-    return catConfig?.subCategories || [];
-  }, [selectedCategorySlug]);
-
-  const allowedBrands = useMemo(() => {
-    if (!selectedCategorySlug) return brands; // Show all if no category
-    const brandMapping = CATEGORY_BRANDS[selectedCategorySlug];
-    if (!brandMapping) return brands; // Show all if no config
-
-    let allowedNames = [];
-    if (Array.isArray(brandMapping)) {
-      allowedNames = brandMapping;
-    } else if (typeof brandMapping === 'object') {
-      if (!formData.subCategory) return []; // Require subCategory
-      allowedNames = brandMapping[formData.subCategory] || [];
-    }
-
-    // Always allow the current brand to prevent form breaking when editing
-    const currentBrand = brands.find(b => b._id === formData.brand);
-    return brands.filter(b => allowedNames.includes(b.name) || (currentBrand && b._id === currentBrand._id));
-  }, [selectedCategorySlug, formData.subCategory, brands, formData.brand]);
 
   const categoryConfig = useMemo(() => {
     return CATEGORY_FIELDS[selectedCategorySlug] || null;
@@ -404,9 +379,9 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 </div>
                 <div>
                   <label className={labelCls}>Brand <span className="text-red-400">*</span></label>
-                  <select name="brand" value={formData.brand} onChange={handleChange} required className={inputCls} disabled={allowedBrands.length === 0}>
-                    <option value="">{allowedBrands.length === 0 && selectedCategorySlug && availableSubCategories.length > 0 && !formData.subCategory ? 'Select Sub-Category First' : 'Select Brand'}</option>
-                    {allowedBrands.map(b => <option key={b._id} value={b._id}>{b.name}</option>)}
+                  <select name="brand" value={formData.brand} onChange={handleChange} required className={inputCls}>
+                    <option value="">Select Brand</option>
+                    {brands.map(b => <option key={b._id} value={b._id}>{b.name}</option>)}
                   </select>
                 </div>
                 <div>
@@ -420,15 +395,8 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   <input type="text" name="color" value={formData.color} onChange={handleChange} className={inputCls} placeholder="e.g. Black, Silver" />
                 </div>
                 <div>
-                  <label className={labelCls}>Sub-Category {availableSubCategories.length > 0 && <span className="text-red-400">*</span>}</label>
-                  {availableSubCategories.length > 0 ? (
-                    <select name="subCategory" value={formData.subCategory} onChange={handleChange} required className={inputCls}>
-                      <option value="">Select Sub-Category</option>
-                      {availableSubCategories.map(sc => <option key={sc} value={sc}>{sc}</option>)}
-                    </select>
-                  ) : (
-                    <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" />
-                  )}
+                  <label className={labelCls}>Sub-Category</label>
+                  <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" />
                 </div>
                 <div className="flex items-end gap-4 pb-1">
                   <label className="flex items-center gap-2 cursor-pointer">
