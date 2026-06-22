@@ -301,17 +301,17 @@ Please share more details.`;
             {/* Brand + Model & Real Price */}
             <div className="flex items-start justify-between gap-3 w-full">
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-xs uppercase tracking-wider text-gray-500 font-semibold bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
+                <span className="text-sm uppercase tracking-wider text-gray-500 font-medium bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
                 {product.modelNumber && (
-                  <span className="text-xs bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-mono border border-gray-100">{product.modelNumber}</span>
+                  <span className="text-sm bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-medium font-mono border border-gray-100">{product.modelNumber}</span>
                 )}
               </div>
               
               {product.additionalContent && (
                 <div 
-                  className={`text-xs px-3 py-1 cursor-pointer transition-all duration-300 select-none whitespace-nowrap ${
+                  className={`text-sm px-3 py-1 cursor-pointer transition-all duration-300 select-none whitespace-nowrap ${
                     showRealPrice 
-                      ? 'text-gray-300' 
+                      ? 'text-gray-700 font-medium' 
                       : 'text-transparent bg-transparent'
                   }`}
                   onClick={() => setShowRealPrice(!showRealPrice)}

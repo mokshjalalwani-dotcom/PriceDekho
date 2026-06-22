@@ -6,6 +6,7 @@ import Product from '../models/Product.js';
 import Category from '../models/Category.js';
 import Brand from '../models/Brand.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import { convertToNLC } from '../utils/nlcConverter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +63,11 @@ router.post('/products', protect, admin, async (req, res) => {
   try {
     const productData = { ...req.body };
 
+    // Convert NLC field (additionalContent) safely
+    if (productData.additionalContent !== undefined) {
+      productData.additionalContent = convertToNLC(productData.additionalContent);
+    }
+
     // Sync price fields
     if (productData.sellingPrice && !productData.price) {
       productData.price = productData.sellingPrice;
@@ -84,6 +90,11 @@ router.post('/products', protect, admin, async (req, res) => {
 router.put('/products/:id', protect, admin, async (req, res) => {
   try {
     const updateData = { ...req.body };
+
+    // Convert NLC field (additionalContent) safely
+    if (updateData.additionalContent !== undefined) {
+      updateData.additionalContent = convertToNLC(updateData.additionalContent);
+    }
 
     // Sync price fields
     if (updateData.sellingPrice) {

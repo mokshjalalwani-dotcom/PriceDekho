@@ -107,7 +107,7 @@ const CompareProducts = () => {
                               className="max-h-full object-contain mix-blend-multiply" 
                             />
                           </Link>
-                          <Link to={`/shop?brand=${product.brand?._id}`} className="text-xs text-[var(--color-primary)] font-bold uppercase mb-1">
+                          <Link to={`/shop?brand=${product.brand?._id}`} className="text-sm text-[var(--color-primary)] font-bold uppercase mb-1">
                             {product.brand?.name}
                           </Link>
                           <Link to={`/product/${product.slug}`} className="font-bold text-gray-900 hover:text-[var(--color-primary)] line-clamp-2 mb-2">

@@ -306,7 +306,7 @@ const AdminDashboard = () => {
                             />
                             <div className="min-w-0">
                               <p className="font-semibold text-gray-900 text-sm truncate max-w-[200px]">{product.name}</p>
-                              <p className="text-xs text-gray-500">{product.brand?.name} {product.modelNumber && `• ${product.modelNumber}`}</p>
+                              <p className="text-sm text-gray-500 font-medium truncate max-w-[200px]">{product.brand?.name} {product.modelNumber && `• ${product.modelNumber}`}</p>
                             </div>
                           </div>
                         </td>

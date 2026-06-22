@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { X, Save, AlertCircle, Plus, Trash2, ChevronDown, ChevronUp, Image, Package, IndianRupee, FileText, Settings, Tag, Layers, List, Box } from 'lucide-react';
 import { CATEGORY_FIELDS } from '../../constants/CategoryFieldsConfig';
+import { convertToNLC } from '../../utils/nlcConverter';
 
 const SECTIONS = [
   { id: 'basic', label: 'Basic Info', icon: Package },
@@ -554,8 +555,20 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 <input type="text" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} className={inputCls} placeholder="https://www.youtube.com/watch?v=XXXXXXXX" />
               </div>
               <div>
-                <label className={labelCls}>NLC</label>
-                <input type="text" name="additionalContent" value={formData.additionalContent} onChange={handleChange} className={inputCls} placeholder="e.g. ₹22,500" />
+                <label className={labelCls}>NLC (Real Price / Code)</label>
+                <input 
+                  type="text" 
+                  name="additionalContent" 
+                  value={formData.additionalContent} 
+                  onChange={handleChange} 
+                  className={inputCls} 
+                  placeholder="e.g. 12345" 
+                />
+                {formData.additionalContent && (
+                  <p className="mt-1.5 text-xs text-gray-500 font-mono bg-gray-50 p-1.5 rounded inline-block border border-gray-100">
+                    Preview: <span className="font-bold text-gray-800">{convertToNLC(formData.additionalContent)}</span>
+                  </p>
+                )}
               </div>
             </div>
           )}

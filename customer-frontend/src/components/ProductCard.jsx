@@ -89,7 +89,7 @@ const ProductCard = ({ product }) => {
       {/* Content */}
       <div className="p-3 sm:p-3.5 flex flex-col flex-grow border-t border-gray-100">
         {/* Brand */}
-        <span className="inline-block text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1 bg-gray-100 px-2 py-0.5 rounded w-fit">
+        <span className="inline-block text-sm text-gray-500 font-medium uppercase tracking-wider mb-1 bg-gray-100 px-2 py-0.5 rounded w-fit max-w-full truncate">
           {product.brand?.name || 'Brand'}
         </span>
 
@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
 
         {/* Model */}
         {product.modelNumber && (
-          <span className="text-[10px] text-gray-400 mb-1.5">Model: {product.modelNumber}</span>
+          <span className="text-sm text-gray-400 font-medium mb-1.5 truncate max-w-full block">Model: {product.modelNumber}</span>
         )}
 
         {/* Highlights */}

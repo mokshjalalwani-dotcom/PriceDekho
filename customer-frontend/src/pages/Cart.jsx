@@ -50,7 +50,7 @@ const Cart = () => {
                   <Link to={`/product/${item.slug}`}>
                     <h3 className="font-semibold text-gray-900 hover:text-[var(--color-primary)] transition-colors line-clamp-2">{item.name}</h3>
                   </Link>
-                  <p className="text-sm text-gray-500 mt-1">{item.brand?.name}</p>
+                  <p className="text-sm text-gray-500 font-medium mt-1 truncate">{item.brand?.name}</p>
                   <div className="flex items-center justify-between mt-3">
                     <div className="flex items-center gap-2">
                       <button
