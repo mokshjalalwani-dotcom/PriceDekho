@@ -7,7 +7,6 @@ import Category from '../models/Category.js';
 import Brand from '../models/Brand.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { convertToNLC } from '../utils/nlcConverter.js';
-import { validateBrandCategory } from '../services/brandService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -64,14 +63,6 @@ router.post('/products', protect, admin, async (req, res) => {
   try {
     const productData = { ...req.body };
 
-    // Validation for Brand -> Category mapping using reusable service
-    if (productData.category && productData.brand) {
-      const validation = await validateBrandCategory(productData.brand, productData.category);
-      if (!validation.isValid) {
-        return res.status(400).json({ message: validation.error });
-      }
-    }
-
     // Convert NLC field (additionalContent) safely
     if (productData.additionalContent !== undefined) {
       productData.additionalContent = convertToNLC(productData.additionalContent);
@@ -106,16 +97,6 @@ router.put('/products/:id', protect, admin, async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     
-    const newCategory = updateData.category || currentProduct.category;
-    const newBrand = updateData.brand || currentProduct.brand;
-    
-    if (newCategory && newBrand) {
-      const validation = await validateBrandCategory(newBrand, newCategory);
-      if (!validation.isValid) {
-        return res.status(400).json({ message: validation.error });
-      }
-    }
-
     // Convert NLC field (additionalContent) safely
     if (updateData.additionalContent !== undefined) {
       updateData.additionalContent = convertToNLC(updateData.additionalContent);

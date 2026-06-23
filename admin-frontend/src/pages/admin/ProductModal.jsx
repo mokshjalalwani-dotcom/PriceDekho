@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import axios from 'axios';
-import { X, Save, AlertCircle, Plus, Trash2, ChevronDown, ChevronUp, Image, Package, IndianRupee, FileText, Settings, Tag, Layers, List, Box } from 'lucide-react';
+import { X, Save, AlertCircle, Plus, Trash2, ChevronDown, ChevronUp, Image, Package, IndianRupee, FileText, Settings, Tag, Layers, List, Box, Search } from 'lucide-react';
 import { CATEGORY_FIELDS } from '../../constants/CategoryFieldsConfig';
 import { convertToNLC } from '../../utils/nlcConverter';
 
@@ -49,12 +49,25 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   }, [formData.category, categories]);
 
   const selectedCategorySlug = selectedCategoryObj?.slug || '';
-  const [showAllBrands, setShowAllBrands] = useState(false);
 
-  const availableBrands = useMemo(() => {
-    if (showAllBrands || !formData.category) return brands;
-    return brands.filter(b => b.categories?.includes(formData.category));
-  }, [brands, formData.category, showAllBrands]);
+  const [brandSearch, setBrandSearch] = useState('');
+  const [isBrandDropdownOpen, setIsBrandDropdownOpen] = useState(false);
+  const brandDropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (brandDropdownRef.current && !brandDropdownRef.current.contains(event.target)) {
+        setIsBrandDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filteredBrands = useMemo(() => {
+    if (!brandSearch) return brands;
+    return brands.filter(b => b.name.toLowerCase().includes(brandSearch.toLowerCase()));
+  }, [brands, brandSearch]);
 
   const categoryConfig = useMemo(() => {
     return CATEGORY_FIELDS[selectedCategorySlug] || null;
@@ -413,19 +426,57 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                     {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
                   </select>
                 </div>
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className={labelCls}>Brand <span className="text-red-400">*</span></label>
-                    <button type="button" onClick={() => setShowAllBrands(!showAllBrands)} className="text-[10px] text-blue-600 font-medium hover:underline">
-                      {showAllBrands ? 'Show Mapped Only' : 'Show All'}
-                    </button>
+                <div className="relative" ref={brandDropdownRef}>
+                  <label className={labelCls}>Brand <span className="text-red-400">*</span></label>
+                  <div className="relative mt-1">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Search size={14} className="text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      className={`${inputCls} pl-9`}
+                      placeholder="Search brand..."
+                      value={isBrandDropdownOpen ? brandSearch : (brands.find(b => b._id === formData.brand)?.name || '')}
+                      onChange={(e) => {
+                        setBrandSearch(e.target.value);
+                        setIsBrandDropdownOpen(true);
+                        if (e.target.value === '') {
+                          setFormData(prev => ({ ...prev, brand: '' }));
+                        }
+                      }}
+                      onFocus={() => {
+                        setIsBrandDropdownOpen(true);
+                        setBrandSearch('');
+                      }}
+                      required={!formData.brand}
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                      <ChevronDown size={16} className="text-gray-400" />
+                    </div>
                   </div>
-                  <select name="brand" value={formData.brand} onChange={handleChange} required className={inputCls}>
-                    <option value="">Select Brand</option>
-                    {availableBrands.map(b => <option key={b._id} value={b._id}>{b.name}</option>)}
-                  </select>
-                  {!showAllBrands && formData.category && availableBrands.length === 0 && (
-                    <p className="text-[10px] text-orange-500 mt-1">No brands mapped to this category. Click 'Show All'.</p>
+                  
+                  {isBrandDropdownOpen && (
+                    <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      {filteredBrands.length > 0 ? (
+                        filteredBrands.map(b => (
+                          <div
+                            key={b._id}
+                            className={`px-4 py-2 cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition-colors text-sm ${formData.brand === b._id ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-700'}`}
+                            onClick={() => {
+                              setFormData(prev => ({ ...prev, brand: b._id }));
+                              setBrandSearch('');
+                              setIsBrandDropdownOpen(false);
+                            }}
+                          >
+                            {b.name}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-4 py-3 text-sm text-gray-500 text-center bg-gray-50">
+                          No brands found.
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
                 <div>
