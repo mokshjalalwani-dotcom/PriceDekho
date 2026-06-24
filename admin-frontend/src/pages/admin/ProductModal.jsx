@@ -506,9 +506,9 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 </div>
                 <div>
                   <label className={labelCls}>
-                    Sub-Category {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) && <span className="text-red-400">*</span>}
+                    Sub-Category {(subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) || selectedCategoryObj?.subCategories?.length > 0) && <span className="text-red-400">*</span>}
                   </label>
-                  {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) ? (
+                  {(subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) || selectedCategoryObj?.subCategories?.length > 0) ? (
                     <select 
                       name="subCategory" 
                       value={formData.subCategory} 
@@ -522,6 +522,10 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                         .map(sub => (
                           <option key={sub._id} value={sub.name}>{sub.name}</option>
                       ))}
+                      {selectedCategoryObj?.subCategories?.map(sub => {
+                        const subName = typeof sub === 'string' ? sub : sub.name;
+                        return <option key={`str-${subName}`} value={subName}>{subName}</option>;
+                      })}
                     </select>
                   ) : (
                     <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />
