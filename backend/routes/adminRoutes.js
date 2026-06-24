@@ -385,8 +385,8 @@ router.patch('/categories/:id/toggle', protect, admin, async (req, res) => {
 // Admin: Add Brand
 router.post('/brands', protect, admin, async (req, res) => {
   try {
-    const { name, slug, logo } = req.body;
-    const brand = await Brand.create({ name, slug, logo, isActive: true });
+    const { name, slug, logo, mappedCategories } = req.body;
+    const brand = await Brand.create({ name, slug, logo, mappedCategories, isActive: true });
     res.status(201).json(brand);
   } catch (error) {
     if (error.code === 11000) {
@@ -400,13 +400,14 @@ router.post('/brands', protect, admin, async (req, res) => {
 // Admin: Update Brand
 router.put('/brands/:id', protect, admin, async (req, res) => {
   try {
-    const { name, slug, logo } = req.body;
+    const { name, slug, logo, mappedCategories } = req.body;
     const brand = await Brand.findById(req.params.id);
     if (!brand) return res.status(404).json({ message: 'Brand not found' });
     
     if (name) brand.name = name;
     if (slug) brand.slug = slug;
     if (logo !== undefined) brand.logo = logo;
+    if (mappedCategories !== undefined) brand.mappedCategories = mappedCategories;
     
     const updated = await brand.save();
     res.json(updated);
@@ -454,11 +455,11 @@ router.get('/subcategories', protect, admin, async (req, res) => {
   // Admin: Add Subcategory
 router.post('/subcategories', protect, admin, async (req, res) => {
   try {
-    let { name, slug, category, displayOrder } = req.body;
+    let { name, slug, category, displayOrder, childCategory } = req.body;
     if (!slug && name) {
       slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
     }
-    const subcategory = await Subcategory.create({ name, slug, category, displayOrder, isActive: true });
+    const subcategory = await Subcategory.create({ name, slug, category, displayOrder, childCategory, isActive: true });
     
     // Populate before returning
     const populated = await Subcategory.findById(subcategory._id).populate('category', 'name slug');
@@ -474,7 +475,7 @@ router.post('/subcategories', protect, admin, async (req, res) => {
 // Admin: Update Subcategory
 router.put('/subcategories/:id', protect, admin, async (req, res) => {
   try {
-    const { name, slug, category, displayOrder } = req.body;
+    const { name, slug, category, displayOrder, childCategory } = req.body;
     const subcategory = await Subcategory.findById(req.params.id);
     
     if (!subcategory) return res.status(404).json({ message: 'Subcategory not found' });
@@ -483,6 +484,7 @@ router.put('/subcategories/:id', protect, admin, async (req, res) => {
     subcategory.slug = slug || subcategory.slug;
     if (category) subcategory.category = category;
     if (displayOrder !== undefined) subcategory.displayOrder = displayOrder;
+    if (childCategory !== undefined) subcategory.childCategory = childCategory;
     
     await subcategory.save();
     

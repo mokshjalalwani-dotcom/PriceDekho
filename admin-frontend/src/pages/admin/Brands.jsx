@@ -17,6 +17,10 @@ const AdminBrands = ({ products = [] }) => {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [logo, setLogo] = useState('');
+  const [mappedCategories, setMappedCategories] = useState([]);
+  
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
 
   const token = localStorage.getItem('adminToken');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
@@ -24,9 +28,6 @@ const AdminBrands = ({ products = [] }) => {
   const fetchBrands = async () => {
     setLoading(true);
     try {
-      // Use /api/brands?all=true to fetch all including inactive, if backend supports it.
-      // If the public route filters out inactive, we might need a dedicated admin route.
-      // Since we don't have an admin get route, let's assume /api/brands?all=true works.
       const res = await axios.get('/api/brands?all=true');
       setBrands(res.data || []);
     } catch (error) {
@@ -36,8 +37,22 @@ const AdminBrands = ({ products = [] }) => {
     }
   };
 
+  const fetchCategoriesAndSubcats = async () => {
+    try {
+      const [catsRes, subsRes] = await Promise.all([
+         axios.get('/api/categories?all=true'),
+         axios.get('/api/admin/subcategories?all=true', authHeader)
+      ]);
+      setCategories(catsRes.data || []);
+      setSubcategories(subsRes.data || []);
+    } catch(err) {
+      console.error('Failed to fetch cats/subs', err);
+    }
+  };
+
   useEffect(() => {
     fetchBrands();
+    fetchCategoriesAndSubcats();
   }, []);
 
   const handleOpenModal = (brand = null) => {
@@ -46,10 +61,18 @@ const AdminBrands = ({ products = [] }) => {
       setName(brand.name);
       setSlug(brand.slug);
       setLogo(brand.logo || '');
+      // Mapped categories structure uses ObjectIds for categories, but populate might have transformed it.
+      setMappedCategories(
+        brand.mappedCategories?.map(m => ({
+          category: m.category?._id || m.category,
+          childCategories: m.childCategories || []
+        })) || []
+      );
     } else {
       setName('');
       setSlug('');
       setLogo('');
+      setMappedCategories([]);
     }
     setIsModalOpen(true);
   };
@@ -57,7 +80,7 @@ const AdminBrands = ({ products = [] }) => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const payload = { name, slug, logo };
+      const payload = { name, slug, logo, mappedCategories };
 
       if (selectedBrand) {
         await axios.put(`/api/admin/brands/${selectedBrand._id}`, payload, authHeader);
@@ -263,6 +286,74 @@ const AdminBrands = ({ products = [] }) => {
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 outline-none" 
                   placeholder="https://example.com/logo.png" 
                 />
+              </div>
+
+              <div className="mt-4 border-t border-gray-100 pt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Category Mappings</label>
+                <div className="space-y-3 max-h-60 overflow-y-auto border border-gray-200 rounded p-3 bg-white">
+                  {categories.map(cat => {
+                    const mapping = mappedCategories.find(m => m.category === cat._id);
+                    const isSelected = !!mapping;
+                    
+                    const catSubcats = subcategories.filter(s => (s.category === cat._id || s.category?._id === cat._id) && s.childCategory);
+                    const uniqueChildCats = [...new Set(catSubcats.map(s => s.childCategory))].filter(Boolean);
+                    
+                    const handleCatToggle = (checked) => {
+                      if (checked) {
+                        setMappedCategories([...mappedCategories, { category: cat._id, childCategories: [] }]);
+                      } else {
+                        setMappedCategories(mappedCategories.filter(m => m.category !== cat._id));
+                      }
+                    };
+
+                    const handleChildToggle = (childCat, checked) => {
+                      setMappedCategories(mappedCategories.map(m => {
+                         if (m.category === cat._id) {
+                            const currentChildren = m.childCategories || [];
+                            if (checked) {
+                               return { ...m, childCategories: [...currentChildren, childCat] };
+                            } else {
+                               return { ...m, childCategories: currentChildren.filter(c => c !== childCat) };
+                            }
+                         }
+                         return m;
+                      }));
+                    };
+
+                    return (
+                       <div key={cat._id} className="border border-gray-100 rounded p-2 bg-gray-50/50">
+                          <label className="flex items-center gap-2 font-medium text-sm text-gray-800 cursor-pointer">
+                            <input 
+                               type="checkbox" 
+                               checked={isSelected} 
+                               onChange={(e) => handleCatToggle(e.target.checked)} 
+                               className="rounded text-orange-500 focus:ring-orange-500 w-4 h-4" 
+                            />
+                            {cat.name}
+                          </label>
+                          
+                          {isSelected && uniqueChildCats.length > 0 && (
+                             <div className="ml-6 mt-2 grid grid-cols-2 gap-2">
+                               {uniqueChildCats.map(childCat => {
+                                  const isChildSelected = mapping.childCategories?.includes(childCat);
+                                  return (
+                                    <label key={childCat} className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
+                                      <input 
+                                         type="checkbox" 
+                                         checked={isChildSelected} 
+                                         onChange={(e) => handleChildToggle(childCat, e.target.checked)} 
+                                         className="rounded text-orange-500 focus:ring-orange-500 w-3.5 h-3.5" 
+                                      />
+                                      {childCat}
+                                    </label>
+                                  );
+                               })}
+                             </div>
+                          )}
+                       </div>
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">

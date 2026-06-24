@@ -12,6 +12,7 @@ const AdminSubcategories = ({ categories = [] }) => {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [childCategory, setChildCategory] = useState('');
   const [displayOrder, setDisplayOrder] = useState('');
 
   const token = localStorage.getItem('adminToken');
@@ -39,11 +40,13 @@ const AdminSubcategories = ({ categories = [] }) => {
       setName(sub.name);
       setSlug(sub.slug);
       setCategoryId(sub.category?._id || '');
+      setChildCategory(sub.childCategory || '');
       setDisplayOrder(sub.displayOrder || 1);
     } else {
       setName('');
       setSlug('');
       setCategoryId(categories.length > 0 ? categories[0]._id : '');
+      setChildCategory('');
       setDisplayOrder(subcategories.length > 0 ? Math.max(...subcategories.map(s => s.displayOrder || 0)) + 1 : 1);
     }
     setIsModalOpen(true);
@@ -60,6 +63,7 @@ const AdminSubcategories = ({ categories = [] }) => {
         name,
         slug,
         category: categoryId,
+        childCategory,
         displayOrder: Number(displayOrder)
       };
 
@@ -120,7 +124,7 @@ const AdminSubcategories = ({ categories = [] }) => {
                 </td>
                 <td className="p-4">
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
-                    <Tag size={10} /> {sub.category?.name || 'Unknown'}
+                    <Tag size={10} /> {sub.category?.name || 'Unknown'} {sub.childCategory ? `> ${sub.childCategory}` : ''}
                   </span>
                 </td>
                 <td className="p-4">
@@ -197,6 +201,30 @@ const AdminSubcategories = ({ categories = [] }) => {
                   ))}
                 </select>
               </div>
+
+              {(() => {
+                const selectedCat = categories.find(c => c._id === categoryId);
+                if (selectedCat && selectedCat.subCategories && selectedCat.subCategories.length > 0) {
+                  return (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Child Category <span className="text-red-400">*</span></label>
+                      <select 
+                        value={childCategory} 
+                        onChange={e => setChildCategory(e.target.value)} 
+                        required 
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200"
+                      >
+                        <option value="" disabled>Select a Child Category</option>
+                        {selectedCat.subCategories.map(sub => {
+                          const subName = typeof sub === 'string' ? sub : sub.name;
+                          return <option key={`child-${subName}`} value={subName}>{subName}</option>;
+                        })}
+                      </select>
+                    </div>
+                  );
+                }
+                return null;
+              })()}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>

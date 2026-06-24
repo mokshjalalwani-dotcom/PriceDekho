@@ -6,7 +6,11 @@ const brandSchema = new mongoose.Schema({
   slug: { type: String, required: true, unique: true },
   image: { type: String },
   logo: { type: String, default: '' },
-  isActive: { type: Boolean, default: true }
+  isActive: { type: Boolean, default: true },
+  mappedCategories: [{
+    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+    childCategories: [{ type: String }]
+  }]
 }, {
   timestamps: true,
 });

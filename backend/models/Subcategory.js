@@ -5,7 +5,8 @@ const subcategorySchema = new mongoose.Schema({
   slug: { type: String, required: true },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   isActive: { type: Boolean, default: true },
-  displayOrder: { type: Number, default: 0 }
+  displayOrder: { type: Number, default: 0 },
+  childCategory: { type: String, default: '' }
 }, {
   timestamps: true,
 });

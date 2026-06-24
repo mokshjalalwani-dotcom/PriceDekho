@@ -69,9 +69,26 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   }, []);
 
   const filteredBrands = useMemo(() => {
-    if (!brandSearch) return brands;
-    return brands.filter(b => b.name.toLowerCase().includes(brandSearch.toLowerCase()));
-  }, [brands, brandSearch]);
+    let result = brands;
+
+    if (formData.category) {
+      result = result.filter(b => {
+        const mapping = b.mappedCategories?.find(m => m.category === formData.category || m.category?._id === formData.category);
+        if (!mapping) return false;
+        
+        const isCombined = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
+        if (isCombined && formData.childCategory) {
+           return mapping.childCategories?.includes(formData.childCategory);
+        }
+        return true;
+      });
+    }
+
+    if (brandSearch) {
+      result = result.filter(b => b.name.toLowerCase().includes(brandSearch.toLowerCase()));
+    }
+    return result;
+  }, [brands, brandSearch, formData.category, formData.childCategory, selectedCategorySlug]);
 
   const categoryConfig = useMemo(() => {
     const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
@@ -142,10 +159,24 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
           : prev.slug
       };
 
-      // Reset brand if category changes and current brand is not valid for new category
-      if (name === 'category' && prev.brand) {
-        const validBrands = brands.filter(b => b.categories?.includes(value));
-        if (!validBrands.find(b => b._id === prev.brand)) {
+      // Reset brand if category or childCategory changes and current brand is not valid
+      if ((name === 'category' || name === 'childCategory') && prev.brand) {
+        // Validate against mappedCategories
+        const categoryToUse = name === 'category' ? value : prev.category;
+        const childToUse = name === 'childCategory' ? value : prev.childCategory;
+        const slugToUse = name === 'category' ? (categories.find(c => c._id === value)?.slug || '') : selectedCategorySlug;
+        
+        const isCombined = slugToUse === 'gas-stove' || slugToUse === 'fan';
+
+        const isValid = brands.find(b => b._id === prev.brand)?.mappedCategories?.some(m => {
+           if (m.category !== categoryToUse && m.category?._id !== categoryToUse) return false;
+           if (isCombined && childToUse) {
+              return m.childCategories?.includes(childToUse);
+           }
+           return true;
+        });
+
+        if (!isValid) {
           nextState.brand = '';
         }
       }
@@ -505,28 +536,6 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   <label className={labelCls}>Color</label>
                   <input type="text" name="color" value={formData.color} onChange={handleChange} className={inputCls} placeholder="e.g. Black, Silver" />
                 </div>
-                <div>
-                  <label className={labelCls}>
-                    Sub-Category {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) && <span className="text-red-400">*</span>}
-                  </label>
-                  {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) ? (
-                    <select 
-                      name="subCategory" 
-                      value={formData.subCategory || ''} 
-                      onChange={handleChange} 
-                      className={inputCls}
-                    >
-                      <option value="">Select Subcategory</option>
-                      {subcategories
-                        .filter(s => s.category?._id === formData.category || s.category === formData.category)
-                        .map(sub => (
-                          <option key={sub._id} value={sub.name}>{sub.name}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input type="text" name="subCategory" value={formData.subCategory || ''} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />
-                  )}
-                </div>
                 {selectedCategoryObj?.subCategories?.length > 0 && (
                   <div>
                     <label className={labelCls}>
@@ -547,6 +556,49 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                     </select>
                   </div>
                 )}
+                <div>
+                  <label className={labelCls}>
+                    Sub-Category {subcategories.some(s => {
+                      const matchesCat = (s.category?._id === formData.category || s.category === formData.category);
+                      if (!matchesCat) return false;
+                      if (selectedCategoryObj?.subCategories?.length > 0) {
+                        return s.childCategory === formData.childCategory;
+                      }
+                      return true;
+                    }) && <span className="text-red-400">*</span>}
+                  </label>
+                  {subcategories.some(s => {
+                      const matchesCat = (s.category?._id === formData.category || s.category === formData.category);
+                      if (!matchesCat) return false;
+                      if (selectedCategoryObj?.subCategories?.length > 0) {
+                        return s.childCategory === formData.childCategory;
+                      }
+                      return true;
+                  }) ? (
+                    <select 
+                      name="subCategory" 
+                      value={formData.subCategory || ''} 
+                      onChange={handleChange} 
+                      className={inputCls}
+                    >
+                      <option value="">Select Subcategory</option>
+                      {subcategories
+                        .filter(s => {
+                          const matchesCat = (s.category?._id === formData.category || s.category === formData.category);
+                          if (!matchesCat) return false;
+                          if (selectedCategoryObj?.subCategories?.length > 0) {
+                            return s.childCategory === formData.childCategory;
+                          }
+                          return true;
+                        })
+                        .map(sub => (
+                          <option key={sub._id} value={sub.name}>{sub.name}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input type="text" name="subCategory" value={formData.subCategory || ''} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />
+                  )}
+                </div>
                 <div className="flex items-end gap-4 pb-1">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange} className="w-4 h-4 text-orange-500 rounded" />

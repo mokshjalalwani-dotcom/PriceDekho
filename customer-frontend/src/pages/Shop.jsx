@@ -15,6 +15,7 @@ const Shop = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [brands, setBrands] = useState([]);
   const [searchInCategory, setSearchInCategory] = useState('');
+  const [dbSubcategories, setDbSubcategories] = useState([]);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -63,12 +64,35 @@ const Shop = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const res = await axios.get('/api/brands');
+        const childCat = searchParams.get('childCategory');
+        let url = '/api/brands';
+        if (currentCategory) {
+          url += `?category=${currentCategory._id}`;
+          if (childCat) {
+            url += `&childCategory=${encodeURIComponent(childCat)}`;
+          }
+        }
+        const res = await axios.get(url);
         setBrands(res.data || []);
       } catch (e) { /* ignore */ }
     };
     fetchBrands();
-  }, []);
+  }, [currentCategory?._id, searchParams.get('childCategory')]);
+
+  // Fetch db subcategories for dynamic third tier
+  useEffect(() => {
+    if (currentCategory) {
+      const fetchDbSubcategories = async () => {
+        try {
+          const res = await axios.get(`/api/subcategories?category=${currentCategory._id}`);
+          setDbSubcategories(res.data || []);
+        } catch (e) { /* ignore */ }
+      };
+      fetchDbSubcategories();
+    } else {
+      setDbSubcategories([]);
+    }
+  }, [currentCategory]);
 
   const updateParam = (key, value) => {
     const params = new URLSearchParams(location.search);
@@ -400,7 +424,10 @@ const Shop = () => {
             {currentCategory?.subCategories?.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 <button
-                  onClick={() => updateParam('childCategory', '')}
+                  onClick={() => {
+                    updateParam('childCategory', '');
+                    updateParam('subCategory', ''); // Clear subcategory when clearing child
+                  }}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!searchParams.get('childCategory') ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
                 >
                   All
@@ -415,7 +442,10 @@ const Shop = () => {
                   return (
                     <button
                       key={subName}
-                      onClick={() => updateParam('childCategory', subName)}
+                      onClick={() => {
+                        updateParam('childCategory', subName);
+                        updateParam('subCategory', ''); // Clear subcategory when changing child
+                      }}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${searchParams.get('childCategory') === subName ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
                     >
                       {subName}
@@ -424,6 +454,33 @@ const Shop = () => {
                 })}
               </div>
             )}
+
+            {/* Third Tier: Actual Subcategories (if childCategory is selected) */}
+            {currentCategory?.subCategories?.length > 0 && searchParams.get('childCategory') && dbSubcategories.length > 0 && (() => {
+              const activeChild = searchParams.get('childCategory');
+              const relevantSubs = dbSubcategories.filter(s => s.childCategory === activeChild);
+              if (relevantSubs.length === 0) return null;
+              return (
+                <div className="flex flex-wrap gap-2 mb-6 -mt-2">
+                  <span className="text-sm text-gray-500 flex items-center mr-2">Subcategory:</span>
+                  <button
+                    onClick={() => updateParam('subCategory', '')}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${!searchParams.get('subCategory') ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
+                  >
+                    All
+                  </button>
+                  {relevantSubs.map(sub => (
+                    <button
+                      key={sub._id}
+                      onClick={() => updateParam('subCategory', sub.name)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${searchParams.get('subCategory') === sub.name ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
+                    >
+                      {sub.name}
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
 
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">

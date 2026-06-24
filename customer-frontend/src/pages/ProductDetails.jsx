@@ -115,11 +115,21 @@ const ProductDetails = () => {
     { label: product.category?.name || 'Category', link: `/shop?category=${product.category?.slug}` },
   ];
 
-  if (product.childCategory || product.subCategory) {
-    const subCatParam = product.childCategory ? `childCategory=${product.childCategory}` : `subCategory=${product.subCategory}`;
+  if (product.childCategory) {
     breadcrumbs.push({ 
-      label: product.childCategory || product.subCategory, 
-      link: `/shop?category=${product.category?.slug}&${subCatParam}` 
+      label: product.childCategory, 
+      link: `/shop?category=${product.category?.slug}&childCategory=${encodeURIComponent(product.childCategory)}` 
+    });
+  }
+
+  if (product.subCategory) {
+    const link = product.childCategory 
+      ? `/shop?category=${product.category?.slug}&childCategory=${encodeURIComponent(product.childCategory)}&subCategory=${encodeURIComponent(product.subCategory)}`
+      : `/shop?category=${product.category?.slug}&subCategory=${encodeURIComponent(product.subCategory)}`;
+      
+    breadcrumbs.push({ 
+      label: product.subCategory, 
+      link 
     });
   }
 
