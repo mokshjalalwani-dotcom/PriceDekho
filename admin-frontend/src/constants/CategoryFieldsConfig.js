@@ -250,10 +250,52 @@ export const CATEGORY_FIELDS = {
     ],
     filterFields: ['cleanerType', 'suctionPowerWatts'],
   },
+  chimney: {
+    label: 'Chimney',
+    fields: [
+      { key: 'filterType', label: 'Filter Type', type: 'select', options: ['Baffle Filter', 'Cassette Filter', 'Mesh Filter', 'Filterless'], required: true },
+      { key: 'suctionCapacity', label: 'Suction Capacity', type: 'text', placeholder: 'e.g. 1200 m3/hr', required: true },
+      { key: 'motorType', label: 'Motor Type', type: 'text', placeholder: 'e.g. BLDC' },
+      { key: 'controlType', label: 'Control Type', type: 'select', options: ['Touch Control', 'Push Button', 'Gesture Control'] },
+      { key: 'noiseLevel', label: 'Noise Level', type: 'text', placeholder: 'e.g. 58 dB' },
+      { key: 'autoClean', label: 'Auto Clean', type: 'boolean' },
+      { key: 'lightingType', label: 'Lighting Type', type: 'text', placeholder: 'e.g. LED 2x1.5W' },
+      { key: 'ductType', label: 'Duct Type', type: 'select', options: ['Ducted', 'Ductless'] },
+      { key: 'powerConsumption', label: 'Power Consumption', type: 'text', placeholder: 'e.g. 150W' },
+      { key: 'installationType', label: 'Installation Type', type: 'select', options: ['Wall Mounted', 'Island', 'Built-in'] },
+      { key: 'warranty', label: 'Warranty', type: 'text', placeholder: 'e.g. 1 Year on Product, 5 Years on Motor' },
+    ],
+    filterFields: ['filterType', 'suctionCapacity', 'autoClean', 'installationType'],
+  },
+
+  'air-cooler': {
+    label: 'Air Cooler',
+    fields: [
+      { key: 'tankCapacity', label: 'Tank Capacity', type: 'text', placeholder: 'e.g. 40 Litres', required: true },
+      { key: 'airDelivery', label: 'Air Delivery', type: 'text', placeholder: 'e.g. 3000 m3/hr' },
+      { key: 'coolingArea', label: 'Cooling Area', type: 'text', placeholder: 'e.g. 150 sq. ft.' },
+      { key: 'honeycombPads', label: 'Honeycomb Pads', type: 'boolean' },
+      { key: 'iceChamber', label: 'Ice Chamber', type: 'boolean' },
+      { key: 'powerConsumption', label: 'Power Consumption', type: 'text', placeholder: 'e.g. 130W' },
+    ],
+    filterFields: ['tankCapacity', 'honeycombPads'],
+  },
 };
 
-// Helper: Get category config by slug
-export const getCategoryConfig = (slug) => {
+// Helper: Get category config by slug and optional subCategoryName
+export const getCategoryConfig = (slug, subCategoryName) => {
+  if (slug === 'gas-stove') {
+    if (subCategoryName === 'Chimney') return CATEGORY_FIELDS['chimney'];
+    if (subCategoryName === 'Gas Stove') return CATEGORY_FIELDS['gas-stove'];
+    return null; // Return null if subcategory not explicitly selected
+  }
+
+  if (slug === 'fan') {
+    if (subCategoryName === 'Air Cooler') return CATEGORY_FIELDS['air-cooler'];
+    if (subCategoryName === 'Fan') return CATEGORY_FIELDS['fan'];
+    return null;
+  }
+
   return CATEGORY_FIELDS[slug] || null;
 };
 
@@ -263,8 +305,8 @@ export const getAllCategorySlugs = () => {
 };
 
 // Helper: Get filter fields for a category
-export const getFilterFields = (slug) => {
-  const config = CATEGORY_FIELDS[slug];
+export const getFilterFields = (slug, subCategoryName) => {
+  const config = getCategoryConfig(slug, subCategoryName);
   if (!config) return [];
   return config.fields.filter(f => config.filterFields.includes(f.key));
 };

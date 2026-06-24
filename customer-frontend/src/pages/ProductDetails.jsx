@@ -10,7 +10,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useCompare } from '../context/CompareContext';
 import { useToast } from '../context/ToastContext';
 import ProductCard from '../components/ProductCard';
-import { CATEGORY_FIELDS } from '../constants/CategoryFieldsConfig';
+import { getCategoryConfig } from '../constants/CategoryFieldsConfig';
 import useSEO from '../hooks/useSEO';
 
 const ProductDetails = () => {
@@ -107,7 +107,7 @@ const ProductDetails = () => {
   const allImages = [product.mainImage, ...(product.galleryImages || []), ...(product.images || [])].filter(Boolean);
   const uniqueImages = [...new Set(allImages)];
   const categorySlug = product.category?.slug || '';
-  const categoryConfig = CATEGORY_FIELDS[categorySlug] || null;
+  const categoryConfig = getCategoryConfig(categorySlug, product.subCategory);
 
   const structuredData = product ? {
     "@context": "https://schema.org/",
@@ -244,6 +244,12 @@ Please share more details.`;
               <>
                 <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
                 <Link to={`/shop?category=${product.category.slug}`} className="hover:text-orange-500 transition-colors">{product.category.name}</Link>
+              </>
+            )}
+            {product.subCategory && (
+              <>
+                <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
+                <span className="text-gray-900 font-medium">{product.subCategory}</span>
               </>
             )}
             <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />

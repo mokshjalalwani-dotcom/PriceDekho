@@ -26,10 +26,10 @@ const Shop = () => {
   const keywordParam = searchParams.get('keyword') || '';
 
   // Get category-specific filter fields
-  const categoryFilterFields = useMemo(() => {
+  const dynamicFilterFields = useMemo(() => {
     if (!categoryParam) return [];
-    return getFilterFields(categoryParam);
-  }, [categoryParam]);
+    return getFilterFields(categoryParam, searchParams.get('subCategory'));
+  }, [categoryParam, searchParams]);
 
   const { categories } = useCategory();
   const currentCategory = categories.find(c => c.slug === categoryParam);

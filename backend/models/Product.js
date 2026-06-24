@@ -141,6 +141,32 @@ const categoryFieldsSchema = new mongoose.Schema({
   panSupportMaterial: String,
   spillTray: String,
 
+  // Chimney
+  filterType: String,
+  suctionCapacity: String,
+  controlType: String,
+  autoClean: String,
+  lightingType: String,
+  ductType: String,
+  installationType: String,
+  warranty: String,
+
+  // Fan
+  fanType: String,
+  sweepSize: String,
+  speedSettings: String,
+  rpm: String,
+  powerConsumption: String,
+  bladeMaterial: String,
+  numberOfBlades: String,
+
+  // Air Cooler
+  tankCapacity: String,
+  airDelivery: String,
+  coolingArea: String,
+  honeycombPads: String,
+  iceChamber: String,
+
   // Dishwasher
   placeSettings: String,
   numberOfWashPrograms: String,

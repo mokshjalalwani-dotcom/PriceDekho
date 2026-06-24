@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import axios from 'axios';
 import { X, Save, AlertCircle, Plus, Trash2, ChevronDown, ChevronUp, Image, Package, IndianRupee, FileText, Settings, Tag, Layers, List, Box, Search } from 'lucide-react';
-import { CATEGORY_FIELDS } from '../../constants/CategoryFieldsConfig';
+import { getCategoryConfig } from '../../constants/CategoryFieldsConfig';
 import { convertToNLC } from '../../utils/nlcConverter';
 
 const SECTIONS = [
@@ -74,8 +74,12 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   }, [brands, brandSearch]);
 
   const categoryConfig = useMemo(() => {
-    return CATEGORY_FIELDS[selectedCategorySlug] || null;
-  }, [selectedCategorySlug]);
+    const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
+    if (isCombinedCategory && !formData.subCategory) {
+      return null;
+    }
+    return getCategoryConfig(selectedCategorySlug, formData.subCategory);
+  }, [selectedCategorySlug, formData.subCategory]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -259,6 +263,11 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
       if (!formData.category) throw new Error('Category is required');
       if (!formData.brand) throw new Error('Brand is required');
       if (!formData.sellingPrice || Number(formData.sellingPrice) <= 0) throw new Error('Valid price is required');
+
+      const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
+      if (isCombinedCategory && !formData.subCategory) {
+        throw new Error('Please select a Child Category.');
+      }
 
       if (formData.youtubeUrl) {
         const ytRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
