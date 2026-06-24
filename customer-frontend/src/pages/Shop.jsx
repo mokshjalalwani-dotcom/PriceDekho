@@ -105,6 +105,19 @@ const Shop = () => {
     navigate(`/shop?${params.toString()}`);
   };
 
+  const updateParams = (updates) => {
+    const params = new URLSearchParams(location.search);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    });
+    params.set('page', 1);
+    navigate(`/shop?${params.toString()}`);
+  };
+
   const toggleFilter = (key, value) => {
     const params = new URLSearchParams(location.search);
     if (params.get(key) === value) {
@@ -118,7 +131,13 @@ const Shop = () => {
 
   const isFilterActive = (key, value) => searchParams.get(key) === value;
 
-  const clearAllFilters = () => navigate('/shop');
+  const clearAllFilters = () => {
+    if (categoryParam) {
+      navigate(`/shop?category=${categoryParam}`);
+    } else {
+      navigate('/shop');
+    }
+  };
 
   const handleCategoryChange = (slug) => {
     if (slug === categoryParam) {
@@ -144,7 +163,7 @@ const Shop = () => {
   };
 
   // Active filters count
-  const reservedKeys = ['page', 'pageSize', 'sortBy', 'subCategory'];
+  const reservedKeys = ['page', 'pageSize', 'sortBy', 'subCategory', 'category', 'childCategory'];
   const activeFilters = [...searchParams.entries()].filter(([k]) => !reservedKeys.includes(k));
 
   /* Skeleton card for loading states */
@@ -263,45 +282,85 @@ const Shop = () => {
                 </button>
               </div>
 
-              {/* Search within category */}
-              {categoryParam && (
-                <div className="mb-6">
-                  <form onSubmit={handleSearchInCategory} className="flex gap-1.5">
-                    <input
-                      type="text"
-                      value={searchInCategory}
-                      onChange={(e) => setSearchInCategory(e.target.value)}
-                      placeholder="Search in category..."
-                      className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 outline-none"
-                    />
-                    <button type="submit" className="px-2.5 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
-                      <Search size={14} className="text-gray-500" />
-                    </button>
-                  </form>
-                </div>
-              )}
 
               {/* Categories */}
               <div className="mb-6">
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm">Categories</h3>
-                <div className="space-y-0.5">
-                  <button
-                    onClick={() => navigate('/shop')}
-                    className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${!categoryParam ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
-                  >
-                    All Categories
-                  </button>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.slug}
-                      onClick={() => handleCategoryChange(cat.slug)}
-                      className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${categoryParam === cat.slug ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
+                {!currentCategory ? (
+                  <>
+                    <h3 className="font-semibold text-gray-900 mb-3 text-sm">Categories</h3>
+                    <div className="space-y-0.5">
+                      <button
+                        onClick={() => navigate('/shop')}
+                        className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${!categoryParam ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
+                      >
+                        All Categories
+                      </button>
+                      {categories.map((cat) => (
+                        <button
+                          key={cat.slug}
+                          onClick={() => handleCategoryChange(cat.slug)}
+                          className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${categoryParam === cat.slug ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
+                        >
+                          <span>{cat.name}</span>
+                          {categoryParam === cat.slug && <ChevronRight size={12} />}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      onClick={() => navigate('/shop')}
+                      className="flex items-center text-sm font-medium text-gray-500 hover:text-orange-500 mb-4 transition-colors group"
                     >
-                      <span>{cat.name}</span>
-                      {categoryParam === cat.slug && <ChevronRight size={12} />}
+                      <ChevronLeft size={16} className="mr-1 group-hover:-translate-x-0.5 transition-transform" /> Back to Categories
                     </button>
-                  ))}
-                </div>
+                    <button
+                      onClick={() => updateParams({ childCategory: '', subCategory: '' })}
+                      className={`block w-full text-left font-bold mb-3 text-sm transition-colors ${!searchParams.get('childCategory') ? 'text-orange-600' : 'text-gray-900 hover:text-orange-600'}`}
+                    >
+                      {currentCategory.name}
+                    </button>
+                    
+                    {currentCategory?.subCategories?.length > 0 && (
+                      <div className="space-y-0.5 border-l-2 border-orange-100 pl-3 ml-1">
+                        
+                        {currentCategory.subCategories.map(sub => {
+                          const subName = typeof sub === 'string' ? sub : sub.name;
+                          const isActiveChild = searchParams.get('childCategory') === subName;
+                          const isActiveCategory = typeof sub === 'string' ? true : sub.isActive !== false;
+                          
+                          if (!isActiveCategory) return null;
+                          
+                          return (
+                            <div key={subName} className="py-0.5">
+                               <button 
+                                 onClick={() => updateParams({ childCategory: subName, subCategory: '' })}
+                                 className={`block w-full text-left py-1.5 text-sm transition-colors ${isActiveChild && !searchParams.get('subCategory') ? 'text-orange-600 font-medium' : isActiveChild ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}
+                               >
+                                 {subName}
+                               </button>
+                               
+                               {isActiveChild && dbSubcategories.filter(s => s.childCategory === subName).length > 0 && (
+                                 <div className="ml-2 mt-1 mb-2 space-y-1 pl-3 border-l-2 border-gray-100">
+                                   {dbSubcategories.filter(s => s.childCategory === subName).map(s => (
+                                     <button 
+                                       key={s._id}
+                                       onClick={() => updateParam('subCategory', s.name)}
+                                       className={`block w-full text-left py-1 text-xs transition-colors ${searchParams.get('subCategory') === s.name ? 'text-gray-900 font-medium' : 'text-gray-500 hover:text-gray-700'}`}
+                                     >
+                                       {s.name}
+                                     </button>
+                                   ))}
+                                 </div>
+                               )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Brand Filter */}
@@ -392,67 +451,7 @@ const Shop = () => {
 
           {/* Main Content - Product Grid */}
           <div className="flex-1 min-w-0">
-            {/* Dynamic Subcategory Chips */}
-            {currentCategory?.subCategories?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                <button
-                  onClick={() => {
-                    updateParam('childCategory', '');
-                    updateParam('subCategory', ''); // Clear subcategory when clearing child
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!searchParams.get('childCategory') ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
-                >
-                  All
-                </button>
-                {/* Note: subCategories is currently an array of strings in DB, will be array of objects later */}
-                {currentCategory.subCategories.map((sub) => {
-                  const subName = typeof sub === 'string' ? sub : sub.name;
-                  const isActive = typeof sub === 'string' ? true : sub.isActive !== false;
-                  
-                  if (!isActive) return null;
-                  
-                  return (
-                    <button
-                      key={subName}
-                      onClick={() => {
-                        updateParam('childCategory', subName);
-                        updateParam('subCategory', ''); // Clear subcategory when changing child
-                      }}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${searchParams.get('childCategory') === subName ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
-                    >
-                      {subName}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
 
-            {/* Third Tier: Actual Subcategories (if childCategory is selected) */}
-            {currentCategory?.subCategories?.length > 0 && searchParams.get('childCategory') && dbSubcategories.length > 0 && (() => {
-              const activeChild = searchParams.get('childCategory');
-              const relevantSubs = dbSubcategories.filter(s => s.childCategory === activeChild);
-              if (relevantSubs.length === 0) return null;
-              return (
-                <div className="flex flex-wrap gap-2 mb-6 -mt-2">
-                  <span className="text-sm text-gray-500 flex items-center mr-2">Subcategory:</span>
-                  <button
-                    onClick={() => updateParam('subCategory', '')}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${!searchParams.get('subCategory') ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
-                  >
-                    All
-                  </button>
-                  {relevantSubs.map(sub => (
-                    <button
-                      key={sub._id}
-                      onClick={() => updateParam('subCategory', sub.name)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${searchParams.get('subCategory') === sub.name ? 'bg-gray-800 text-white border-gray-800' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
-                    >
-                      {sub.name}
-                    </button>
-                  ))}
-                </div>
-              );
-            })()}
 
             {loading ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
