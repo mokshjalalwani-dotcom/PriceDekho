@@ -37,9 +37,13 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   const [formData, setFormData] = useState({ ...emptyForm });
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [openSections, setOpenSections] = useState(['basic', 'pricing', 'content']);
+
+  const token = localStorage.getItem('adminToken');
+  const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   // Find category slug from selected category ID
   // Find category slug and object from selected category ID
@@ -76,12 +80,14 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catRes, brandRes] = await Promise.all([
+        const [catRes, brandRes, subRes] = await Promise.all([
           axios.get('/api/categories'),
-          axios.get('/api/brands')
+          axios.get('/api/brands?all=true'),
+          axios.get('/api/admin/subcategories?all=true', authHeader)
         ]);
         setCategories(catRes.data);
         setBrands(brandRes.data);
+        setSubcategories(subRes.data);
       } catch (err) {
         console.error('Error fetching categories/brands', err);
       }
@@ -491,9 +497,9 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 </div>
                 <div>
                   <label className={labelCls}>
-                    Sub-Category {selectedCategoryObj?.subCategories?.length > 0 && <span className="text-red-400">*</span>}
+                    Sub-Category {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) && <span className="text-red-400">*</span>}
                   </label>
-                  {selectedCategoryObj?.subCategories?.length > 0 ? (
+                  {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) ? (
                     <select 
                       name="subCategory" 
                       value={formData.subCategory} 
@@ -502,10 +508,11 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                       className={inputCls}
                     >
                       <option value="">Select Subcategory</option>
-                      {selectedCategoryObj.subCategories.map(sub => {
-                        const subName = typeof sub === 'string' ? sub : sub.name;
-                        return <option key={subName} value={subName}>{subName}</option>;
-                      })}
+                      {subcategories
+                        .filter(s => s.category?._id === formData.category || s.category === formData.category)
+                        .map(sub => (
+                          <option key={sub._id} value={sub.name}>{sub.name}</option>
+                      ))}
                     </select>
                   ) : (
                     <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />

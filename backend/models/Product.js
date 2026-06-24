@@ -148,6 +148,28 @@ const categoryFieldsSchema = new mongoose.Schema({
   halfLoadOption: String,
   dryingFeature: String,
   suitableUtensils: String,
+
+  // Projector
+  brightnessLumens: String,
+  projectionSize: String,
+  lampLifeHours: String,
+  contrastRatio: String,
+  resolutionType: String,
+
+  // Geyser
+  capacityLitresGeyser: String, // to distinguish from fridge capacityLitres if necessary, but string is fine
+  tankMaterial: String,
+  heatingElement: String,
+  starRatingGeyser: String,
+  mountType: String,
+  pressureRating: String,
+
+  // Vacuum Cleaner
+  cleanerType: String,
+  suctionPowerWatts: String,
+  dustCapacity: String,
+  cordLength: String,
+  attachmentsIncluded: String,
 }, { _id: false, strict: false });
 
 // --- Main Product Schema ---

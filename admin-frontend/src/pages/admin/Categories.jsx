@@ -13,8 +13,6 @@ const AdminCategories = ({ products = [] }) => {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [displayOrder, setDisplayOrder] = useState('');
-  const [subCategories, setSubCategories] = useState([]);
-  const [newSubName, setNewSubName] = useState('');
 
   const token = localStorage.getItem('adminToken');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
@@ -51,52 +49,15 @@ const AdminCategories = ({ products = [] }) => {
       setName(category.name);
       setSlug(category.slug);
       setDisplayOrder(category.displayOrder);
-      // Map strings or objects to standard object format for UI state
-      setSubCategories(
-        (category.subCategories || []).map((sub, idx) => {
-          if (typeof sub === 'string') return { name: sub, isActive: true, displayOrder: idx + 1 };
-          return sub;
-        })
-      );
     } else {
       setName('');
       setSlug('');
       setDisplayOrder(categories.length > 0 ? categories[categories.length - 1].displayOrder + 1 : 1);
-      setSubCategories([]);
     }
-    setNewSubName('');
     setIsModalOpen(true);
   };
 
-  const handleAddSubCategory = () => {
-    if (!newSubName.trim()) return;
-    const isDuplicate = subCategories.some(sub => sub.name.toLowerCase() === newSubName.trim().toLowerCase());
-    if (isDuplicate) {
-      alert('This subcategory name already exists.');
-      return;
-    }
-    setSubCategories([
-      ...subCategories,
-      { name: newSubName.trim(), isActive: true, displayOrder: subCategories.length + 1 }
-    ]);
-    setNewSubName('');
-  };
 
-  const handleRemoveSubCategory = (index) => {
-    // In a real app, we should check if products use it before removing, 
-    // but the backend will block it if we try to remove an in-use one later (or we can just soft delete).
-    // For now, we'll allow removing from UI if it's new or rely on backend validation.
-    // A better approach is to just toggle isActive.
-    const newSubs = [...subCategories];
-    newSubs.splice(index, 1);
-    setSubCategories(newSubs);
-  };
-
-  const handleToggleSubCategoryActive = (index) => {
-    const newSubs = [...subCategories];
-    newSubs[index].isActive = !newSubs[index].isActive;
-    setSubCategories(newSubs);
-  };
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -104,8 +65,7 @@ const AdminCategories = ({ products = [] }) => {
       const payload = {
         name,
         slug,
-        displayOrder: Number(displayOrder),
-        subCategories
+        displayOrder: Number(displayOrder)
       };
 
       if (selectedCategory) {
@@ -125,9 +85,8 @@ const AdminCategories = ({ products = [] }) => {
       const productsCount = products.filter(p => p.category?._id === category._id).length;
       // Brands can have categories as objects or strings depending on population, check both
       const brandsCount = brands.filter(b => b.categories?.some(c => c === category._id || c._id === category._id)).length;
-      const subCatCount = category.subCategories?.length || 0;
       
-      const confirmMessage = `Category: ${category.name}\n\nProducts: ${productsCount}\nBrands: ${brandsCount}\nSubcategories: ${subCatCount}\n\nAre you sure you want to disable this category?`;
+      const confirmMessage = `Category: ${category.name}\n\nProducts: ${productsCount}\nBrands: ${brandsCount}\n\nAre you sure you want to disable this category?`;
       
       if (!window.confirm(confirmMessage)) return;
     } else {
@@ -157,7 +116,6 @@ const AdminCategories = ({ products = [] }) => {
             <tr className="border-b border-gray-200 bg-gray-50">
               <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Order</th>
               <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
-              <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Subcategories</th>
               <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Products</th>
               <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
               <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
@@ -165,9 +123,9 @@ const AdminCategories = ({ products = [] }) => {
           </thead>
           <tbody className="divide-y divide-gray-100">
             {loading ? (
-              <tr><td colSpan="6" className="p-8 text-center text-gray-500">Loading categories...</td></tr>
+              <tr><td colSpan="5" className="p-8 text-center text-gray-500">Loading categories...</td></tr>
             ) : categories.length === 0 ? (
-              <tr><td colSpan="6" className="p-8 text-center text-gray-500">No categories found</td></tr>
+              <tr><td colSpan="5" className="p-8 text-center text-gray-500">No categories found</td></tr>
             ) : categories.map(cat => {
               const productCount = products.filter(p => p.category?._id === cat._id).length;
               return (
@@ -176,14 +134,6 @@ const AdminCategories = ({ products = [] }) => {
                   <td className="p-4">
                     <p className="font-semibold text-gray-900 text-sm">{cat.name}</p>
                     <p className="text-xs text-gray-500">/{cat.slug}</p>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex flex-wrap gap-1 max-w-[250px]">
-                      {cat.subCategories?.map(sub => (
-                        <span key={sub} className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-xs">{sub}</span>
-                      ))}
-                      {(!cat.subCategories || cat.subCategories.length === 0) && <span className="text-gray-400 text-xs">-</span>}
-                    </div>
                   </td>
                   <td className="p-4 text-sm font-medium text-gray-700">{productCount}</td>
                   <td className="p-4">
@@ -237,53 +187,6 @@ const AdminCategories = ({ products = [] }) => {
                 <p className="text-[10px] text-gray-500 mt-1">If this number is already taken, existing categories will automatically shift down.</p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Subcategories</label>
-                <div className="flex gap-2 mb-3">
-                  <input 
-                    type="text" 
-                    value={newSubName} 
-                    onChange={e => setNewSubName(e.target.value)} 
-                    onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddSubCategory())}
-                    placeholder="e.g. Air Cooler"
-                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200" 
-                  />
-                  <button 
-                    type="button" 
-                    onClick={handleAddSubCategory}
-                    className="px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200"
-                  >
-                    Add
-                  </button>
-                </div>
-                
-                {subCategories.length > 0 && (
-                  <div className="space-y-2 max-h-40 overflow-y-auto border border-gray-100 rounded-lg p-2 bg-gray-50">
-                    {subCategories.map((sub, idx) => (
-                      <div key={idx} className={`flex items-center justify-between p-2 bg-white rounded border border-gray-200 ${!sub.isActive ? 'opacity-60' : ''}`}>
-                        <span className="text-sm font-medium text-gray-700">{sub.name}</span>
-                        <div className="flex items-center gap-2">
-                          <button 
-                            type="button" 
-                            onClick={() => handleToggleSubCategoryActive(idx)}
-                            className={`text-xs px-2 py-1 rounded ${sub.isActive ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
-                          >
-                            {sub.isActive ? 'Active' : 'Disabled'}
-                          </button>
-                          <button 
-                            type="button" 
-                            onClick={() => handleRemoveSubCategory(idx)}
-                            className="text-gray-400 hover:text-red-500 p-1"
-                            title="Remove"
-                          >
-                            <X size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">Cancel</button>

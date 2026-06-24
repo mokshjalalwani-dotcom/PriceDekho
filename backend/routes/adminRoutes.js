@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
 import Brand from '../models/Brand.js';
+import Subcategory from '../models/Subcategory.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { convertToNLC } from '../utils/nlcConverter.js';
 
@@ -297,7 +298,7 @@ router.delete('/products/:id/specs/:gid', protect, admin, async (req, res) => {
 // Admin: Add Category
 router.post('/categories', protect, admin, async (req, res) => {
   try {
-    const { name, slug, iconKey, displayOrder, subCategories } = req.body;
+    const { name, slug, iconKey, displayOrder } = req.body;
     
     // Auto-shift display order logic
     if (displayOrder !== undefined) {
@@ -308,7 +309,7 @@ router.post('/categories', protect, admin, async (req, res) => {
     }
     
     const category = await Category.create({
-      name, slug, iconKey, displayOrder, subCategories, isActive: true
+      name, slug, iconKey, displayOrder, isActive: true
     });
     
     res.status(201).json(category);
@@ -324,7 +325,7 @@ router.post('/categories', protect, admin, async (req, res) => {
 // Admin: Update Category
 router.put('/categories/:id', protect, admin, async (req, res) => {
   try {
-    const { name, slug, iconKey, displayOrder, subCategories } = req.body;
+    const { name, slug, iconKey, displayOrder } = req.body;
     
     const category = await Category.findById(req.params.id);
     if (!category) return res.status(404).json({ message: 'Category not found' });
@@ -350,28 +351,7 @@ router.put('/categories/:id', protect, admin, async (req, res) => {
     }
     
     if (displayOrder !== undefined) category.displayOrder = displayOrder;
-    
-    if (subCategories !== undefined) {
-      // Check for removed subcategories
-      if (category.subCategories && category.subCategories.length > 0) {
-        const incomingNames = subCategories.map(s => s.name);
-        const removedSubs = category.subCategories.filter(s => {
-          const sName = typeof s === 'string' ? s : s.name;
-          return !incomingNames.includes(sName);
-        });
 
-        if (removedSubs.length > 0) {
-          for (const sub of removedSubs) {
-            const subName = typeof sub === 'string' ? sub : sub.name;
-            const inUseCount = await Product.countDocuments({ category: category._id, subCategory: subName });
-            if (inUseCount > 0) {
-              return res.status(400).json({ message: `Cannot delete subcategory '${subName}'. It is used by ${inUseCount} product(s). Please move them or disable the subcategory instead.` });
-            }
-          }
-        }
-      }
-      category.subCategories = subCategories;
-    }
     
     const updated = await category.save();
     res.json(updated);
@@ -405,8 +385,8 @@ router.patch('/categories/:id/toggle', protect, admin, async (req, res) => {
 // Admin: Add Brand
 router.post('/brands', protect, admin, async (req, res) => {
   try {
-    const { name, slug, categories } = req.body;
-    const brand = await Brand.create({ name, slug, categories, isActive: true });
+    const { name, slug, logo } = req.body;
+    const brand = await Brand.create({ name, slug, logo, isActive: true });
     res.status(201).json(brand);
   } catch (error) {
     if (error.code === 11000) {
@@ -420,13 +400,13 @@ router.post('/brands', protect, admin, async (req, res) => {
 // Admin: Update Brand
 router.put('/brands/:id', protect, admin, async (req, res) => {
   try {
-    const { name, slug, categories } = req.body;
+    const { name, slug, logo } = req.body;
     const brand = await Brand.findById(req.params.id);
     if (!brand) return res.status(404).json({ message: 'Brand not found' });
     
     if (name) brand.name = name;
     if (slug) brand.slug = slug;
-    if (categories !== undefined) brand.categories = categories;
+    if (logo !== undefined) brand.logo = logo;
     
     const updated = await brand.save();
     res.json(updated);
@@ -448,6 +428,85 @@ router.patch('/brands/:id/toggle', protect, admin, async (req, res) => {
     brand.isActive = !brand.isActive;
     await brand.save();
     res.json({ message: `Brand ${brand.isActive ? 'enabled' : 'disabled'}`, brand });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// =====================================================
+// SUBCATEGORIES
+// =====================================================
+
+// Admin: Get all subcategories
+router.get('/subcategories', protect, admin, async (req, res) => {
+  try {
+    const filter = req.query.all ? {} : { isActive: true };
+    if (req.query.category) {
+      filter.category = req.query.category;
+    }
+    const subcategories = await Subcategory.find(filter).populate('category', 'name slug').sort({ 'category.displayOrder': 1, displayOrder: 1 });
+    res.json(subcategories);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
+  // Admin: Add Subcategory
+router.post('/subcategories', protect, admin, async (req, res) => {
+  try {
+    let { name, slug, category, displayOrder } = req.body;
+    if (!slug && name) {
+      slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    }
+    const subcategory = await Subcategory.create({ name, slug, category, displayOrder, isActive: true });
+    
+    // Populate before returning
+    const populated = await Subcategory.findById(subcategory._id).populate('category', 'name slug');
+    res.status(201).json(populated);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Subcategory with this slug already exists for this category.' });
+    }
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Update Subcategory
+router.put('/subcategories/:id', protect, admin, async (req, res) => {
+  try {
+    const { name, slug, category, displayOrder } = req.body;
+    const subcategory = await Subcategory.findById(req.params.id);
+    
+    if (!subcategory) return res.status(404).json({ message: 'Subcategory not found' });
+    
+    subcategory.name = name || subcategory.name;
+    subcategory.slug = slug || subcategory.slug;
+    if (category) subcategory.category = category;
+    if (displayOrder !== undefined) subcategory.displayOrder = displayOrder;
+    
+    await subcategory.save();
+    
+    const populated = await Subcategory.findById(subcategory._id).populate('category', 'name slug');
+    res.json(populated);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Subcategory with this slug already exists for this category.' });
+    }
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Toggle Subcategory Active Status
+router.patch('/subcategories/:id/toggle', protect, admin, async (req, res) => {
+  try {
+    const subcategory = await Subcategory.findById(req.params.id);
+    if (!subcategory) return res.status(404).json({ message: 'Subcategory not found' });
+    
+    subcategory.isActive = !subcategory.isActive;
+    await subcategory.save();
+    
+    const populated = await Subcategory.findById(subcategory._id).populate('category', 'name slug');
+    res.json({ message: `Subcategory ${subcategory.isActive ? 'enabled' : 'disabled'}`, subcategory: populated });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

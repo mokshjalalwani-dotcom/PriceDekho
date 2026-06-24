@@ -9,6 +9,7 @@ import {
 import ProductModal from './ProductModal';
 import AdminSettings from './AdminSettings';
 import AdminCategories from './Categories';
+import AdminSubcategories from './Subcategories';
 import AdminBrands from './Brands';
 
 const statusColors = {
@@ -162,6 +163,7 @@ const AdminDashboard = () => {
   const sidebarItems = [
     { key: 'products', label: 'Products', icon: Package },
     { key: 'categories', label: 'Categories', icon: Tag },
+    { key: 'subcategories', label: 'Subcategories', icon: Tag },
     { key: 'brands', label: 'Brands', icon: ShoppingBag },
     { key: 'orders', label: 'Orders', icon: ShoppingBag },
     { key: 'settings', label: 'Settings', icon: Settings },
@@ -216,6 +218,7 @@ const AdminDashboard = () => {
           <h2 className="text-xl font-bold text-gray-800">
             {activeTab === 'products' ? 'Product Management' : 
              activeTab === 'categories' ? 'Category Management' : 
+             activeTab === 'subcategories' ? 'Subcategory Management' : 
              activeTab === 'brands' ? 'Brand Management' : 
              activeTab === 'orders' ? 'Order Management' : 'Store Settings'}
           </h2>
@@ -408,6 +411,11 @@ const AdminDashboard = () => {
           {/* Categories Tab */}
           {activeTab === 'categories' && (
             <AdminCategories products={products} />
+          )}
+
+          {/* Subcategories Tab */}
+          {activeTab === 'subcategories' && (
+            <AdminSubcategories categories={categories} />
           )}
 
           {/* Brands Tab */}

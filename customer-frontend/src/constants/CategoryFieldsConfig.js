@@ -205,6 +205,51 @@ export const CATEGORY_FIELDS = {
     ],
     filterFields: ['placeSettings', 'numberOfWashPrograms', 'installationType'],
   },
+
+  projector: {
+    label: 'Projector',
+    fields: [
+      { key: 'brightnessLumens', label: 'Brightness (Lumens)', type: 'text', placeholder: 'e.g. 3000 ANSI Lumens', required: true },
+      { key: 'resolutionType', label: 'Resolution', type: 'select', options: ['HD Ready', 'Full HD', '4K Ultra HD'] },
+      { key: 'projectionSize', label: 'Projection Size', type: 'text', placeholder: 'e.g. 30 to 300 inches' },
+      { key: 'lampLifeHours', label: 'Lamp Life (Hours)', type: 'text', placeholder: 'e.g. 10000 Hours' },
+      { key: 'contrastRatio', label: 'Contrast Ratio', type: 'text', placeholder: 'e.g. 10000:1' },
+      { key: 'connectivity', label: 'Connectivity', type: 'text', placeholder: 'e.g. HDMI, USB, Wi-Fi' },
+      { key: 'speakerOutput', label: 'Speaker Output', type: 'text', placeholder: 'e.g. 10W' },
+      { key: 'smartFeatures', label: 'Smart Features', type: 'boolean' },
+    ],
+    filterFields: ['brightnessLumens', 'resolutionType'],
+  },
+
+  gyser: {
+    label: 'Geyser / Water Heater',
+    fields: [
+      { key: 'capacityLitresGeyser', label: 'Capacity (Litres)', type: 'select', options: ['3L', '6L', '10L', '15L', '25L', '35L', '50L'], required: true },
+      { key: 'mountType', label: 'Mount Type', type: 'select', options: ['Vertical', 'Horizontal'] },
+      { key: 'tankMaterial', label: 'Tank Material', type: 'select', options: ['Stainless Steel', 'Glass Lined', 'Copper', 'Titanium Enamel'] },
+      { key: 'heatingElement', label: 'Heating Element', type: 'select', options: ['Copper', 'Incoloy', 'Glass Coated'] },
+      { key: 'starRatingGeyser', label: 'Star Rating', type: 'select', options: ['1 Star', '2 Star', '3 Star', '4 Star', '5 Star'] },
+      { key: 'pressureRating', label: 'Pressure Rating', type: 'text', placeholder: 'e.g. 8 Bar' },
+      { key: 'powerConsumption', label: 'Power Consumption', type: 'text', placeholder: 'e.g. 2000W' },
+      { key: 'autoShutOff', label: 'Auto Shut Off', type: 'boolean' },
+    ],
+    filterFields: ['capacityLitresGeyser', 'mountType', 'starRatingGeyser'],
+  },
+
+  'vacuum-cleaner': {
+    label: 'Vacuum Cleaner',
+    fields: [
+      { key: 'cleanerType', label: 'Cleaner Type', type: 'select', options: ['Canister', 'Handheld', 'Stick', 'Robotic', 'Upright', 'Wet & Dry'], required: true },
+      { key: 'suctionPowerWatts', label: 'Suction Power (Watts)', type: 'text', placeholder: 'e.g. 1900W' },
+      { key: 'dustCapacity', label: 'Dust Capacity', type: 'text', placeholder: 'e.g. 2 Litres' },
+      { key: 'cordLength', label: 'Cord Length', type: 'text', placeholder: 'e.g. 5 meters' },
+      { key: 'attachmentsIncluded', label: 'Attachments Included', type: 'text', placeholder: 'e.g. Crevice Tool, Dusting Brush' },
+      { key: 'noiseLevel', label: 'Noise Level', type: 'text', placeholder: 'e.g. 80 dB' },
+      { key: 'powerConsumption', label: 'Power Consumption', type: 'text', placeholder: 'e.g. 1500W' },
+      { key: 'hepaFilter', label: 'HEPA Filter', type: 'boolean' },
+    ],
+    filterFields: ['cleanerType', 'suctionPowerWatts'],
+  },
 };
 
 // Helper: Get category config by slug
