@@ -261,13 +261,13 @@ Please share more details.`;
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center text-sm text-gray-500 flex-wrap">
-            <Link to="/" className="hover:text-orange-500 transition-colors">Home</Link>
+            <Link to="/" className="hover:text-theme-primary transition-colors">Home</Link>
             <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
-            <Link to="/shop" className="hover:text-orange-500 transition-colors">Shop</Link>
+            <Link to="/shop" className="hover:text-theme-primary transition-colors">Shop</Link>
             {product.category && (
               <>
                 <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
-                <Link to={`/shop?category=${product.category.slug}`} className="hover:text-orange-500 transition-colors">{product.category.name}</Link>
+                <Link to={`/shop?category=${product.category.slug}`} className="hover:text-theme-primary transition-colors">{product.category.name}</Link>
               </>
             )}
             {product.subCategory && (
@@ -308,7 +308,7 @@ Please share more details.`;
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`w-20 h-20 border-2 rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-1.5 transition-all ${selectedImage === idx ? 'border-orange-500 shadow-md ring-1 ring-orange-200' : 'border-gray-200 hover:border-gray-300'}`}
+                    className={`w-20 h-20 border-2 rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-1.5 transition-all ${selectedImage === idx ? 'border-theme-primary shadow-md ring-1 ring-theme-focus' : 'border-gray-200 hover:border-gray-300'}`}
                   >
                     <img 
                       src={img} 
@@ -368,7 +368,7 @@ Please share more details.`;
             )}
 
             {/* Price Section */}
-            <div className="bg-orange-50/60 rounded-xl p-5 border border-orange-100/50">
+            <div className="bg-theme-light/60 rounded-xl p-5 border border-theme-light/50">
               <div className="flex items-baseline gap-3 flex-wrap">
                 <span className="text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
                 {mrp > price && (
@@ -398,7 +398,7 @@ Please share more details.`;
                     <button
                       key={idx}
                       onClick={() => setSelectedVariant(selectedVariant === v ? null : v)}
-                      className={`px-3.5 py-2 text-sm font-medium rounded-lg border-2 transition-colors ${selectedVariant === v ? 'border-orange-500 bg-orange-50 text-orange-700' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
+                      className={`px-3.5 py-2 text-sm font-medium rounded-lg border-2 transition-colors ${selectedVariant === v ? 'border-theme-primary bg-theme-light text-theme-dark' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
                     >
                       {v.variantName}
                       {v.color && <span className="text-gray-400 ml-1">({v.color})</span>}
@@ -505,7 +505,7 @@ Please share more details.`;
               {[
                 { icon: ShieldCheck, label: 'Genuine Product', color: 'text-green-500', bg: 'bg-green-50' },
                 { icon: Truck, label: 'Fast Delivery', color: 'text-blue-500', bg: 'bg-blue-50' },
-                { icon: CreditCard, label: 'Secure Checkout', color: 'text-orange-500', bg: 'bg-orange-50' },
+                { icon: CreditCard, label: 'Secure Checkout', color: 'text-theme-primary', bg: 'bg-theme-light' },
                 { icon: Package, label: product.warrantyDetails || '1 Year Warranty', color: 'text-purple-500', bg: 'bg-purple-50' },
               ].map((item, i) => (
                 <div key={i} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg ${item.bg}`}>
@@ -529,7 +529,7 @@ Please share more details.`;
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 ${activeTab === tab.key ? 'border-orange-500 text-orange-600 bg-orange-50/30' : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50/50'}`}
+                className={`px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 ${activeTab === tab.key ? 'border-theme-primary text-theme-primary bg-theme-light/30' : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50/50'}`}
               >
                 {tab.label}
               </button>
@@ -560,7 +560,7 @@ Please share more details.`;
                       {section.rows.length > 8 && (
                         <button
                           onClick={() => setShowAllSpecs(!showAllSpecs)}
-                          className="flex items-center gap-1 text-sm text-orange-600 font-medium mt-3 hover:underline"
+                          className="flex items-center gap-1 text-sm text-theme-primary font-medium mt-3 hover:underline"
                         >
                           {showAllSpecs ? 'Show Less' : `Show All ${section.rows.length} Specs`}
                           {showAllSpecs ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -629,7 +629,7 @@ Please share more details.`;
           <div className="mb-12">
             <div className="flex items-center justify-between mb-6">
               <h2 className="section-heading">Similar Products</h2>
-              <Link to={`/shop?category=${product.category?.slug}`} className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors">
+              <Link to={`/shop?category=${product.category?.slug}`} className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors">
                 View All <ChevronRight size={14} />
               </Link>
             </div>

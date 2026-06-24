@@ -81,7 +81,7 @@ const AdminSettings = () => {
               value={settings.whatsappNumber}
               onChange={handleChange}
               placeholder="e.g. +919876543210"
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200 max-w-md"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus max-w-md"
             />
             <p className="text-xs text-gray-500 mt-1">Include country code. Customers will be redirected to this number.</p>
           </div>
@@ -105,7 +105,7 @@ const AdminSettings = () => {
                 value={settings.upiId}
                 onChange={handleChange}
                 placeholder="e.g. satguru@upi"
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus"
               />
             </div>
             <div>
@@ -116,7 +116,7 @@ const AdminSettings = () => {
                 value={settings.upiQrImage}
                 onChange={handleChange}
                 placeholder="https://example.com/qr.png"
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus"
               />
             </div>
           </div>
@@ -125,7 +125,7 @@ const AdminSettings = () => {
         {/* COD Policy */}
         <div className="space-y-4">
           <h4 className="text-md font-bold text-gray-800 border-b pb-2 flex items-center gap-2">
-            Cash on Delivery (COD) Policy <AlertTriangle size={16} className="text-orange-500" />
+            Cash on Delivery (COD) Policy <AlertTriangle size={16} className="text-theme-primary" />
           </h4>
           
           <label className="flex items-center gap-2 cursor-pointer">
@@ -143,7 +143,7 @@ const AdminSettings = () => {
                 onChange={handleChange}
                 min="1"
                 max="100"
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200 max-w-[150px]"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus max-w-[150px]"
               />
               <p className="text-xs text-gray-500 mt-1">Customers selecting COD will be asked to pay this percentage of the total via UPI first.</p>
             </div>

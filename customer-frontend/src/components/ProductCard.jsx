@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
 
       {/* Quick Actions */}
       <div className="absolute top-2.5 right-2.5 z-10 flex flex-col gap-1.5">
-        <span className="w-8 h-8 bg-white/90 backdrop-blur-sm shadow-md rounded-full flex items-center justify-center text-gray-400 hover:text-orange-500 transition-all opacity-0 group-hover:opacity-100 duration-300 ring-1 ring-gray-100">
+        <span className="w-8 h-8 bg-white/90 backdrop-blur-sm shadow-md rounded-full flex items-center justify-center text-gray-400 hover:text-theme-primary transition-all opacity-0 group-hover:opacity-100 duration-300 ring-1 ring-gray-100">
           <Eye size={15} />
         </span>
         <button
@@ -94,7 +94,7 @@ const ProductCard = ({ product }) => {
         </span>
 
         {/* Name */}
-        <h3 className="text-[13px] text-gray-800 font-semibold leading-snug line-clamp-2 mb-1 group-hover:text-orange-600 transition-colors min-h-[36px]">
+        <h3 className="text-[13px] text-gray-800 font-semibold leading-snug line-clamp-2 mb-1 group-hover:text-theme-primary transition-colors min-h-[36px]">
           {product.name}
         </h3>
 

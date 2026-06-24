@@ -145,7 +145,7 @@ const AdminCategories = ({ products = [] }) => {
                     <button onClick={() => handleOpenModal(cat)} className="text-gray-400 hover:text-blue-500 mr-3 transition-colors" title="Edit"><Edit size={18} /></button>
                     <button 
                       onClick={() => handleToggleActive(cat)} 
-                      className={`transition-colors ${cat.isActive ? 'text-gray-400 hover:text-orange-500' : 'text-green-500 hover:text-green-600'}`} 
+                      className={`transition-colors ${cat.isActive ? 'text-gray-400 hover:text-theme-primary' : 'text-green-500 hover:text-green-600'}`} 
                       title={cat.isActive ? 'Disable Category' : 'Enable Category'}
                     >
                       {cat.isActive ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -172,18 +172,18 @@ const AdminCategories = ({ products = [] }) => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input type="text" value={name} onChange={e => setName(e.target.value)} required className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200" />
+                  <input type="text" value={name} onChange={e => setName(e.target.value)} required className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-                  <input type="text" value={slug} onChange={e => setSlug(e.target.value)} required disabled={!!selectedCategory} className={`w-full px-3 py-2 border border-gray-200 rounded-lg ${selectedCategory ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-orange-200'}`} />
+                  <input type="text" value={slug} onChange={e => setSlug(e.target.value)} required disabled={!!selectedCategory} className={`w-full px-3 py-2 border border-gray-200 rounded-lg ${selectedCategory ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-theme-focus'}`} />
                   {selectedCategory && <p className="text-[10px] text-gray-500 mt-1">Slug cannot be changed to prevent broken links.</p>}
                 </div>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
-                <input type="number" value={displayOrder} onChange={e => setDisplayOrder(e.target.value)} required min="1" className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200" />
+                <input type="number" value={displayOrder} onChange={e => setDisplayOrder(e.target.value)} required min="1" className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus" />
                 <p className="text-[10px] text-gray-500 mt-1">If this number is already taken, existing categories will automatically shift down.</p>
               </div>
 

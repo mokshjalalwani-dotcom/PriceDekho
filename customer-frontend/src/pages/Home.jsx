@@ -61,7 +61,7 @@ const Home = () => {
               <h2 className="section-heading text-[clamp(1.1rem,4vw,1.5rem)] leading-tight sm:text-2xl">What do you want to buy today?</h2>
               <p className="text-sm text-gray-500 mt-1 sm:mt-1.5 hidden sm:block">Browse from our wide range of home appliances</p>
             </div>
-            <Link to="/shop" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
+            <Link to="/shop" className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors shrink-0">
               View All <ChevronRight size={14} />
             </Link>
           </div>
@@ -98,7 +98,7 @@ const Home = () => {
             {[
               { icon: ShieldCheck, label: 'Genuine Products', sub: '100% authentic brands', color: 'text-green-600', bg: 'bg-green-50' },
               { icon: Truck, label: 'Fast Delivery', sub: 'Quick & reliable shipping', color: 'text-blue-600', bg: 'bg-blue-50' },
-              { icon: Zap, label: 'Best Prices', sub: 'Competitive pricing always', color: 'text-orange-600', bg: 'bg-orange-50' },
+              { icon: Zap, label: 'Best Prices', sub: 'Competitive pricing always', color: 'text-theme-primary', bg: 'bg-theme-light' },
               { icon: Headphones, label: 'Expert Support', sub: 'Dedicated service team', color: 'text-purple-600', bg: 'bg-purple-50' },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 px-4 py-3">
@@ -123,7 +123,7 @@ const Home = () => {
               <h2 className="section-heading">Trending Products</h2>
               <p className="text-sm text-gray-500 mt-1.5">Top-rated picks from our store</p>
             </div>
-            <Link to="/shop?sortBy=rating_desc" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
+            <Link to="/shop?sortBy=rating_desc" className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors shrink-0">
               View All <ChevronRight size={14} />
             </Link>
           </div>
@@ -148,7 +148,7 @@ const Home = () => {
               <h2 className="section-heading">Latest Arrivals</h2>
               <p className="text-sm text-gray-500 mt-1.5">Freshly added to our inventory</p>
             </div>
-            <Link to="/shop?sortBy=newest" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
+            <Link to="/shop?sortBy=newest" className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors shrink-0">
               View All <ChevronRight size={14} />
             </Link>
           </div>

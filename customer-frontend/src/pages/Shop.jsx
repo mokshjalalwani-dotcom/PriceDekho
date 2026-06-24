@@ -189,9 +189,9 @@ const Shop = () => {
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center text-sm text-gray-500">
-            <button onClick={() => navigate('/')} className="hover:text-orange-500 transition-colors">Home</button>
+            <button onClick={() => navigate('/')} className="hover:text-theme-primary transition-colors">Home</button>
             <ChevronRight size={14} className="mx-1.5 text-gray-300" />
-            <button onClick={() => navigate('/shop')} className="hover:text-orange-500 transition-colors">Shop</button>
+            <button onClick={() => navigate('/shop')} className="hover:text-theme-primary transition-colors">Shop</button>
             {currentCategory && (
               <>
                 <ChevronRight size={14} className="mx-1.5 text-gray-300" />
@@ -213,7 +213,7 @@ const Shop = () => {
           </div>
           <div className="flex items-center gap-3">
             <button
-              className="md:hidden flex items-center gap-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg px-3.5 py-2.5 hover:border-orange-300 transition-colors shadow-sm"
+              className="md:hidden flex items-center gap-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg px-3.5 py-2.5 hover:border-theme-focus transition-colors shadow-sm"
               onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
             >
               <SlidersHorizontal size={16} /> Filters {activeFilters.length > 0 && `(${activeFilters.length})`}
@@ -221,7 +221,7 @@ const Shop = () => {
             <select
               value={sortParam}
               onChange={handleSortChange}
-              className="border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-gray-700 focus:ring-2 focus:ring-orange-200 outline-none shadow-sm cursor-pointer appearance-none pr-8"
+              className="border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-gray-700 focus:ring-2 focus:ring-theme-focus outline-none shadow-sm cursor-pointer appearance-none pr-8"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`, backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em' }}
             >
               <option value="">Sort: Featured</option>
@@ -242,7 +242,7 @@ const Shop = () => {
               <button
                 key={`${key}-${value}`}
                 onClick={() => toggleFilter(key, value)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-700 text-xs font-medium rounded-full border border-orange-200 hover:bg-orange-100 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-theme-light text-theme-dark text-xs font-medium rounded-full border border-theme-light hover:bg-theme-light transition-colors"
               >
                 <span className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>: {value}
                 <X size={12} />
@@ -271,7 +271,7 @@ const Shop = () => {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200/60 p-5 md:sticky md:top-24 max-h-[calc(100vh-120px)] overflow-y-auto h-full md:h-auto">
               <div className="flex items-center justify-between mb-5 pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2">
-                  <Filter size={18} className="text-orange-500" />
+                  <Filter size={18} className="text-theme-primary" />
                   <h2 className="text-base font-bold text-gray-900">Filters</h2>
                 </div>
                 <button
@@ -291,7 +291,7 @@ const Shop = () => {
                     <div className="space-y-0.5">
                       <button
                         onClick={() => navigate('/shop')}
-                        className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${!categoryParam ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
+                        className={`block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${!categoryParam ? 'bg-theme-light text-theme-primary font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
                       >
                         All Categories
                       </button>
@@ -299,7 +299,7 @@ const Shop = () => {
                         <button
                           key={cat.slug}
                           onClick={() => handleCategoryChange(cat.slug)}
-                          className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${categoryParam === cat.slug ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
+                          className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${categoryParam === cat.slug ? 'bg-theme-light text-theme-primary font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
                         >
                           <span>{cat.name}</span>
                           {categoryParam === cat.slug && <ChevronRight size={12} />}
@@ -311,19 +311,19 @@ const Shop = () => {
                   <>
                     <button 
                       onClick={() => navigate('/shop')}
-                      className="flex items-center text-sm font-medium text-gray-500 hover:text-orange-500 mb-4 transition-colors group"
+                      className="flex items-center text-sm font-medium text-gray-500 hover:text-theme-primary mb-4 transition-colors group"
                     >
                       <ChevronLeft size={16} className="mr-1 group-hover:-translate-x-0.5 transition-transform" /> Back to Categories
                     </button>
                     <button
                       onClick={() => updateParams({ childCategory: '', subCategory: '' })}
-                      className={`block w-full text-left font-bold mb-3 text-sm transition-colors ${!searchParams.get('childCategory') ? 'text-orange-600' : 'text-gray-900 hover:text-orange-600'}`}
+                      className={`block w-full text-left font-bold mb-3 text-sm transition-colors ${!searchParams.get('childCategory') ? 'text-theme-primary' : 'text-gray-900 hover:text-theme-primary'}`}
                     >
                       {currentCategory.name}
                     </button>
                     
                     {currentCategory?.subCategories?.length > 0 && (
-                      <div className="space-y-0.5 border-l-2 border-orange-100 pl-3 ml-1">
+                      <div className="space-y-0.5 border-l-2 border-theme-light pl-3 ml-1">
                         
                         {currentCategory.subCategories.map(sub => {
                           const subName = typeof sub === 'string' ? sub : sub.name;
@@ -336,7 +336,7 @@ const Shop = () => {
                             <div key={subName} className="py-0.5">
                                <button 
                                  onClick={() => updateParams({ childCategory: subName, subCategory: '' })}
-                                 className={`block w-full text-left py-1.5 text-sm transition-colors ${isActiveChild && !searchParams.get('subCategory') ? 'text-orange-600 font-medium' : isActiveChild ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}
+                                 className={`block w-full text-left py-1.5 text-sm transition-colors ${isActiveChild && !searchParams.get('subCategory') ? 'text-theme-primary font-medium' : isActiveChild ? 'text-gray-900 font-medium' : 'text-gray-600 hover:text-gray-900'}`}
                                >
                                  {subName}
                                </button>
@@ -372,11 +372,11 @@ const Shop = () => {
                       <label key={brand._id} className="flex items-center group cursor-pointer">
                         <input
                           type="checkbox"
-                          className="w-3.5 h-3.5 rounded text-orange-500 border-gray-300 focus:ring-orange-400"
+                          className="w-3.5 h-3.5 rounded text-theme-primary border-gray-300 focus:ring-theme-focus"
                           checked={isFilterActive('brand', brand.slug)}
                           onChange={() => toggleFilter('brand', brand.slug)}
                         />
-                        <span className={`ml-2.5 text-sm transition-colors ${isFilterActive('brand', brand.slug) ? 'text-orange-600 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                        <span className={`ml-2.5 text-sm transition-colors ${isFilterActive('brand', brand.slug) ? 'text-theme-primary font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
                           {brand.name}
                         </span>
                       </label>
@@ -393,11 +393,11 @@ const Shop = () => {
                     <label key={opt} className="flex items-center group cursor-pointer">
                       <input
                         type="checkbox"
-                        className="w-3.5 h-3.5 rounded text-orange-500 border-gray-300 focus:ring-orange-400"
+                        className="w-3.5 h-3.5 rounded text-theme-primary border-gray-300 focus:ring-theme-focus"
                         checked={isFilterActive('availability', opt)}
                         onChange={() => toggleFilter('availability', opt)}
                       />
-                      <span className={`ml-2.5 text-sm transition-colors ${isFilterActive('availability', opt) ? 'text-orange-600 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                      <span className={`ml-2.5 text-sm transition-colors ${isFilterActive('availability', opt) ? 'text-theme-primary font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
                         {opt}
                       </span>
                     </label>
@@ -417,11 +417,11 @@ const Shop = () => {
                             <label key={opt} className="flex items-center group cursor-pointer">
                               <input
                                 type="checkbox"
-                                className="w-3.5 h-3.5 rounded text-orange-500 border-gray-300 focus:ring-orange-400"
+                                className="w-3.5 h-3.5 rounded text-theme-primary border-gray-300 focus:ring-theme-focus"
                                 checked={isFilterActive(field.key, opt)}
                                 onChange={() => toggleFilter(field.key, opt)}
                               />
-                              <span className={`ml-2.5 text-sm transition-colors ${isFilterActive(field.key, opt) ? 'text-orange-600 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                              <span className={`ml-2.5 text-sm transition-colors ${isFilterActive(field.key, opt) ? 'text-theme-primary font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
                                 {opt}
                               </span>
                             </label>
@@ -431,11 +431,11 @@ const Shop = () => {
                             <label key={opt} className="flex items-center group cursor-pointer">
                               <input
                                 type="checkbox"
-                                className="w-3.5 h-3.5 rounded text-orange-500 border-gray-300 focus:ring-orange-400"
+                                className="w-3.5 h-3.5 rounded text-theme-primary border-gray-300 focus:ring-theme-focus"
                                 checked={isFilterActive(field.key, opt)}
                                 onChange={() => toggleFilter(field.key, opt)}
                               />
-                              <span className={`ml-2.5 text-sm transition-colors ${isFilterActive(field.key, opt) ? 'text-orange-600 font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
+                              <span className={`ml-2.5 text-sm transition-colors ${isFilterActive(field.key, opt) ? 'text-theme-primary font-medium' : 'text-gray-600 group-hover:text-gray-900'}`}>
                                 {opt}
                               </span>
                             </label>
@@ -489,7 +489,7 @@ const Shop = () => {
                     key={x + 1}
                     onClick={() => handlePageChange(x + 1)}
                     className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-sm transition-colors ${pageNum === x + 1
-                        ? 'bg-orange-500 text-white shadow-md'
+                        ? 'bg-theme-primary text-white shadow-md'
                         : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
                       }`}
                   >

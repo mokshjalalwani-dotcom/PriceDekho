@@ -20,7 +20,7 @@ const Footer = () => {
               <div className="w-[42px] h-[42px] rounded-lg flex items-center justify-center overflow-hidden bg-white p-1">
                 <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
               </div>
-              <span className="font-bold text-2xl tracking-tight text-white">Satguru<span style={{ color: 'rgb(123,63,0)' }}>Electricals</span></span>
+              <span className="font-bold text-2xl tracking-tight text-white">Satguru<span style={{ color: 'var(--theme-primary)' }}>Electricals</span></span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mt-4">
               Your trusted partner for premium home appliances & electronics. Quality products, competitive prices, and exceptional service since 1995.

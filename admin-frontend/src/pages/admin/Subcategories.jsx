@@ -136,7 +136,7 @@ const AdminSubcategories = ({ categories = [] }) => {
                   <button onClick={() => handleOpenModal(sub)} className="text-gray-400 hover:text-blue-500 mr-3 transition-colors" title="Edit"><Edit size={18} /></button>
                   <button 
                     onClick={() => handleToggleActive(sub)} 
-                    className={`transition-colors ${sub.isActive ? 'text-gray-400 hover:text-orange-500' : 'text-green-500 hover:text-green-600'}`} 
+                    className={`transition-colors ${sub.isActive ? 'text-gray-400 hover:text-theme-primary' : 'text-green-500 hover:text-green-600'}`} 
                     title={sub.isActive ? 'Disable' : 'Enable'}
                   >
                     {sub.isActive ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -170,7 +170,7 @@ const AdminSubcategories = ({ categories = [] }) => {
                       }
                     }} 
                     required 
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200" 
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus" 
                   />
                 </div>
                 <div>
@@ -180,7 +180,7 @@ const AdminSubcategories = ({ categories = [] }) => {
                     value={slug} 
                     onChange={e => setSlug(e.target.value)} 
                     disabled={!!selectedSub} 
-                    className={`w-full px-3 py-2 border border-gray-200 rounded-lg ${selectedSub ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-orange-200'}`} 
+                    className={`w-full px-3 py-2 border border-gray-200 rounded-lg ${selectedSub ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-theme-focus'}`} 
                     placeholder="Auto-generated if empty"
                   />
                 </div>
@@ -193,7 +193,7 @@ const AdminSubcategories = ({ categories = [] }) => {
                   onChange={e => setCategoryId(e.target.value)} 
                   required 
                   disabled={!!selectedSub}
-                  className={`w-full px-3 py-2 border border-gray-200 rounded-lg ${selectedSub ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-orange-200'}`}
+                  className={`w-full px-3 py-2 border border-gray-200 rounded-lg ${selectedSub ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-theme-focus'}`}
                 >
                   <option value="" disabled>Select a Category</option>
                   {categories.map(cat => (
@@ -212,7 +212,7 @@ const AdminSubcategories = ({ categories = [] }) => {
                         value={childCategory} 
                         onChange={e => setChildCategory(e.target.value)} 
                         required 
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200"
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus"
                       >
                         <option value="" disabled>Select a Child Category</option>
                         {selectedCat.subCategories.map(sub => {
@@ -228,7 +228,7 @@ const AdminSubcategories = ({ categories = [] }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
-                <input type="number" value={displayOrder} onChange={e => setDisplayOrder(e.target.value)} required min="1" className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200" />
+                <input type="number" value={displayOrder} onChange={e => setDisplayOrder(e.target.value)} required min="1" className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus" />
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">

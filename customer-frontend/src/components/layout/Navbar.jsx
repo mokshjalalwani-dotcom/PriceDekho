@@ -42,13 +42,13 @@ const Navbar = () => {
               <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
             </div>
             <span className="font-[800] text-[15px] sm:text-lg tracking-tight text-[#242933] truncate">
-              Satguru<span style={{ color: 'rgb(123,63,0)' }}>Electricals</span>
+              Satguru<span style={{ color: 'var(--theme-primary)' }}>Electricals</span>
             </span>
           </Link>
 
           {/* Search Bar - Desktop */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
-            <div className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-orange-300 focus-within:bg-white transition-all h-[42px]">
+            <div className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-theme-focus focus-within:bg-white transition-all h-[42px]">
               <div className="flex items-center pl-4 text-gray-400">
                 <Search size={16} />
               </div>
@@ -67,24 +67,24 @@ const Navbar = () => {
 
           {/* User Actions */}
           <div className="hidden md:flex items-center gap-1">
-            <Link to="/compare" className="flex items-center gap-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 font-medium transition-colors text-sm relative rounded-full px-3 py-2">
+            <Link to="/compare" className="flex items-center gap-1.5 text-gray-500 hover:text-[var(--color-primary)] hover:bg-[var(--theme-light)] font-medium transition-colors text-sm relative rounded-full px-3 py-2">
               <GitCompare size={19} />
               <span className="hidden lg:inline">Compare</span>
               {compareCount > 0 && (
-                <span className="absolute -top-0.5 right-0.5 bg-blue-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
+                <span className="absolute -top-0.5 right-0.5 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {compareCount}
                 </span>
               )}
             </Link>
-            <Link to="/wishlist" className="text-gray-500 hover:text-red-500 hover:bg-red-50 transition-colors relative rounded-full p-2.5">
+            <Link to="/wishlist" className="text-gray-500 hover:text-[var(--color-primary)] hover:bg-[var(--theme-light)] transition-colors relative rounded-full p-2.5">
               <Heart size={20} />
               {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 right-0 bg-red-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
+                <span className="absolute -top-0.5 right-0 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
                   {wishlistCount > 9 ? '9+' : wishlistCount}
                 </span>
               )}
             </Link>
-            <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] hover:bg-orange-50 transition-colors relative rounded-full p-2.5">
+            <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] hover:bg-[var(--theme-light)] transition-colors relative rounded-full p-2.5">
               <ShoppingCart size={20} />
               {cartCount > 0 && (
                 <span className="absolute -top-0.5 right-0 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
@@ -112,7 +112,7 @@ const Navbar = () => {
 
         {/* Mobile Search Bar - Rendered below main navbar header */}
         <div className="md:hidden px-4 pb-3">
-          <form onSubmit={handleSearch} className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-orange-300 focus-within:bg-white transition-all h-[40px]">
+          <form onSubmit={handleSearch} className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-theme-focus focus-within:bg-white transition-all h-[40px]">
             <div className="flex items-center pl-3 text-gray-400">
               <Search size={16} />
             </div>
@@ -141,7 +141,7 @@ const Navbar = () => {
                 key={cat.slug}
                 to={`/shop?category=${cat.slug}`}
                 onClick={() => setIsMenuOpen(false)}
-                className="block px-3 py-2 text-base font-medium text-gray-800 hover:text-orange-500 hover:bg-orange-50 rounded-lg"
+                className="block px-3 py-2 text-base font-medium text-gray-800 hover:text-theme-primary hover:bg-theme-light rounded-lg"
               >
                 {cat.name}
               </Link>

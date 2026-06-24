@@ -2,12 +2,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #FF6600; 
-  --color-primary-dark: #E65C00;
+  --color-theme-primary: var(--theme-primary, #FF6600);
+  --color-theme-light: var(--theme-light, #FFF3E0);
+  --color-theme-dark: var(--theme-dark, #E65C00);
+  --color-theme-hover: var(--theme-hover, #E65C00);
+  --color-theme-focus: var(--theme-focus, #FF8533);
+
+  --color-primary: var(--theme-primary, #FF6600); 
+  --color-primary-dark: var(--theme-hover, #E65C00);
   --color-secondary: #0F172A;
   --color-secondary-light: #1E293B;
   --color-background: #F5F5F3;
   --color-surface: #FFFFFF;
+}
+
+:root {
+  /* Default fallbacks for the dynamic theme to prevent flashing */
+  --theme-primary: #FF6600;
+  --theme-light: #FFF3E0;
+  --theme-dark: #E65C00;
+  --theme-hover: #E65C00;
+  --theme-focus: #FF8533;
 }
 
 @layer base {
@@ -55,7 +70,7 @@
     @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-green-500 text-white;
   }
   .badge-featured {
-    @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-orange-500 text-white;
+    @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-theme-primary text-white;
   }
   .badge-oos {
     @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-gray-600 text-white;

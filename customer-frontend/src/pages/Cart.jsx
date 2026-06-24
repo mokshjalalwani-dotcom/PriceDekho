@@ -13,7 +13,7 @@ const Cart = () => {
   if (cart.length === 0) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-6 text-center px-4">
-        <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center">
+        <div className="w-24 h-24 bg-theme-light rounded-full flex items-center justify-center">
           <ShoppingBag size={40} className="text-[var(--color-primary)]" />
         </div>
         <div>
@@ -102,7 +102,7 @@ const Cart = () => {
                   </span>
                 </div>
                 {shippingPrice > 0 && (
-                  <p className="text-xs text-orange-600 bg-orange-50 rounded-lg p-2">
+                  <p className="text-xs text-theme-primary bg-theme-light rounded-lg p-2">
                     Add ₹{(999 - cartTotal).toLocaleString()} more for free shipping
                   </p>
                 )}

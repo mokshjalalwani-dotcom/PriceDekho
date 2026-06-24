@@ -18,6 +18,7 @@ import brandRoutes from './routes/brandRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import subCategoryRoutes from './routes/subCategoryRoutes.js';
+import themeRoutes from './routes/themeRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -112,6 +113,7 @@ app.use('/api/admin', adminRoutes);  // /api/admin/products
 app.use('/api/auth', customerAuthRouter); // /api/auth/register, /api/auth/login
 app.use('/api/settings', settingsRoutes); // /api/settings
 app.use('/api/subcategories', subCategoryRoutes);
+app.use('/api/theme', themeRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

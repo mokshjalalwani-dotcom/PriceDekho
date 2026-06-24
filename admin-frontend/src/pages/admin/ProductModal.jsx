@@ -354,7 +354,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
 
   if (!isOpen) return null;
 
-  const inputCls = 'w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm outline-none transition-all';
+  const inputCls = 'w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus focus:border-transparent text-sm outline-none transition-all';
   const labelCls = 'block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide';
 
   const renderCategoryFields = () => {
@@ -412,7 +412,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
         type="button"
         onClick={() => toggleSection(section.id)}
         className={`w-full flex items-center justify-between px-5 py-3 rounded-lg transition-colors ${
-          isOpen ? 'bg-orange-50 text-orange-700' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+          isOpen ? 'bg-theme-light text-theme-dark' : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
         }`}
       >
         <div className="flex items-center gap-2 font-semibold text-sm">
@@ -434,7 +434,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
               {product ? 'Edit Product' : 'Add New Product'}
             </h2>
             {selectedCategorySlug && categoryConfig && (
-              <span className="text-xs text-orange-600 font-medium">{categoryConfig.label} Form</span>
+              <span className="text-xs text-theme-primary font-medium">{categoryConfig.label} Form</span>
             )}
           </div>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -508,7 +508,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                         filteredBrands.map(b => (
                           <div
                             key={b._id}
-                            className={`px-4 py-2 cursor-pointer hover:bg-orange-50 hover:text-orange-600 transition-colors text-sm ${formData.brand === b._id ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-700'}`}
+                            className={`px-4 py-2 cursor-pointer hover:bg-theme-light hover:text-theme-primary transition-colors text-sm ${formData.brand === b._id ? 'bg-theme-light text-theme-primary font-medium' : 'text-gray-700'}`}
                             onClick={() => {
                               setFormData(prev => ({ ...prev, brand: b._id }));
                               setBrandSearch('');
@@ -601,7 +601,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 </div>
                 <div className="flex items-end gap-4 pb-1">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange} className="w-4 h-4 text-orange-500 rounded" />
+                    <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange} className="w-4 h-4 text-theme-primary rounded" />
                     <span className="text-sm font-medium text-gray-700">Featured</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
@@ -662,7 +662,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className={labelCls}>Gallery Images (URLs)</label>
-                  <button type="button" onClick={() => setFormData(prev => ({ ...prev, galleryImages: [...prev.galleryImages, ''] }))} className="text-xs text-orange-600 font-bold hover:underline">+ Add Image</button>
+                  <button type="button" onClick={() => setFormData(prev => ({ ...prev, galleryImages: [...prev.galleryImages, ''] }))} className="text-xs text-theme-primary font-bold hover:underline">+ Add Image</button>
                 </div>
                 <div className="space-y-2">
                   {(formData.galleryImages || []).map((img, idx) => (
@@ -719,7 +719,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className={labelCls}>Key Highlights</label>
-                  <button type="button" onClick={() => addArrayItem('highlights')} className="text-xs text-orange-600 font-bold hover:underline">+ Add</button>
+                  <button type="button" onClick={() => addArrayItem('highlights')} className="text-xs text-theme-primary font-bold hover:underline">+ Add</button>
                 </div>
                 {(formData.highlights || []).map((h, idx) => (
                   <div key={idx} className="flex gap-2 mb-2">
@@ -731,7 +731,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className={labelCls}>Box Contents</label>
-                  <button type="button" onClick={() => addArrayItem('boxContents')} className="text-xs text-orange-600 font-bold hover:underline">+ Add</button>
+                  <button type="button" onClick={() => addArrayItem('boxContents')} className="text-xs text-theme-primary font-bold hover:underline">+ Add</button>
                 </div>
                 {(formData.boxContents || []).map((b, idx) => (
                   <div key={idx} className="flex gap-2 mb-2">
@@ -771,7 +771,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   <button type="button" onClick={() => addSpecField(gIdx)} className="text-xs text-blue-600 font-bold hover:underline ml-4">+ Add Field</button>
                 </div>
               ))}
-              <button type="button" onClick={addSpecGroup} className="flex items-center gap-1 text-sm text-orange-600 font-bold hover:underline">
+              <button type="button" onClick={addSpecGroup} className="flex items-center gap-1 text-sm text-theme-primary font-bold hover:underline">
                 <Plus size={14} /> Add Specification Group
               </button>
             </div>
@@ -806,7 +806,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   </div>
                 </div>
               ))}
-              <button type="button" onClick={addVariant} className="flex items-center gap-1 text-sm text-orange-600 font-bold hover:underline">
+              <button type="button" onClick={addVariant} className="flex items-center gap-1 text-sm text-theme-primary font-bold hover:underline">
                 <Plus size={14} /> Add Variant
               </button>
             </div>
@@ -831,7 +831,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
             <button type="button" onClick={onClose} className="px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium text-sm">
               Cancel
             </button>
-            <button form="product-form" type="submit" disabled={loading} className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2 font-bold text-sm shadow-lg shadow-orange-500/20 disabled:opacity-50">
+            <button form="product-form" type="submit" disabled={loading} className="px-6 py-2 bg-theme-primary text-white rounded-lg hover:bg-theme-hover transition-colors flex items-center gap-2 font-bold text-sm shadow-lg shadow-theme-primary/20 disabled:opacity-50">
               {loading ? 'Saving...' : <><Save size={16} /> {product ? 'Update' : 'Add Product'}</>}
             </button>
           </div>

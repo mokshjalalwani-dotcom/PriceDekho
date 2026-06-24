@@ -151,7 +151,7 @@ const AdminBrands = ({ products = [] }) => {
           </div>
           <input
             type="text"
-            className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 text-sm outline-none transition-all"
+            className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus text-sm outline-none transition-all"
             placeholder="Search brands..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -161,7 +161,7 @@ const AdminBrands = ({ products = [] }) => {
           <select 
             value={filterStatus} 
             onChange={(e) => setFilterStatus(e.target.value)} 
-            className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-200 outline-none"
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-theme-focus outline-none"
           >
             <option value="all">All Status</option>
             <option value="active">Active Only</option>
@@ -170,7 +170,7 @@ const AdminBrands = ({ products = [] }) => {
           <select 
             value={sortOrder} 
             onChange={(e) => setSortOrder(e.target.value)} 
-            className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-orange-200 outline-none"
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-theme-focus outline-none"
           >
             <option value="asc">Name (A-Z)</option>
             <option value="desc">Name (Z-A)</option>
@@ -227,7 +227,7 @@ const AdminBrands = ({ products = [] }) => {
                     <button onClick={() => handleOpenModal(brand)} className="text-gray-400 hover:text-blue-500 mr-3 transition-colors" title="Edit"><Edit size={18} /></button>
                     <button 
                       onClick={() => handleToggleActive(brand)} 
-                      className={`transition-colors ${brand.isActive ? 'text-gray-400 hover:text-orange-500' : 'text-green-500 hover:text-green-600'}`} 
+                      className={`transition-colors ${brand.isActive ? 'text-gray-400 hover:text-theme-primary' : 'text-green-500 hover:text-green-600'}`} 
                       title={brand.isActive ? 'Disable' : 'Enable'}
                     >
                       {brand.isActive ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -261,7 +261,7 @@ const AdminBrands = ({ products = [] }) => {
                     }
                   }} 
                   required 
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 outline-none" 
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus outline-none" 
                 />
               </div>
               
@@ -272,7 +272,7 @@ const AdminBrands = ({ products = [] }) => {
                   value={slug} 
                   onChange={e => setSlug(e.target.value)} 
                   disabled={!!selectedBrand} 
-                  className={`w-full px-3 py-2 border border-gray-200 rounded-lg outline-none ${selectedBrand ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-orange-200'}`} 
+                  className={`w-full px-3 py-2 border border-gray-200 rounded-lg outline-none ${selectedBrand ? 'bg-gray-100 text-gray-500' : 'focus:ring-2 focus:ring-theme-focus'}`} 
                   placeholder="Auto-generated if empty"
                 />
               </div>
@@ -283,7 +283,7 @@ const AdminBrands = ({ products = [] }) => {
                   type="text" 
                   value={logo} 
                   onChange={e => setLogo(e.target.value)} 
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 outline-none" 
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-theme-focus outline-none" 
                   placeholder="https://example.com/logo.png" 
                 />
               </div>
@@ -327,7 +327,7 @@ const AdminBrands = ({ products = [] }) => {
                                type="checkbox" 
                                checked={isSelected} 
                                onChange={(e) => handleCatToggle(e.target.checked)} 
-                               className="rounded text-orange-500 focus:ring-orange-500 w-4 h-4" 
+                               className="rounded text-theme-primary focus:ring-theme-focus w-4 h-4" 
                             />
                             {cat.name}
                           </label>
@@ -342,7 +342,7 @@ const AdminBrands = ({ products = [] }) => {
                                          type="checkbox" 
                                          checked={isChildSelected} 
                                          onChange={(e) => handleChildToggle(childCat, e.target.checked)} 
-                                         className="rounded text-orange-500 focus:ring-orange-500 w-3.5 h-3.5" 
+                                         className="rounded text-theme-primary focus:ring-theme-focus w-3.5 h-3.5" 
                                       />
                                       {childCat}
                                     </label>

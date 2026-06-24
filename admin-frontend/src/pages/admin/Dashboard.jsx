@@ -4,13 +4,14 @@ import axios from 'axios';
 import {
   Package, ShoppingBag, IndianRupee, Plus, Edit, Trash2, LogOut,
   ArrowUpRight, Search, X, ChevronDown, Tag, Eye, EyeOff, AlertTriangle,
-  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings
+  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings, Palette
 } from 'lucide-react';
 import ProductModal from './ProductModal';
 import AdminSettings from './AdminSettings';
 import AdminCategories from './Categories';
 import AdminSubcategories from './Subcategories';
 import AdminBrands from './Brands';
+import ThemeSettings from './ThemeSettings';
 
 const statusColors = {
   Pending: 'bg-yellow-100 text-yellow-700',
@@ -166,6 +167,7 @@ const AdminDashboard = () => {
     { key: 'subcategories', label: 'Subcategories', icon: Tag },
     { key: 'brands', label: 'Brands', icon: ShoppingBag },
     { key: 'orders', label: 'Orders', icon: ShoppingBag },
+    { key: 'theme', label: 'Theme Builder', icon: Palette },
     { key: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -193,10 +195,10 @@ const AdminDashboard = () => {
               <Icon size={22} className="shrink-0" />
               {!isSidebarCollapsed && <span className="ml-3">{label}</span>}
               {!isSidebarCollapsed && key === 'orders' && pendingOrders > 0 && (
-                <span className="ml-auto bg-orange-500 text-white text-xs font-bold rounded-full px-2 py-0.5">{pendingOrders}</span>
+                <span className="ml-auto bg-theme-primary text-white text-xs font-bold rounded-full px-2 py-0.5">{pendingOrders}</span>
               )}
               {isSidebarCollapsed && key === 'orders' && pendingOrders > 0 && (
-                <span className="absolute ml-8 mb-4 bg-orange-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{pendingOrders}</span>
+                <span className="absolute ml-8 mb-4 bg-theme-primary text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{pendingOrders}</span>
               )}
             </button>
           ))}
@@ -205,7 +207,7 @@ const AdminDashboard = () => {
           <button onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} title="Toggle Sidebar" className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'justify-start px-4'} py-2.5 text-gray-500 hover:bg-gray-50 font-medium rounded-lg transition-colors`}>
             {isSidebarCollapsed ? <ChevronRight size={20} className="shrink-0" /> : <><ChevronLeft size={20} className="shrink-0" /> <span className="ml-3">Collapse</span></>}
           </button>
-          <button onClick={handleLogout} title="Logout" className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'justify-start px-4'} py-2.5 text-red-500 hover:bg-red-50 font-medium rounded-lg transition-colors`}>
+          <button onClick={handleLogout} title="Logout" className={`w-full flex items-center ${isSidebarCollapsed ? 'justify-center' : 'justify-start px-4'} py-2.5 text-[var(--color-primary)] hover:bg-[var(--theme-light)] font-medium rounded-lg transition-colors`}>
             <LogOut size={20} className="shrink-0" /> {!isSidebarCollapsed && <span className="ml-3">Logout</span>}
           </button>
         </div>
@@ -220,9 +222,10 @@ const AdminDashboard = () => {
              activeTab === 'categories' ? 'Category Management' : 
              activeTab === 'subcategories' ? 'Subcategory Management' : 
              activeTab === 'brands' ? 'Brand Management' : 
-             activeTab === 'orders' ? 'Order Management' : 'Store Settings'}
+             activeTab === 'orders' ? 'Order Management' : 
+             activeTab === 'theme' ? 'Theme Builder' : 'Store Settings'}
           </h2>
-          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-[var(--color-primary)] font-bold">A</div>
+          <div className="w-10 h-10 rounded-full bg-theme-light flex items-center justify-center text-[var(--color-primary)] font-bold">A</div>
         </header>
 
         {/* Content */}
@@ -240,7 +243,7 @@ const AdminDashboard = () => {
             </div>
             <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
               <div className="flex justify-between items-start mb-3">
-                <div className="p-2.5 bg-orange-50 text-orange-500 rounded-lg"><ShoppingBag size={22} /></div>
+                <div className="p-2.5 bg-theme-light text-theme-primary rounded-lg"><ShoppingBag size={22} /></div>
                 {pendingOrders > 0 && <span className="text-xs bg-yellow-100 text-yellow-700 font-semibold px-2 py-1 rounded-full">{pendingOrders} Pending</span>}
               </div>
               <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Total Orders</h3>
@@ -267,12 +270,12 @@ const AdminDashboard = () => {
                     <input
                       type="text" placeholder="Search..."
                       value={productSearch} onChange={(e) => setProductSearch(e.target.value)}
-                      className="pl-8 pr-7 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200 w-44"
+                      className="pl-8 pr-7 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus w-44"
                     />
                     {productSearch && <button onClick={() => setProductSearch('')} className="absolute right-2 top-2.5 text-gray-400 hover:text-gray-600"><X size={12} /></button>}
                   </div>
                   {/* Category Filter */}
-                  <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="py-2 px-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200">
+                  <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="py-2 px-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus">
                     <option value="">All Categories</option>
                     {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                   </select>
@@ -423,6 +426,11 @@ const AdminDashboard = () => {
             <AdminBrands products={products} categories={categories} />
           )}
 
+          {/* Theme Tab */}
+          {activeTab === 'theme' && (
+            <ThemeSettings />
+          )}
+
           {/* Settings Tab */}
           {activeTab === 'settings' && (
             <AdminSettings />
@@ -459,7 +467,7 @@ const AdminDashboard = () => {
                   value={statusMessage}
                   onChange={(e) => setStatusMessage(e.target.value)}
                   placeholder="e.g. We have confirmed your order and will ship it tomorrow!"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-200 resize-none h-24 text-sm"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus resize-none h-24 text-sm"
                 />
               </div>
             </div>

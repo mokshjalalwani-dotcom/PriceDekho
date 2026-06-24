@@ -13,8 +13,12 @@ axios.defaults.baseURL = baseURL;
 
 console.log('[PriceDekho Admin] API Base URL:', baseURL || '(proxy mode)');
 
+import { ThemeProvider } from './context/ThemeContext.jsx'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </StrictMode>,
 )

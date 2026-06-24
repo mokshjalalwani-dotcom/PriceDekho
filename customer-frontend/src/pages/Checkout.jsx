@@ -163,15 +163,15 @@ const Checkout = () => {
                 
                 <div className="space-y-4">
                   {/* COD Option */}
-                  <label className={`flex items-start gap-3 cursor-pointer p-4 border-2 rounded-xl transition-colors ${paymentMethod === 'COD' ? 'border-[var(--color-primary)] bg-orange-50' : 'border-gray-200 hover:border-orange-200'}`}>
+                  <label className={`flex items-start gap-3 cursor-pointer p-4 border-2 rounded-xl transition-colors ${paymentMethod === 'COD' ? 'border-[var(--color-primary)] bg-theme-light' : 'border-gray-200 hover:border-theme-light'}`}>
                     <input type="radio" name="paymentMethod" value="COD" checked={paymentMethod === 'COD'} onChange={() => setPaymentMethod('COD')} className="accent-[var(--color-primary)] mt-1" />
                     <div className="flex-1">
                       <p className="font-semibold text-gray-900">Cash on Delivery (COD)</p>
                       <p className="text-sm text-gray-500">Pay when your order arrives</p>
                       
                       {paymentMethod === 'COD' && settings?.codAdvanceEnabled && (
-                        <div className="mt-4 p-4 bg-white rounded-lg border border-orange-200 shadow-sm">
-                          <h4 className="font-semibold text-orange-800 mb-2">⚠️ Advance Payment Required</h4>
+                        <div className="mt-4 p-4 bg-white rounded-lg border border-theme-light shadow-sm">
+                          <h4 className="font-semibold text-theme-dark mb-2">⚠️ Advance Payment Required</h4>
                           <p className="text-sm text-gray-600 mb-4">
                             Please pay a <strong>{settings.codAdvancePercent}% advance (₹{((total * settings.codAdvancePercent) / 100).toLocaleString()})</strong> via UPI to confirm your COD order. The remaining amount will be collected on delivery.
                           </p>
@@ -206,14 +206,14 @@ const Checkout = () => {
 
                   {/* UPI Option */}
                   {settings?.upiEnabled && (
-                    <label className={`flex items-start gap-3 cursor-pointer p-4 border-2 rounded-xl transition-colors ${paymentMethod === 'UPI' ? 'border-[var(--color-primary)] bg-orange-50' : 'border-gray-200 hover:border-orange-200'}`}>
+                    <label className={`flex items-start gap-3 cursor-pointer p-4 border-2 rounded-xl transition-colors ${paymentMethod === 'UPI' ? 'border-[var(--color-primary)] bg-theme-light' : 'border-gray-200 hover:border-theme-light'}`}>
                       <input type="radio" name="paymentMethod" value="UPI" checked={paymentMethod === 'UPI'} onChange={() => setPaymentMethod('UPI')} className="accent-[var(--color-primary)] mt-1" />
                       <div className="flex-1">
                         <p className="font-semibold text-gray-900">Pay via UPI</p>
                         <p className="text-sm text-gray-500">Pay instantly using any UPI app</p>
                         
                         {paymentMethod === 'UPI' && (
-                          <div className="mt-4 p-4 bg-white rounded-lg border border-orange-200 shadow-sm">
+                          <div className="mt-4 p-4 bg-white rounded-lg border border-theme-light shadow-sm">
                             <div className="flex flex-col items-center gap-2 mb-4 bg-gray-50 p-3 rounded-lg border border-gray-100 text-center">
                               {settings.upiQrImage ? (
                                 <img src={settings.upiQrImage} alt="UPI QR" className="w-32 h-32 object-contain" />
