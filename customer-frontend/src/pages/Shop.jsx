@@ -26,7 +26,7 @@ const Shop = () => {
   const keywordParam = searchParams.get('keyword') || '';
 
   // Get category-specific filter fields
-  const dynamicFilterFields = useMemo(() => {
+  const categoryFilterFields = useMemo(() => {
     if (!categoryParam) return [];
     return getFilterFields(categoryParam, searchParams.get('subCategory'));
   }, [categoryParam, searchParams]);
