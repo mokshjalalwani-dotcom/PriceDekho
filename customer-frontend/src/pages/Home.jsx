@@ -54,11 +54,11 @@ const Home = () => {
   return (
     <div className="w-full">
       {/* Shop by Category */}
-      <section className="py-6 sm:pt-8 sm:pb-12 bg-white min-h-[calc(100dvh-70px)] sm:min-h-0 flex flex-col justify-center">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1 w-full justify-center">
-          <div className="flex items-center justify-between mb-6 sm:mb-8">
+      <section className="py-4 sm:pt-8 sm:pb-12 bg-white min-h-[calc(100dvh-70px)] sm:min-h-0 flex flex-col justify-center">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col w-full">
+          <div className="flex items-center justify-between mb-4 sm:mb-8">
             <div>
-              <h2 className="section-heading text-xl sm:text-2xl">What do you want to buy today?</h2>
+              <h2 className="section-heading text-lg sm:text-2xl leading-tight">What do you want to buy today?</h2>
               <p className="text-sm text-gray-500 mt-1 sm:mt-1.5 hidden sm:block">Browse from our wide range of home appliances</p>
             </div>
             <Link to="/shop" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
@@ -66,7 +66,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-5 sm:gap-4 lg:gap-6 my-auto">
+          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-5 sm:gap-4 lg:gap-6">
             {categoriesLoading ? (
               Array.from({ length: 16 }).map((_, i) => (
                 <div key={i} className="flex flex-col items-center w-full">
