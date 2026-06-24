@@ -75,11 +75,11 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
 
   const categoryConfig = useMemo(() => {
     const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
-    if (isCombinedCategory && !formData.subCategory) {
+    if (isCombinedCategory && !formData.childCategory) {
       return null;
     }
-    return getCategoryConfig(selectedCategorySlug, formData.subCategory);
-  }, [selectedCategorySlug, formData.subCategory]);
+    return getCategoryConfig(selectedCategorySlug, formData.childCategory || formData.subCategory);
+  }, [selectedCategorySlug, formData.subCategory, formData.childCategory]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,6 +153,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
       // Reset subcategory if category changes
       if (name === 'category') {
         nextState.subCategory = '';
+        nextState.childCategory = '';
       }
 
       return nextState;
@@ -265,7 +266,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
       if (!formData.sellingPrice || Number(formData.sellingPrice) <= 0) throw new Error('Valid price is required');
 
       const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
-      if (isCombinedCategory && !formData.subCategory) {
+      if (isCombinedCategory && !formData.childCategory) {
         throw new Error('Please select a Child Category.');
       }
 
@@ -506,14 +507,13 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                 </div>
                 <div>
                   <label className={labelCls}>
-                    Sub-Category {(subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) || selectedCategoryObj?.subCategories?.length > 0) && <span className="text-red-400">*</span>}
+                    Sub-Category {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) && <span className="text-red-400">*</span>}
                   </label>
-                  {(subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) || selectedCategoryObj?.subCategories?.length > 0) ? (
+                  {subcategories.some(s => s.category?._id === formData.category || s.category === formData.category) ? (
                     <select 
                       name="subCategory" 
-                      value={formData.subCategory} 
+                      value={formData.subCategory || ''} 
                       onChange={handleChange} 
-                      required={true}
                       className={inputCls}
                     >
                       <option value="">Select Subcategory</option>
@@ -522,15 +522,31 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                         .map(sub => (
                           <option key={sub._id} value={sub.name}>{sub.name}</option>
                       ))}
+                    </select>
+                  ) : (
+                    <input type="text" name="subCategory" value={formData.subCategory || ''} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />
+                  )}
+                </div>
+                {selectedCategoryObj?.subCategories?.length > 0 && (
+                  <div>
+                    <label className={labelCls}>
+                      Child Category <span className="text-red-400">*</span>
+                    </label>
+                    <select 
+                      name="childCategory" 
+                      value={formData.childCategory || ''} 
+                      onChange={handleChange} 
+                      required={true}
+                      className={inputCls}
+                    >
+                      <option value="">Select Child Category</option>
                       {selectedCategoryObj?.subCategories?.map(sub => {
                         const subName = typeof sub === 'string' ? sub : sub.name;
                         return <option key={`str-${subName}`} value={subName}>{subName}</option>;
                       })}
                     </select>
-                  ) : (
-                    <input type="text" name="subCategory" value={formData.subCategory} onChange={handleChange} className={inputCls} placeholder="Optional sub-category" disabled={!!formData.category} />
-                  )}
-                </div>
+                  </div>
+                )}
                 <div className="flex items-end gap-4 pb-1">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange} className="w-4 h-4 text-orange-500 rounded" />

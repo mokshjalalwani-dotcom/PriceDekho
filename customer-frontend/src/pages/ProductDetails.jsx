@@ -106,8 +106,22 @@ const ProductDetails = () => {
   
   const allImages = [product.mainImage, ...(product.galleryImages || []), ...(product.images || [])].filter(Boolean);
   const uniqueImages = [...new Set(allImages)];
-  const categorySlug = product.category?.slug || '';
-  const categoryConfig = getCategoryConfig(categorySlug, product.subCategory);
+  // Determine which config to use based on subCategory if needed
+  const categoryConfig = getCategoryConfig(product.category?.slug, product.childCategory || product.subCategory);
+
+  const breadcrumbs = [
+    { label: 'Home', link: '/' },
+    { label: 'Shop', link: '/shop' },
+    { label: product.category?.name || 'Category', link: `/shop?category=${product.category?.slug}` },
+  ];
+
+  if (product.childCategory || product.subCategory) {
+    const subCatParam = product.childCategory ? `childCategory=${product.childCategory}` : `subCategory=${product.subCategory}`;
+    breadcrumbs.push({ 
+      label: product.childCategory || product.subCategory, 
+      link: `/shop?category=${product.category?.slug}&${subCatParam}` 
+    });
+  }
 
   const structuredData = product ? {
     "@context": "https://schema.org/",

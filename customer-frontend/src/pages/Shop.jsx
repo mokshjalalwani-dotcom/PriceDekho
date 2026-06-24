@@ -28,7 +28,7 @@ const Shop = () => {
   // Get category-specific filter fields
   const categoryFilterFields = useMemo(() => {
     if (!categoryParam) return [];
-    return getFilterFields(categoryParam, searchParams.get('subCategory'));
+    return getFilterFields(categoryParam, searchParams.get('childCategory') || searchParams.get('subCategory'));
   }, [categoryParam, searchParams]);
 
   const { categories } = useCategory();
@@ -400,8 +400,8 @@ const Shop = () => {
             {currentCategory?.subCategories?.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 <button
-                  onClick={() => updateParam('subCategory', '')}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!searchParams.get('subCategory') ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
+                  onClick={() => updateParam('childCategory', '')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!searchParams.get('childCategory') ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
                 >
                   All
                 </button>
@@ -415,8 +415,8 @@ const Shop = () => {
                   return (
                     <button
                       key={subName}
-                      onClick={() => updateParam('subCategory', subName)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${searchParams.get('subCategory') === subName ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
+                      onClick={() => updateParam('childCategory', subName)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${searchParams.get('childCategory') === subName ? 'bg-orange-500 text-white shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:bg-orange-50'}`}
                     >
                       {subName}
                     </button>

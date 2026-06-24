@@ -79,10 +79,16 @@ export const getProducts = async (req, res) => {
       subCategoryFilter = { subCategory: req.query.subCategory };
     }
 
+    // --- Child Category filter ---
+    let childCategoryFilter = {};
+    if (req.query.childCategory) {
+      childCategoryFilter = { childCategory: req.query.childCategory };
+    }
+
     // --- Category-specific field filters ---
     const categoryFieldFilters = {};
     const reservedKeys = [
-      'page', 'pageSize', 'keyword', 'category', 'subCategory', 'brand', 'sortBy',
+      'page', 'pageSize', 'keyword', 'category', 'subCategory', 'childCategory', 'brand', 'sortBy',
       'minPrice', 'maxPrice', 'availability', 'color'
     ];
     Object.keys(req.query).forEach(key => {
@@ -114,6 +120,7 @@ export const getProducts = async (req, res) => {
       ...keyword,
       ...categoryFilter,
       ...subCategoryFilter,
+      ...childCategoryFilter,
       ...brandFilter,
       ...availabilityFilter,
       ...visibilityFilter,

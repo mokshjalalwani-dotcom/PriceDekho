@@ -28,13 +28,13 @@ const auditMixedCategories = async () => {
 
     const targetCategoryIds = [gasStoveCat?._id, fanCat?._id].filter(Boolean);
 
-    // Find all products in these categories that are missing a subCategory
+    // Find all products in these categories that are missing a childCategory
     const ambiguousProducts = await Product.find({
       category: { $in: targetCategoryIds },
       $or: [
-        { subCategory: { $exists: false } },
-        { subCategory: '' },
-        { subCategory: null }
+        { childCategory: { $exists: false } },
+        { childCategory: '' },
+        { childCategory: null }
       ]
     }).populate('category', 'name slug');
 

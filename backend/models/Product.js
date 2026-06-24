@@ -208,6 +208,7 @@ const productSchema = new mongoose.Schema({
   modelNumber: { type: String, default: '' },
   color: { type: String, default: '' },
   subCategory: { type: String, default: '' },
+  childCategory: { type: String, default: '' },
 
   // Pricing
   sellingPrice: { type: Number, required: true },
