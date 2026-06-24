@@ -54,11 +54,11 @@ const Home = () => {
   return (
     <div className="w-full">
       {/* Shop by Category */}
-      <section className="py-2 sm:pt-8 sm:pb-12 bg-white min-h-[calc(100dvh-120px)] sm:min-h-0 flex flex-col">
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-6 lg:px-8 flex flex-col flex-1 w-full justify-evenly">
-          <div className="flex items-center justify-between mb-2 sm:mb-8 px-2 sm:px-0">
+      <section className="py-6 sm:pt-8 sm:pb-12 bg-white min-h-[calc(100dvh-70px)] sm:min-h-0 flex flex-col justify-center">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1 w-full justify-center">
+          <div className="flex items-center justify-between mb-6 sm:mb-8">
             <div>
-              <h2 className="section-heading text-lg sm:text-2xl">What do you want to buy today?</h2>
+              <h2 className="section-heading text-xl sm:text-2xl">What do you want to buy today?</h2>
               <p className="text-sm text-gray-500 mt-1 sm:mt-1.5 hidden sm:block">Browse from our wide range of home appliances</p>
             </div>
             <Link to="/shop" className="text-sm text-orange-600 font-semibold hover:text-orange-700 flex items-center gap-1 transition-colors shrink-0">
@@ -66,7 +66,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-2 gap-y-3 sm:gap-4 lg:gap-6 flex-1 content-between sm:content-start">
+          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-3 gap-y-5 sm:gap-4 lg:gap-6 my-auto">
             {categoriesLoading ? (
               Array.from({ length: 16 }).map((_, i) => (
                 <div key={i} className="flex flex-col items-center w-full">
@@ -76,14 +76,14 @@ const Home = () => {
               ))
             ) : (
               categories.map((cat) => (
-                <div key={cat.slug} className="flex flex-col items-center w-full group justify-start">
+                <div key={cat.slug} className="flex flex-col items-center w-full group">
                   <Link
                     to={`/shop?category=${cat.slug}`}
-                    className={`w-full aspect-square rounded-[14px] sm:rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[65px] sm:max-w-[110px] mx-auto ring-1 ring-black/5`}
+                    className={`w-full aspect-square rounded-[16px] sm:rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 max-w-[85px] sm:max-w-[110px] mx-auto ring-1 ring-black/5 p-2 sm:p-0`}
                   >
-                    {React.cloneElement(cat.icon, { size: "100%", className: "w-6 h-6 sm:w-10 sm:h-10 text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
+                    {React.cloneElement(cat.icon, { size: "100%", className: "w-7 h-7 sm:w-10 sm:h-10 text-white stroke-[1.5] group-hover:scale-110 transition-transform" })}
                   </Link>
-                  <span className="font-semibold text-gray-700 text-[10px] sm:text-xs text-center leading-[1.1] mt-1.5 sm:mt-2.5 w-full line-clamp-2 px-0.5">{cat.name}</span>
+                  <span className="font-semibold text-gray-700 text-[10px] sm:text-xs text-center leading-[1.2] mt-2 sm:mt-2.5 w-full line-clamp-2 px-1">{cat.name}</span>
                 </div>
               ))
             )}
