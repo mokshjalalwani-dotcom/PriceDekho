@@ -6,6 +6,7 @@ const themeSchema = new mongoose.Schema({
   primaryDark: { type: String, default: '#E65C00' },
   primaryHover: { type: String, default: '#E65C00' },
   primaryFocus: { type: String, default: '#FF8533' },
+  discountBadge: { type: String, default: '#00C853' }, // Default bright green
   isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 

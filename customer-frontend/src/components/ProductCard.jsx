@@ -87,7 +87,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content */}
-      <div className="p-3 sm:p-3.5 flex flex-col flex-grow border-t border-gray-100">
+      <div className="p-2 sm:p-3.5 flex flex-col flex-grow border-t border-gray-100">
         {/* Brand */}
         <span className="inline-block text-sm text-gray-500 font-medium uppercase tracking-wider mb-1 bg-gray-100 px-2 py-0.5 rounded w-fit max-w-full truncate">
           {product.brand?.name || 'Brand'}
@@ -122,7 +122,7 @@ const ProductCard = ({ product }) => {
             {product.mrp && product.mrp > price && (
               <>
                 <span className="text-xs text-gray-400 line-through">₹{product.mrp.toLocaleString('en-IN')}</span>
-                <span className="text-[10px] font-bold text-green-600">{discount}% off</span>
+                <span className="text-[10px] font-bold" style={{ color: 'var(--theme-discount, #16a34a)' }}>{discount}% off</span>
               </>
             )}
           </div>

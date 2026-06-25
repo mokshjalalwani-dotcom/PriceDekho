@@ -187,7 +187,7 @@ const Shop = () => {
     <div className="bg-[var(--color-background)] min-h-screen pb-16">
       {/* Breadcrumb Bar */}
       <div className="bg-white border-b border-gray-100">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 py-2.5">
           <div className="flex items-center text-sm text-gray-500">
             <button onClick={() => navigate('/')} className="hover:text-theme-primary transition-colors">Home</button>
             <ChevronRight size={14} className="mx-1.5 text-gray-300" />
@@ -202,18 +202,18 @@ const Shop = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6 pt-3 md:pt-4">
         {/* Page Title */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3 md:mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900">
               {currentCategory ? currentCategory.name : keywordParam ? `Results for "${keywordParam}"` : 'All Products'}
             </h1>
-            {!loading && <p className="text-sm text-gray-500 mt-1">{total} products found</p>}
+            {!loading && <p className="text-xs md:text-sm text-gray-500 mt-1">{total} products found</p>}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <button
-              className="md:hidden flex items-center gap-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg px-3.5 py-2.5 hover:border-theme-focus transition-colors shadow-sm"
+              className="md:hidden flex items-center gap-2 text-xs md:text-sm text-gray-600 bg-white border border-gray-200 rounded-lg px-3 py-2 md:px-3.5 md:py-2.5 hover:border-theme-focus transition-colors shadow-sm"
               onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
             >
               <SlidersHorizontal size={16} /> Filters {activeFilters.length > 0 && `(${activeFilters.length})`}
@@ -221,7 +221,7 @@ const Shop = () => {
             <select
               value={sortParam}
               onChange={handleSortChange}
-              className="border border-gray-200 bg-white rounded-lg px-4 py-2.5 text-sm text-gray-700 focus:ring-2 focus:ring-theme-focus outline-none shadow-sm cursor-pointer appearance-none pr-8"
+              className="border border-gray-200 bg-white rounded-lg px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm text-gray-700 focus:ring-2 focus:ring-theme-focus outline-none shadow-sm cursor-pointer appearance-none pr-7 md:pr-8"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E")`, backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em' }}
             >
               <option value="">Sort: Featured</option>
@@ -237,27 +237,27 @@ const Shop = () => {
 
         {/* Active Filter Pills */}
         {activeFilters.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-5">
+          <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
             {activeFilters.map(([key, value]) => (
               <button
                 key={`${key}-${value}`}
                 onClick={() => toggleFilter(key, value)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-theme-light text-theme-dark text-xs font-medium rounded-full border border-theme-light hover:bg-theme-light transition-colors"
+                className="inline-flex items-center gap-1 md:gap-1.5 px-2.5 py-1 md:px-3 md:py-1.5 bg-theme-light text-theme-dark text-[10px] md:text-xs font-medium rounded-full border border-theme-light hover:bg-theme-light transition-colors"
               >
                 <span className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>: {value}
-                <X size={12} />
+                <X size={10} className="md:w-3 md:h-3" />
               </button>
             ))}
             <button
               onClick={clearAllFilters}
-              className="text-xs text-gray-500 hover:text-red-500 font-medium underline ml-1"
+              className="text-[10px] md:text-xs text-gray-500 hover:text-red-500 font-medium underline ml-1"
             >
               Clear All
             </button>
           </div>
         )}
 
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col md:flex-row gap-4">
           {/* Mobile Filter Overlay Backdrop */}
           {mobileFiltersOpen && (
             <div
@@ -267,9 +267,9 @@ const Shop = () => {
           )}
 
           {/* Sidebar Filters */}
-          <div className={`${mobileFiltersOpen ? 'fixed inset-y-0 left-0 z-40 w-72 animate-slide-in-left' : 'hidden'} md:relative md:block md:w-64 lg:w-72 shrink-0`}>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200/60 p-5 md:sticky md:top-24 max-h-[calc(100vh-120px)] overflow-y-auto h-full md:h-auto">
-              <div className="flex items-center justify-between mb-5 pb-3 border-b border-gray-100">
+          <div className={`${mobileFiltersOpen ? 'fixed inset-y-0 left-0 z-40 w-72 animate-slide-in-left' : 'hidden'} md:relative md:block md:w-60 lg:w-64 shrink-0`}>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200/60 p-4 md:sticky md:top-24 max-h-[calc(100vh-120px)] overflow-y-auto h-full md:h-auto">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2">
                   <Filter size={18} className="text-theme-primary" />
                   <h2 className="text-base font-bold text-gray-900">Filters</h2>
@@ -454,7 +454,7 @@ const Shop = () => {
 
 
             {loading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-5">
                 {Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)}
               </div>
             ) : products.length === 0 ? (
@@ -467,7 +467,7 @@ const Shop = () => {
                 <button onClick={clearAllFilters} className="btn-primary">Clear All Filters</button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4 lg:gap-5">
                 {products.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}

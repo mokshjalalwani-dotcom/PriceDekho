@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Plus, Edit, Eye, EyeOff, X, Tag } from 'lucide-react';
+import { Plus, Edit, Eye, EyeOff, X, Tag, Trash2 } from 'lucide-react';
 
 const AdminSubcategories = ({ categories = [] }) => {
   const [subcategories, setSubcategories] = useState([]);
@@ -90,6 +90,18 @@ const AdminSubcategories = ({ categories = [] }) => {
     }
   };
 
+  const handleDeleteSubcategory = async (sub) => {
+    const userInput = window.prompt(`Type "confirm" to delete the subcategory: ${sub.name}`);
+    if (userInput !== 'confirm') return;
+
+    try {
+      await axios.delete(`/api/admin/subcategories/${sub._id}`, authHeader);
+      fetchSubcategories();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to delete subcategory');
+    }
+  };
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
       <div className="p-5 border-b border-gray-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-gray-50/50">
@@ -136,10 +148,17 @@ const AdminSubcategories = ({ categories = [] }) => {
                   <button onClick={() => handleOpenModal(sub)} className="text-gray-400 hover:text-blue-500 mr-3 transition-colors" title="Edit"><Edit size={18} /></button>
                   <button 
                     onClick={() => handleToggleActive(sub)} 
-                    className={`transition-colors ${sub.isActive ? 'text-gray-400 hover:text-theme-primary' : 'text-green-500 hover:text-green-600'}`} 
+                    className={`transition-colors ${sub.isActive ? 'text-gray-400 hover:text-theme-primary mr-3' : 'text-green-500 hover:text-green-600 mr-3'}`} 
                     title={sub.isActive ? 'Disable' : 'Enable'}
                   >
                     {sub.isActive ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteSubcategory(sub)} 
+                    className="text-gray-400 hover:text-red-500 transition-colors" 
+                    title="Delete"
+                  >
+                    <Trash2 size={18} />
                   </button>
                 </td>
               </tr>

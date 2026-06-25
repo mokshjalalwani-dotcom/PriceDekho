@@ -434,6 +434,19 @@ router.patch('/brands/:id/toggle', protect, admin, async (req, res) => {
   }
 });
 
+// Admin: Hard Delete Brand
+router.delete('/brands/:id', protect, admin, async (req, res) => {
+  try {
+    const brand = await Brand.findById(req.params.id);
+    if (!brand) return res.status(404).json({ message: 'Brand not found' });
+    
+    await brand.deleteOne();
+    res.json({ message: 'Brand deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // =====================================================
 // SUBCATEGORIES
 // =====================================================
@@ -511,6 +524,19 @@ router.patch('/subcategories/:id/toggle', protect, admin, async (req, res) => {
     res.json({ message: `Subcategory ${subcategory.isActive ? 'enabled' : 'disabled'}`, subcategory: populated });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+});
+
+// Admin: Hard Delete Subcategory
+router.delete('/subcategories/:id', protect, admin, async (req, res) => {
+  try {
+    const subcategory = await Subcategory.findById(req.params.id);
+    if (!subcategory) return res.status(404).json({ message: 'Subcategory not found' });
+    
+    await subcategory.deleteOne();
+    res.json({ message: 'Subcategory deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

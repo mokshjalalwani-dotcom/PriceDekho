@@ -196,6 +196,30 @@ const categoryFieldsSchema = new mongoose.Schema({
   dustCapacity: String,
   cordLength: String,
   attachmentsIncluded: String,
+
+  // Kitchen Appliances (Induction, Kettle, Toaster, Air Fryer, etc.)
+  numberOfCookingZones: String,
+  panelMaterial: String,
+  preSetMenus: String,
+  touchControl: String,
+  autoShutOff: String,
+  keepWarmFunction: String,
+  numberOfSlices: String,
+  browningLevels: String,
+  nonStickCoating: String,
+  temperatureControl: String,
+  digitalDisplay: String,
+  steamerBasketIncluded: String,
+  coffeeMakerType: String,
+  capacityCups: String,
+  milkFrother: String,
+  heaterType: String,
+  heatSettings: String,
+  overheatProtection: String,
+  ironType: String,
+  soleplateMaterial: String,
+  steamBurst: String,
+  waterTankCapacity: String,
 }, { _id: false, strict: false });
 
 // --- Main Product Schema ---

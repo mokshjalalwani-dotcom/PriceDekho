@@ -91,7 +91,7 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
   }, [brands, brandSearch, formData.category, formData.childCategory, selectedCategorySlug]);
 
   const categoryConfig = useMemo(() => {
-    const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan';
+    const isCombinedCategory = selectedCategorySlug === 'gas-stove' || selectedCategorySlug === 'fan' || selectedCategorySlug === 'mixer';
     if (isCombinedCategory && !formData.childCategory) {
       return null;
     }

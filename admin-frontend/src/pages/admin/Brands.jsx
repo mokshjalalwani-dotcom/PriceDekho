@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { Plus, Edit, Eye, EyeOff, X, Image as ImageIcon, Search } from 'lucide-react';
+import { Plus, Edit, Eye, EyeOff, X, Image as ImageIcon, Search, Trash2 } from 'lucide-react';
 
 const AdminBrands = ({ products = [] }) => {
   const [brands, setBrands] = useState([]);
@@ -102,6 +102,18 @@ const AdminBrands = ({ products = [] }) => {
       fetchBrands();
     } catch (error) {
       alert(error.response?.data?.message || 'Failed to toggle status');
+    }
+  };
+
+  const handleDeleteBrand = async (brand) => {
+    const userInput = window.prompt(`Type "confirm" to delete the brand: ${brand.name}`);
+    if (userInput !== 'confirm') return;
+
+    try {
+      await axios.delete(`/api/admin/brands/${brand._id}`, authHeader);
+      fetchBrands();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to delete brand');
     }
   };
 
@@ -227,10 +239,17 @@ const AdminBrands = ({ products = [] }) => {
                     <button onClick={() => handleOpenModal(brand)} className="text-gray-400 hover:text-blue-500 mr-3 transition-colors" title="Edit"><Edit size={18} /></button>
                     <button 
                       onClick={() => handleToggleActive(brand)} 
-                      className={`transition-colors ${brand.isActive ? 'text-gray-400 hover:text-theme-primary' : 'text-green-500 hover:text-green-600'}`} 
+                      className={`transition-colors ${brand.isActive ? 'text-gray-400 hover:text-theme-primary mr-3' : 'text-green-500 hover:text-green-600 mr-3'}`} 
                       title={brand.isActive ? 'Disable' : 'Enable'}
                     >
                       {brand.isActive ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteBrand(brand)} 
+                      className="text-gray-400 hover:text-red-500 transition-colors" 
+                      title="Delete"
+                    >
+                      <Trash2 size={18} />
                     </button>
                   </td>
                 </tr>

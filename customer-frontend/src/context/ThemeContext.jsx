@@ -22,6 +22,7 @@ export const ThemeProvider = ({ children }) => {
         if (data.primaryDark) root.style.setProperty('--theme-dark', data.primaryDark);
         if (data.primaryHover) root.style.setProperty('--theme-hover', data.primaryHover);
         if (data.primaryFocus) root.style.setProperty('--theme-focus', data.primaryFocus);
+        if (data.discountBadge) root.style.setProperty('--theme-discount', data.discountBadge);
       } catch (err) {
         console.error('Failed to load theme configuration:', err);
         // Do nothing else, CSS fallbacks defined in index.css will handle it safely

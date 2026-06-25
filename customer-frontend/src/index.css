@@ -67,7 +67,7 @@
 
   /* Product badge pill */
   .badge-discount {
-    @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-green-500 text-white;
+    @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-[var(--theme-discount,#00C853)] text-white;
   }
   .badge-featured {
     @apply text-[10px] font-bold px-2.5 py-0.5 rounded-md shadow-sm tracking-wide bg-theme-primary text-white;

@@ -8,7 +8,8 @@ const defaultTheme = {
   primaryLight: '#FFF3E0',
   primaryDark: '#E65C00',
   primaryHover: '#E65C00',
-  primaryFocus: '#FF8533'
+  primaryFocus: '#FF8533',
+  discountBadge: '#00C853'
 };
 
 const presetPalettes = [
@@ -36,6 +37,7 @@ const ThemeSettings = () => {
         primaryDark: theme.primaryDark || defaultTheme.primaryDark,
         primaryHover: theme.primaryHover || defaultTheme.primaryHover,
         primaryFocus: theme.primaryFocus || defaultTheme.primaryFocus,
+        discountBadge: theme.discountBadge || defaultTheme.discountBadge,
       });
     }
   }, [theme]);
@@ -224,6 +226,22 @@ const ThemeSettings = () => {
                     type="color" 
                     value={formData.primaryFocus} 
                     onChange={(e) => handleColorChange('primaryFocus', e.target.value)}
+                    className="h-10 w-14 p-1 rounded border border-gray-200 cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Discount Badge</label>
+                  <p className="text-xs text-gray-500 mt-1">Used for the "% OFF" badge on product cards.</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-mono text-gray-500 uppercase">{formData.discountBadge || '#00C853'}</span>
+                  <input 
+                    type="color" 
+                    value={formData.discountBadge || '#00C853'} 
+                    onChange={(e) => handleColorChange('discountBadge', e.target.value)}
                     className="h-10 w-14 p-1 rounded border border-gray-200 cursor-pointer"
                   />
                 </div>

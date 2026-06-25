@@ -216,8 +216,8 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm z-10">
-          <h2 className="text-xl font-bold text-gray-800">
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 shadow-sm z-10">
+          <h2 className="text-lg md:text-xl font-bold text-gray-800">
             {activeTab === 'products' ? 'Product Management' : 
              activeTab === 'categories' ? 'Category Management' : 
              activeTab === 'subcategories' ? 'Subcategory Management' : 
@@ -225,43 +225,45 @@ const AdminDashboard = () => {
              activeTab === 'orders' ? 'Order Management' : 
              activeTab === 'theme' ? 'Theme Builder' : 'Store Settings'}
           </h2>
-          <div className="w-10 h-10 rounded-full bg-theme-light flex items-center justify-center text-[var(--color-primary)] font-bold">A</div>
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-theme-light flex items-center justify-center text-[var(--color-primary)] font-bold text-sm md:text-base">A</div>
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-5">
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div className="p-2.5 bg-blue-50 text-blue-600 rounded-lg"><Package size={22} /></div>
-                <span className="flex items-center text-sm font-medium text-green-600"><ArrowUpRight size={16} /> Live</span>
+          {activeTab === 'products' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-5">
+              <div className="bg-white rounded-xl p-4 md:p-5 border border-gray-100 shadow-sm">
+                <div className="flex justify-between items-start mb-2 md:mb-3">
+                  <div className="p-2 md:p-2.5 bg-blue-50 text-blue-600 rounded-lg"><Package size={20} className="md:w-[22px] md:h-[22px]" /></div>
+                  <span className="flex items-center text-xs md:text-sm font-medium text-green-600"><ArrowUpRight size={14} className="md:w-4 md:h-4" /> Live</span>
+                </div>
+                <h3 className="text-gray-500 text-[10px] md:text-xs font-medium tracking-wide uppercase">Total Products</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 mt-1">{loading ? '...' : products.length}</p>
               </div>
-              <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Total Products</h3>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{loading ? '...' : products.length}</p>
-            </div>
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div className="p-2.5 bg-theme-light text-theme-primary rounded-lg"><ShoppingBag size={22} /></div>
-                {pendingOrders > 0 && <span className="text-xs bg-yellow-100 text-yellow-700 font-semibold px-2 py-1 rounded-full">{pendingOrders} Pending</span>}
+              <div className="bg-white rounded-xl p-4 md:p-5 border border-gray-100 shadow-sm">
+                <div className="flex justify-between items-start mb-2 md:mb-3">
+                  <div className="p-2 md:p-2.5 bg-theme-light text-theme-primary rounded-lg"><ShoppingBag size={20} className="md:w-[22px] md:h-[22px]" /></div>
+                  {pendingOrders > 0 && <span className="text-[10px] md:text-xs bg-yellow-100 text-yellow-700 font-semibold px-2 py-1 rounded-full">{pendingOrders} Pending</span>}
+                </div>
+                <h3 className="text-gray-500 text-[10px] md:text-xs font-medium tracking-wide uppercase">Total Orders</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 mt-1">{ordersLoading ? '...' : orders.length}</p>
               </div>
-              <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Total Orders</h3>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{ordersLoading ? '...' : orders.length}</p>
-            </div>
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
-              <div className="flex justify-between items-start mb-3">
-                <div className="p-2.5 bg-green-50 text-green-600 rounded-lg"><IndianRupee size={22} /></div>
+              <div className="bg-white rounded-xl p-4 md:p-5 border border-gray-100 shadow-sm">
+                <div className="flex justify-between items-start mb-2 md:mb-3">
+                  <div className="p-2 md:p-2.5 bg-green-50 text-green-600 rounded-lg"><IndianRupee size={20} className="md:w-[22px] md:h-[22px]" /></div>
+                </div>
+                <h3 className="text-gray-500 text-[10px] md:text-xs font-medium tracking-wide uppercase">Total Revenue</h3>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 mt-1">₹{totalRevenue.toLocaleString()}</p>
               </div>
-              <h3 className="text-gray-500 text-xs font-medium tracking-wide uppercase">Total Revenue</h3>
-              <p className="text-2xl font-bold text-gray-900 mt-1">₹{totalRevenue.toLocaleString()}</p>
             </div>
-          </div>
+          )}
 
           {/* Products Tab */}
           {activeTab === 'products' && (
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-              <div className="p-5 border-b border-gray-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-gray-50/50">
+              <div className="p-4 md:p-5 border-b border-gray-200 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 md:gap-4 bg-gray-50/50">
                 <h3 className="text-lg font-bold text-gray-900">Inventory ({filteredProducts.length})</h3>
                 <div className="flex flex-wrap items-center gap-3">
                   {/* Search */}
@@ -289,11 +291,11 @@ const AdminDashboard = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-gray-200 bg-gray-50">
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Visible</th>
-                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
+                      <th className="p-3 md:p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Product</th>
+                      <th className="p-3 md:p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
+                      <th className="p-3 md:p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
+                      <th className="p-3 md:p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Visible</th>
+                      <th className="p-3 md:p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -303,7 +305,7 @@ const AdminDashboard = () => {
                       <tr><td colSpan="5" className="p-8 text-center text-gray-500">No products found</td></tr>
                     ) : filteredProducts.map(product => (
                       <tr key={product._id} className="hover:bg-gray-50 transition-colors">
-                        <td className="p-4">
+                        <td className="p-3 md:p-4">
                           <div className="flex items-center gap-3">
                             <img
                               src={product.mainImage || product.images?.[0] || 'https://placehold.co/40x40?text=NA'}
@@ -316,18 +318,18 @@ const AdminDashboard = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="p-4">
+                        <td className="p-3 md:p-4">
                           <p className="font-medium text-gray-900">₹{(product.sellingPrice || product.price || 0).toLocaleString()}</p>
                           {product.mrp > (product.sellingPrice || product.price) && (
                             <p className="text-xs text-gray-400 line-through">₹{product.mrp.toLocaleString()}</p>
                           )}
                         </td>
-                        <td className="p-4">
+                        <td className="p-3 md:p-4">
                           <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
                             <Tag size={10} /> {product.category?.name || '-'}
                           </span>
                         </td>
-                        <td className="p-4">
+                        <td className="p-3 md:p-4">
                           <button
                             onClick={() => handleToggleVisibility(product._id)}
                             className={`p-1.5 rounded-lg transition-colors ${product.isVisible !== false ? 'text-green-600 bg-green-50 hover:bg-green-100' : 'text-gray-400 bg-gray-50 hover:bg-gray-100'}`}
@@ -336,7 +338,7 @@ const AdminDashboard = () => {
                             {product.isVisible !== false ? <Eye size={16} /> : <EyeOff size={16} />}
                           </button>
                         </td>
-                        <td className="p-4 text-right">
+                        <td className="p-3 md:p-4 text-right">
                           <button onClick={() => handleEditProduct(product)} className="text-gray-400 hover:text-blue-500 mr-3 transition-colors" title="Edit"><Edit size={18} /></button>
                           <button onClick={() => handleDeleteProduct(product._id)} className="text-gray-400 hover:text-red-500 transition-colors" title="Delete"><Trash2 size={18} /></button>
                         </td>

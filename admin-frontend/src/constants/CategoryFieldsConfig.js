@@ -280,6 +280,98 @@ export const CATEGORY_FIELDS = {
     ],
     filterFields: ['tankCapacity', 'honeycombPads'],
   },
+
+  induction: {
+    label: 'Induction / Infrared Cooktop',
+    fields: [
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 2000W', required: true },
+      { key: 'numberOfCookingZones', label: 'Number of Cooking Zones', type: 'select', options: ['1', '2', '3', '4'] },
+      { key: 'panelMaterial', label: 'Panel Material', type: 'select', options: ['Glass', 'Ceramic'] },
+      { key: 'preSetMenus', label: 'Pre-set Menus', type: 'boolean' },
+      { key: 'touchControl', label: 'Touch Control', type: 'boolean' },
+    ],
+    filterFields: ['powerConsumption', 'panelMaterial'],
+  },
+
+  'electric-kettle': {
+    label: 'Electric Kettle',
+    fields: [
+      { key: 'capacityLitres', label: 'Capacity (Litres)', type: 'text', placeholder: 'e.g. 1.5L', required: true },
+      { key: 'bodyMaterial', label: 'Body Material', type: 'select', options: ['Stainless Steel', 'Glass', 'Plastic'] },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 1500W' },
+      { key: 'autoShutOff', label: 'Auto Shut-off', type: 'boolean' },
+      { key: 'keepWarmFunction', label: 'Keep Warm Function', type: 'boolean' },
+    ],
+    filterFields: ['capacityLitres', 'bodyMaterial'],
+  },
+
+  toaster: {
+    label: 'Toaster / Sandwich Maker',
+    fields: [
+      { key: 'numberOfSlices', label: 'Number of Slices', type: 'select', options: ['2', '4'] },
+      { key: 'browningLevels', label: 'Browning Levels', type: 'text', placeholder: 'e.g. 6' },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 750W' },
+      { key: 'nonStickCoating', label: 'Non-stick Coating', type: 'boolean' },
+    ],
+    filterFields: ['numberOfSlices'],
+  },
+
+  'air-fryer': {
+    label: 'Air Fryer',
+    fields: [
+      { key: 'capacityLitres', label: 'Capacity (Litres)', type: 'text', placeholder: 'e.g. 4L', required: true },
+      { key: 'temperatureControl', label: 'Temperature Control', type: 'text', placeholder: 'e.g. up to 200°C' },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 1400W' },
+      { key: 'digitalDisplay', label: 'Digital Display', type: 'boolean' },
+      { key: 'preSetMenus', label: 'Pre-set Menus', type: 'boolean' },
+    ],
+    filterFields: ['capacityLitres', 'digitalDisplay'],
+  },
+
+  'rice-cooker': {
+    label: 'Rice Cooker',
+    fields: [
+      { key: 'capacityLitres', label: 'Capacity (Litres)', type: 'text', placeholder: 'e.g. 1.8L', required: true },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 700W' },
+      { key: 'keepWarmFunction', label: 'Keep Warm Function', type: 'boolean' },
+      { key: 'steamerBasketIncluded', label: 'Steamer Basket Included', type: 'boolean' },
+    ],
+    filterFields: ['capacityLitres'],
+  },
+
+  'coffee-maker': {
+    label: 'Coffee Maker',
+    fields: [
+      { key: 'coffeeMakerType', label: 'Coffee Maker Type', type: 'select', options: ['Drip', 'Espresso', 'Filter'] },
+      { key: 'capacityCups', label: 'Capacity (Cups)', type: 'text', placeholder: 'e.g. 10 Cups' },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 900W' },
+      { key: 'milkFrother', label: 'Milk Frother', type: 'boolean' },
+    ],
+    filterFields: ['coffeeMakerType'],
+  },
+
+  'room-heater': {
+    label: 'Room Heater',
+    fields: [
+      { key: 'heaterType', label: 'Heater Type', type: 'select', options: ['Fan', 'Radiant', 'Oil Filled', 'Halogen'] },
+      { key: 'heatSettings', label: 'Heat Settings', type: 'text', placeholder: 'e.g. 1000W / 2000W' },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 2000W' },
+      { key: 'overheatProtection', label: 'Overheat Protection', type: 'boolean' },
+    ],
+    filterFields: ['heaterType'],
+  },
+
+  iron: {
+    label: 'Iron / Garment Steamer',
+    fields: [
+      { key: 'ironType', label: 'Iron Type', type: 'select', options: ['Dry', 'Steam'] },
+      { key: 'soleplateMaterial', label: 'Soleplate Material', type: 'select', options: ['Non-stick', 'Ceramic', 'Stainless Steel'] },
+      { key: 'powerConsumption', label: 'Power (Watts)', type: 'text', placeholder: 'e.g. 1200W' },
+      { key: 'steamBurst', label: 'Steam Burst', type: 'boolean' },
+      { key: 'waterTankCapacity', label: 'Water Tank Capacity', type: 'text', placeholder: 'e.g. 200ml' },
+    ],
+    filterFields: ['ironType'],
+  }
 };
 
 // Helper: Get category config by slug and optional subCategoryName
@@ -288,6 +380,23 @@ export const getCategoryConfig = (slug, subCategoryName) => {
     if (subCategoryName === 'Chimney') return CATEGORY_FIELDS['chimney'];
     if (subCategoryName === 'Gas Stove') return CATEGORY_FIELDS['gas-stove'];
     return null; // Return null if subcategory not explicitly selected
+  }
+
+  if (slug === 'mixer') {
+    const mixerRelated = ['Mixer Grinder', 'Juicer Mixer Grinder', 'Juicer', 'Hand Blender', 'Wet Grinder', 'Food Processor', 'Chopper', 'Stand Mixer', 'Nutri Blender'];
+    if (mixerRelated.includes(subCategoryName)) return CATEGORY_FIELDS['mixer'];
+    
+    if (['Induction', 'Infrared Cooktop'].includes(subCategoryName)) return CATEGORY_FIELDS['induction'];
+    if (subCategoryName === 'Electric Kettle') return CATEGORY_FIELDS['electric-kettle'];
+    if (['Toaster', 'Sandwich Maker', 'Pop-up Toaster'].includes(subCategoryName)) return CATEGORY_FIELDS['toaster'];
+    if (subCategoryName === 'Air Fryer') return CATEGORY_FIELDS['air-fryer'];
+    if (subCategoryName === 'Rice Cooker') return CATEGORY_FIELDS['rice-cooker'];
+    if (subCategoryName === 'Coffee Maker') return CATEGORY_FIELDS['coffee-maker'];
+    if (subCategoryName === 'Room Heater') return CATEGORY_FIELDS['room-heater'];
+    if (['Iron', 'Garment Steamer'].includes(subCategoryName)) return CATEGORY_FIELDS['iron'];
+    if (['Microwave', 'OTG', 'Electric Tandoor'].includes(subCategoryName)) return CATEGORY_FIELDS['oven'];
+
+    return null; 
   }
 
   if (slug === 'fan') {
