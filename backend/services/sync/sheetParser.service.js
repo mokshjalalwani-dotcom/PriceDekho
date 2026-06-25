@@ -40,7 +40,7 @@ export const parseSheet = async (sheetReference) => {
     const normalizedRecords = records.map(record => {
       const normalizedRow = {};
       for (const [key, value] of Object.entries(record)) {
-        normalizedRow[key.trim().toLowerCase()] = value ? value.trim() : '';
+        normalizedRow[key.trim().toLowerCase().replace(/\s+/g, '')] = value ? value.trim() : '';
       }
       return normalizedRow;
     });

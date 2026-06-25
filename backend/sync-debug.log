@@ -1,0 +1,40 @@
+Mismatch on key: additionalContent
+New value: "LSYYY"
+Old value: "LR"
+
+Mismatch on key: additionalContent
+New value: "LTYYY"
+Old value: "LR"
+
+Mismatch on key: additionalContent
+New value: "LYYYY"
+Old value: ""
+
+Mismatch on key: categoryFields
+New value: {"child category":"ChildCategory"}
+Old value: {}
+
+Mismatch on key: categoryFields
+New value: {"child category":"Chimney","_resolvedCategory":"6a2b00b2345d2e4909b302ba","_resolvedBrand":"6a2b00b3345d2e4909b302d8"}
+Old value: {}
+
+Mismatch on key: categoryFields
+New value: {"_resolvedCategory":"6a396feac0a1506b74b5974b"}
+Old value: {}
+
+Mismatch on key: categoryFields
+New value: {"child category":"Fan"}
+Old value: {}
+
+Mismatch on key: categoryFields
+New value: {"child category":"ChildCategory"}
+Old value: {}
+
+Mismatch on key: childCategory
+New value: "Chimney"
+Old value: "ChildCategory"
+
+Mismatch on key: childCategory
+New value: "ChildCategory"
+Old value: undefined
+

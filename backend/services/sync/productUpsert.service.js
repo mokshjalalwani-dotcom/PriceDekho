@@ -1,133 +1,205 @@
 import Product from '../../models/Product.js';
 import { convertToNLC } from '../../utils/nlcConverter.js';
 
-export const upsertProducts = async (validRows) => {
-  if (validRows.length === 0) return { inserted: 0, updated: 0 };
+const isEqualValue = (newVal, oldVal) => {
+  if (newVal === oldVal) return true;
+  if (newVal == null && oldVal == null) return true;
+  if (newVal == null || oldVal == null) return false;
+  
+  if (typeof newVal !== 'object' || typeof oldVal !== 'object') return false;
+  
+  if (Array.isArray(newVal) && Array.isArray(oldVal)) {
+    if (newVal.length !== oldVal.length) return false;
+    for (let i = 0; i < newVal.length; i++) {
+      if (!isEqualValue(newVal[i], oldVal[i])) return false;
+    }
+    return true;
+  }
+  
+  if (Array.isArray(newVal) !== Array.isArray(oldVal)) return false;
+  
+  const newKeys = Object.keys(newVal);
+  for (const k of newKeys) {
+    if (!isEqualValue(newVal[k], oldVal[k])) return false;
+  }
+  
+  return true;
+};
 
-  const bulkOps = validRows.map(row => {
-    const knownKeys = ['sku', 'name', 'sellingprice', 'price', 'mrp', 'category', 'brand', 'imageurl', 'stock', 'modelnumber', 'color', 'subcategory', 'childcategory', '_resolvedCategory', '_resolvedBrand', 'nlc', 'additionalcontent', 'highlights', 'keyhighlights', 'shortdescription'];
-    
-    const categoryFields = {};
-    for (const key of Object.keys(row)) {
-      const lowerKey = key.toLowerCase();
-      if (!knownKeys.includes(lowerKey) 
-          && !lowerKey.startsWith('nlc') 
-          && !lowerKey.includes('highlight') 
-          && !lowerKey.includes('color') 
-          && !lowerKey.includes('warranty')
-          && !(lowerKey.includes('short') && lowerKey.includes('desc'))
-          && !(lowerKey.includes('full') && lowerKey.includes('desc'))
-          && !lowerKey.includes('box')
-          && row[key] !== '') {
-        categoryFields[key] = row[key];
+/**
+ * Builds the $set document from a validated sheet row.
+ */
+const buildSetDoc = (row) => {
+  const doc = {};
+
+  if (row.name && row.name !== '') doc.name = row.name.trim();
+
+  if (row.sellingprice || row.price) {
+    const sp = Number(row.sellingprice || row.price);
+    if (!isNaN(sp) && sp > 0) {
+      doc.sellingPrice = sp;
+      doc.price = sp; // legacy alias
+    }
+  }
+
+  if (row.mrp && row.mrp !== '') {
+    const mrp = Number(row.mrp);
+    if (!isNaN(mrp)) doc.mrp = mrp;
+  }
+
+  if (doc.mrp > 0 && doc.sellingPrice > 0 && doc.mrp > doc.sellingPrice) {
+    doc.discountPercentage = Math.round(((doc.mrp - doc.sellingPrice) / doc.mrp) * 100);
+  }
+
+  if (row._resolvedCategory) doc.category = row._resolvedCategory;
+  if (row._resolvedBrand)    doc.brand    = row._resolvedBrand;
+
+  if (row.stock !== undefined && row.stock !== '') {
+    const countInStock = Number(row.stock);
+    if (!isNaN(countInStock)) {
+      doc.countInStock  = countInStock;
+      doc.availability  = countInStock <= 0 ? 'Out of Stock' : 'In Stock';
+    }
+  }
+
+  // Only track mainImage — NOT images[] to prevent hook conflict loop
+  if (row.imageurl && row.imageurl !== '') doc.mainImage = row.imageurl.trim();
+
+  if (row.modelnumber && row.modelnumber !== '') doc.modelNumber = row.modelnumber.trim();
+
+  const colorKey = Object.keys(row).find(k => k.toLowerCase().includes('color') || k.toLowerCase() === 'colour');
+  if (colorKey && row[colorKey] !== '') doc.color = row[colorKey].trim();
+
+  const highlightKey = Object.keys(row).find(k => k.toLowerCase().includes('highlight'));
+  if (highlightKey && row[highlightKey] !== '') {
+    doc.highlights = row[highlightKey].split(',').map(h => h.trim()).filter(Boolean);
+  }
+
+  const warrantyKey = Object.keys(row).find(k => k.toLowerCase().includes('warranty'));
+  if (warrantyKey && row[warrantyKey] !== '') doc.warrantyDetails = row[warrantyKey].trim();
+
+  const shortDescKey = Object.keys(row).find(k => k.toLowerCase().includes('short') && k.toLowerCase().includes('desc'));
+  if (shortDescKey && row[shortDescKey] !== '') doc.shortDescription = row[shortDescKey].trim();
+
+  const fullDescKey = Object.keys(row).find(k => k.toLowerCase().includes('full') && k.toLowerCase().includes('desc'));
+  if (fullDescKey && row[fullDescKey] !== '') doc.fullDescription = row[fullDescKey].trim();
+
+  const boxKey = Object.keys(row).find(k => k.toLowerCase().includes('box'));
+  if (boxKey && row[boxKey] !== '') {
+    doc.boxContents = row[boxKey].split(',').map(h => h.trim()).filter(Boolean);
+  }
+
+  if (row.subcategory   && row.subcategory   !== '') doc.subCategory   = row.subcategory.trim();
+  if (row.childcategory && row.childcategory !== '') doc.childCategory = row.childcategory.trim();
+
+  let nlcValue = row.additionalcontent;
+  if (!nlcValue) {
+    const nlcKey = Object.keys(row).find(k => k.startsWith('nlc'));
+    if (nlcKey) nlcValue = row[nlcKey];
+  }
+  if (nlcValue !== undefined && nlcValue !== '') {
+    doc.additionalContent = convertToNLC(String(nlcValue));
+  }
+
+  const knownKeys = [
+    'sku', 'name', 'sellingprice', 'price', 'mrp', 'category', 'brand',
+    'imageurl', 'stock', 'modelnumber', 'color', 'subcategory', 'childcategory',
+    '_resolvedcategory', '_resolvedbrand', 'nlc', 'additionalcontent',
+    'highlights', 'keyhighlights', 'shortdescription',
+  ];
+  const categoryFields = {};
+  for (const key of Object.keys(row)) {
+    const lk = key.toLowerCase();
+    if (
+      !knownKeys.includes(lk) && !lk.startsWith('nlc')
+      && !lk.includes('highlight') && !lk.includes('color')
+      && !lk.includes('warranty')
+      && !(lk.includes('short') && lk.includes('desc'))
+      && !(lk.includes('full')  && lk.includes('desc'))
+      && !lk.includes('box')
+      && row[key] !== ''
+    ) {
+      // Try to maintain key case matching schema if possible, or just use what we have.
+      categoryFields[key] = typeof row[key] === 'string' ? row[key].trim() : row[key];
+    }
+  }
+  if (Object.keys(categoryFields).length > 0) doc.categoryFields = categoryFields;
+
+  return doc;
+};
+
+/**
+ * Bulk-upserts validated sheet rows into the database.
+ * Computes deep equality to avoid Mongoose timestamp updates on identical rows.
+ */
+export const upsertProducts = async (validRows, existingMap = new Map()) => {
+  if (validRows.length === 0) return { inserted: 0, affected: 0 };
+
+  const bulkOps = [];
+  let affectedLocal = 0;
+
+  for (const row of validRows) {
+    const setDoc = buildSetDoc(row);
+    let existingDoc = existingMap.get(row.modelnumber);
+
+    let hasChanges = false;
+    if (!existingDoc) {
+      hasChanges = true;
+    } else {
+      // Stringify and parse to convert ObjectIds to strings and normalize Dates
+      existingDoc = JSON.parse(JSON.stringify(existingDoc));
+      
+      for (const key of Object.keys(setDoc)) {
+        if (!isEqualValue(setDoc[key], existingDoc[key])) {
+          hasChanges = true;
+          console.log("\n[DIFF DETECTED]", row.modelnumber);
+          console.log("Field:", key);
+          console.log("DB Value (old):", existingDoc[key], "Type:", typeof existingDoc[key]);
+          console.log("Sheet Value (new):", setDoc[key], "Type:", typeof setDoc[key]);
+          console.log("isEqualValue check failed!");
+          break;
+        }
       }
     }
 
-    const updateDoc = {};
-    const setOnInsertDoc = {};
-
-    // Only add fields if they exist and are not empty
-    if (row.name && row.name !== '') {
-      updateDoc.name = row.name;
-      setOnInsertDoc.slug = row.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.random().toString(36).substring(2, 8);
+    if (!hasChanges) {
+      continue;
     }
-    
-    if (row.sellingprice || row.price) {
-      const sellingPrice = Number(row.sellingprice || row.price);
-      if (sellingPrice > 0) {
-        updateDoc.sellingPrice = sellingPrice;
-        updateDoc.price = sellingPrice;
+
+    if (existingDoc) {
+      affectedLocal++;
+    }
+
+    const setOnInsert = {};
+    if (row.name) {
+      setOnInsert.slug = row.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.random().toString(36).substring(2, 8);
+      if (row.imageurl && row.imageurl !== '') {
+        setOnInsert.images = [row.imageurl.trim()];
       }
     }
 
-    if (row.mrp && row.mrp !== '') {
-      updateDoc.mrp = Number(row.mrp);
-    }
-    
-    if (updateDoc.mrp > 0 && updateDoc.sellingPrice > 0 && updateDoc.mrp > updateDoc.sellingPrice) {
-      updateDoc.discountPercentage = Math.round(((updateDoc.mrp - updateDoc.sellingPrice) / updateDoc.mrp) * 100);
-    }
-
-    if (row._resolvedCategory) updateDoc.category = row._resolvedCategory;
-    if (row._resolvedBrand) updateDoc.brand = row._resolvedBrand;
-
-    if (row.stock !== undefined && row.stock !== '') {
-      const countInStock = Number(row.stock);
-      updateDoc.countInStock = countInStock;
-      updateDoc.availability = countInStock <= 0 ? 'Out of Stock' : 'In Stock';
-    }
-
-    if (row.imageurl && row.imageurl !== '') {
-      updateDoc.mainImage = row.imageurl;
-      updateDoc.images = [row.imageurl];
-    }
-    
-    // row.modelnumber maps to sku internally but we can also set the modelNumber field if the schema supports it
-    if (row.modelnumber && row.modelnumber !== '') updateDoc.modelNumber = row.modelnumber;
-    
-    // Find Color dynamically
-    const colorKey = Object.keys(row).find(k => k.toLowerCase().includes('color') || k.toLowerCase() === 'colour');
-    if (colorKey && row[colorKey] !== '') updateDoc.color = row[colorKey];
-
-    // Find Highlights dynamically
-    const highlightKey = Object.keys(row).find(k => k.toLowerCase().includes('highlight'));
-    if (highlightKey && row[highlightKey] !== '') {
-      updateDoc.highlights = row[highlightKey].split(',').map(h => h.trim()).filter(h => h);
-    }
-    
-    // Find Warranty Details
-    const warrantyKey = Object.keys(row).find(k => k.toLowerCase().includes('warranty'));
-    if (warrantyKey && row[warrantyKey] !== '') updateDoc.warrantyDetails = row[warrantyKey];
-
-    // Find Short Description
-    const shortDescKey = Object.keys(row).find(k => k.toLowerCase().includes('short') && k.toLowerCase().includes('desc'));
-    if (shortDescKey && row[shortDescKey] !== '') updateDoc.shortDescription = row[shortDescKey];
-
-    // Find Full Description
-    const fullDescKey = Object.keys(row).find(k => k.toLowerCase().includes('full') && k.toLowerCase().includes('desc'));
-    if (fullDescKey && row[fullDescKey] !== '') updateDoc.fullDescription = row[fullDescKey];
-
-    // Find Box Contents
-    const boxContentsKey = Object.keys(row).find(k => k.toLowerCase().includes('box'));
-    if (boxContentsKey && row[boxContentsKey] !== '') {
-      updateDoc.boxContents = row[boxContentsKey].split(',').map(h => h.trim()).filter(h => h);
-    }
-
-    if (row.subcategory && row.subcategory !== '') updateDoc.subCategory = row.subcategory;
-    if (row.childcategory && row.childcategory !== '') updateDoc.childCategory = row.childcategory;
-    
-    // Map NLC column to additionalContent by finding any key that starts with 'nlc'
-    let nlcValue = row.additionalcontent;
-    if (!nlcValue) {
-      const nlcKey = Object.keys(row).find(k => k.startsWith('nlc'));
-      if (nlcKey) nlcValue = row[nlcKey];
-    }
-    
-    if (nlcValue !== undefined && nlcValue !== '') {
-      updateDoc.additionalContent = convertToNLC(String(nlcValue));
-    }
-    
-    if (Object.keys(categoryFields).length > 0) {
-      updateDoc.categoryFields = categoryFields;
-    }
-
-    return {
+    bulkOps.push({
       updateOne: {
         filter: { modelNumber: row.modelnumber },
-        update: { 
-          $set: updateDoc,
-          $setOnInsert: setOnInsertDoc
+        update: {
+          $set:         setDoc,
+          $setOnInsert: setOnInsert,
         },
-        upsert: !!row.name // Only insert new products if a name is provided, otherwise it's strictly an update
-      }
-    };
-  });
+        upsert: !!row.name,
+      },
+    });
+  }
+
+  if (bulkOps.length === 0) {
+    return { inserted: 0, affected: 0 };
+  }
 
   try {
     const result = await Product.bulkWrite(bulkOps, { ordered: false });
+
     return {
       inserted: result.upsertedCount || 0,
-      updated: result.modifiedCount || 0
+      affected: affectedLocal,
     };
   } catch (error) {
     console.error('Bulk write error:', error);

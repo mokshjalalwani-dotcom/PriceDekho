@@ -204,15 +204,15 @@ const GoogleSheetsSync = () => {
               <div className="text-2xl font-bold">{report.totalRows}</div>
             </div>
             <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
-              <div className="text-sm text-gray-500">{report.dryRun ? 'Valid (Would Insert)' : 'Inserted'}</div>
+              <div className="text-sm text-gray-500">{report.dryRun ? 'Would Insert' : 'Inserted'}</div>
               <div className="text-2xl font-bold text-green-600">{report.insertedCount}</div>
             </div>
             <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
-              <div className="text-sm text-gray-500">{report.dryRun ? 'Valid (Would Update)' : 'Updated'}</div>
-              <div className="text-2xl font-bold text-blue-600">{report.updatedCount}</div>
+              <div className="text-sm text-gray-500">{report.dryRun ? 'Would Affect' : 'Products Affected'}</div>
+              <div className="text-2xl font-bold text-blue-600">{report.affectedCount ?? 0}</div>
             </div>
             <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
-              <div className="text-sm text-gray-500">Failed / Skipped</div>
+              <div className="text-sm text-gray-500">Failed</div>
               <div className="text-2xl font-bold text-red-600">{report.failedCount}</div>
             </div>
           </div>
