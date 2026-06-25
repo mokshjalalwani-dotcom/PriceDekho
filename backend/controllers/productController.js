@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
 import Brand from '../models/Brand.js';
+import { adaptProductForFrontend, adaptProductsListForFrontend } from '../utils/productResponseAdapter.js';
 
 // @desc    Fetch all products with advanced filtering
 // @route   GET /api/products
@@ -137,7 +138,7 @@ export const getProducts = async (req, res) => {
       .limit(pageSize)
       .skip(pageSize * (page - 1));
 
-    res.json({ products, page, pages: Math.ceil(count / pageSize), total: count });
+    res.json({ products: adaptProductsListForFrontend(products), page, pages: Math.ceil(count / pageSize), total: count });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
@@ -153,7 +154,7 @@ export const getProductBySlug = async (req, res) => {
       .populate('brand', 'name slug logo');
 
     if (product) {
-      res.json(product);
+      res.json(adaptProductForFrontend(product));
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
@@ -172,7 +173,7 @@ export const getProductById = async (req, res) => {
       .populate('brand', 'name slug logo');
 
     if (product) {
-      res.json(product);
+      res.json(adaptProductForFrontend(product));
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
@@ -195,7 +196,7 @@ export const getProductsToCompare = async (req, res) => {
       .populate('category', 'name slug')
       .populate('brand', 'name slug');
 
-    res.json(products);
+    res.json(adaptProductsListForFrontend(products));
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
@@ -221,7 +222,7 @@ export const getSimilarProducts = async (req, res) => {
       .limit(8)
       .sort({ isFeatured: -1, rating: -1 });
 
-    res.json(similar);
+    res.json(adaptProductsListForFrontend(similar));
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
@@ -256,7 +257,7 @@ export const getProductsByCategory = async (req, res) => {
 
     res.json({
       category,
-      products,
+      products: adaptProductsListForFrontend(products),
       brands,
       page,
       pages: Math.ceil(count / pageSize),
@@ -291,7 +292,7 @@ export const searchProducts = async (req, res) => {
       .limit(20)
       .sort({ isFeatured: -1, rating: -1 });
 
-    res.json({ products, total: products.length });
+    res.json({ products: adaptProductsListForFrontend(products), total: products.length });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }

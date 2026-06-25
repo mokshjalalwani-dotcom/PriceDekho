@@ -19,6 +19,8 @@ import orderRoutes from './routes/orderRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import subCategoryRoutes from './routes/subCategoryRoutes.js';
 import themeRoutes from './routes/themeRoutes.js';
+import syncRoutes from './routes/sync.routes.js';
+import { initSyncScheduler } from './jobs/syncScheduler.job.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,6 +29,9 @@ dotenv.config();
 
 // Connect to Database
 connectDB();
+
+// Initialize schedulers
+initSyncScheduler();
 
 const app = express();
 
@@ -114,6 +119,7 @@ app.use('/api/auth', customerAuthRouter); // /api/auth/register, /api/auth/login
 app.use('/api/settings', settingsRoutes); // /api/settings
 app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/theme', themeRoutes);
+app.use('/api/admin/sync', syncRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

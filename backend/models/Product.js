@@ -227,6 +227,7 @@ const productSchema = new mongoose.Schema({
   // Basic Info
   name: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
+  sku: { type: String }, // Legacy field, no longer used for Google Sheets Sync
   brand: { type: mongoose.Schema.Types.ObjectId, ref: 'Brand', required: true },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   modelNumber: { type: String, default: '' },
@@ -295,6 +296,11 @@ const productSchema = new mongoose.Schema({
 
 // --- Pre-validate hooks ---
 productSchema.pre('validate', function () {
+  // Auto-generate SKU for new manual products
+  if (!this.sku && this.isNew) {
+    this.sku = `PRD-${this._id.toString().toUpperCase()}`;
+  }
+
   // Auto-set availability based on stock
   if (this.countInStock <= 0) {
     this.availability = 'Out of Stock';

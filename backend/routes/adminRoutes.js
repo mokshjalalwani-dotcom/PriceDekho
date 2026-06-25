@@ -8,6 +8,7 @@ import Brand from '../models/Brand.js';
 import Subcategory from '../models/Subcategory.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { convertToNLC } from '../utils/nlcConverter.js';
+import { adaptProductForFrontend, adaptProductsListForFrontend } from '../utils/productResponseAdapter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -53,7 +54,7 @@ router.get('/products', protect, admin, async (req, res) => {
       .populate('category', 'name slug icon')
       .populate('brand', 'name slug logo')
       .sort({ createdAt: -1 });
-    res.json({ products });
+    res.json({ products: adaptProductsListForFrontend(products) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -81,7 +82,7 @@ router.post('/products', protect, admin, async (req, res) => {
     const populated = await Product.findById(createdProduct._id)
       .populate('category', 'name slug')
       .populate('brand', 'name slug');
-    res.status(201).json(populated);
+    res.status(201).json(adaptProductForFrontend(populated));
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -123,7 +124,7 @@ router.put('/products/:id', protect, admin, async (req, res) => {
       .populate('brand', 'name slug');
 
     if (product) {
-      res.json(product);
+      res.json(adaptProductForFrontend(product));
     } else {
       res.status(404).json({ message: 'Product not found' });
     }

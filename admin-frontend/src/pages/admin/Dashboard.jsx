@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
   Package, ShoppingBag, IndianRupee, Plus, Edit, Trash2, LogOut,
   ArrowUpRight, Search, X, ChevronDown, Tag, Eye, EyeOff, AlertTriangle,
-  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings, Palette
+  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings, Palette, Database
 } from 'lucide-react';
 import ProductModal from './ProductModal';
 import AdminSettings from './AdminSettings';
@@ -12,6 +12,7 @@ import AdminCategories from './Categories';
 import AdminSubcategories from './Subcategories';
 import AdminBrands from './Brands';
 import ThemeSettings from './ThemeSettings';
+import GoogleSheetsSync from './GoogleSheetsSync';
 
 const statusColors = {
   Pending: 'bg-yellow-100 text-yellow-700',
@@ -167,6 +168,7 @@ const AdminDashboard = () => {
     { key: 'subcategories', label: 'Subcategories', icon: Tag },
     { key: 'brands', label: 'Brands', icon: ShoppingBag },
     { key: 'orders', label: 'Orders', icon: ShoppingBag },
+    { key: 'sheets-sync', label: 'Sheets Sync', icon: Database },
     { key: 'theme', label: 'Theme Builder', icon: Palette },
     { key: 'settings', label: 'Settings', icon: Settings },
   ];
@@ -223,6 +225,7 @@ const AdminDashboard = () => {
              activeTab === 'subcategories' ? 'Subcategory Management' : 
              activeTab === 'brands' ? 'Brand Management' : 
              activeTab === 'orders' ? 'Order Management' : 
+             activeTab === 'sheets-sync' ? 'Google Sheets Sync' : 
              activeTab === 'theme' ? 'Theme Builder' : 'Store Settings'}
           </h2>
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-theme-light flex items-center justify-center text-[var(--color-primary)] font-bold text-sm md:text-base">A</div>
@@ -431,6 +434,11 @@ const AdminDashboard = () => {
           {/* Theme Tab */}
           {activeTab === 'theme' && (
             <ThemeSettings />
+          )}
+
+          {/* Sheets Sync Tab */}
+          {activeTab === 'sheets-sync' && (
+            <GoogleSheetsSync />
           )}
 
           {/* Settings Tab */}
