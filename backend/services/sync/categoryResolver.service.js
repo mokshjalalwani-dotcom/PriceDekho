@@ -10,8 +10,8 @@ export const preloadCategories = async () => {
     const categories = await Category.find({}).lean();
     categoryMap = {};
     for (const cat of categories) {
-      // Map lowercase trimmed name to ObjectId string
-      categoryMap[cat.name.trim().toLowerCase()] = cat._id.toString();
+      // Map lowercase trimmed name to an object with id and slug
+      categoryMap[cat.name.trim().toLowerCase()] = { id: cat._id.toString(), slug: cat.slug };
     }
   } catch (error) {
     console.error('Failed to preload categories:', error);
@@ -24,7 +24,8 @@ export const resolveCategory = (categoryName) => {
     throw new Error('Categories must be preloaded before resolution');
   }
   const match = fuzzyMatch(categoryName, categoryMap);
-  return match ? match.id : null;
+  // fuzzyMatch returns the mapped object we stored.
+  return match ? match : null;
 };
 
 export const preloadBrands = async () => {

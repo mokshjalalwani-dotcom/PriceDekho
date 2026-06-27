@@ -65,9 +65,9 @@ export const rollbackSync = async (syncId) => {
       const restoreData = { ...oldState.data };
       delete restoreData._id; // Safety
       bulkOps.push({
-        updateOne: {
+        replaceOne: {
           filter: identifierFilter,
-          update: { $set: restoreData }
+          replacement: restoreData
         }
       });
     }

@@ -51,8 +51,12 @@ const buildSetDoc = (row) => {
     doc.discountPercentage = Math.round(((doc.mrp - doc.sellingPrice) / doc.mrp) * 100);
   }
 
-  if (row._resolvedCategory) doc.category = row._resolvedCategory;
-  if (row._resolvedBrand)    doc.brand    = row._resolvedBrand;
+  if (row._resolvedCategory) {
+    doc.category = row._resolvedCategory.id;
+  }
+  if (row._resolvedBrand) {
+    doc.brand = row._resolvedBrand;
+  }
 
   if (row.stock !== undefined && row.stock !== '') {
     const countInStock = Number(row.stock);
@@ -62,7 +66,6 @@ const buildSetDoc = (row) => {
     }
   }
 
-  // Only track mainImage — NOT images[] to prevent hook conflict loop
   if (row.imageurl && row.imageurl !== '') doc.mainImage = row.imageurl.trim();
 
   const youtubeKey = Object.keys(row).find(k => k.toLowerCase().includes('youtube'));
@@ -70,16 +73,10 @@ const buildSetDoc = (row) => {
 
   if (row.modelnumber && row.modelnumber !== '') doc.modelNumber = row.modelnumber.trim();
 
-  const colorKey = Object.keys(row).find(k => k.toLowerCase().includes('color') || k.toLowerCase() === 'colour');
-  if (colorKey && row[colorKey] !== '') doc.color = row[colorKey].trim();
-
   const highlightKey = Object.keys(row).find(k => k.toLowerCase().includes('highlight'));
   if (highlightKey && row[highlightKey] !== '') {
     doc.highlights = row[highlightKey].split(',').map(h => h.trim()).filter(Boolean);
   }
-
-  const warrantyKey = Object.keys(row).find(k => k.toLowerCase().includes('warranty'));
-  if (warrantyKey && row[warrantyKey] !== '') doc.warrantyDetails = row[warrantyKey].trim();
 
   const shortDescKey = Object.keys(row).find(k => k.toLowerCase().includes('short') && k.toLowerCase().includes('desc'));
   if (shortDescKey && row[shortDescKey] !== '') doc.shortDescription = row[shortDescKey].trim();
@@ -92,9 +89,6 @@ const buildSetDoc = (row) => {
     doc.boxContents = row[boxKey].split(',').map(h => h.trim()).filter(Boolean);
   }
 
-  if (row.subcategory   && row.subcategory   !== '') doc.subCategory   = row.subcategory.trim();
-  if (row.childcategory && row.childcategory !== '') doc.childCategory = row.childcategory.trim();
-
   let nlcValue = row.additionalcontent;
   if (!nlcValue) {
     const nlcKey = Object.keys(row).find(k => k.startsWith('nlc'));
@@ -104,30 +98,15 @@ const buildSetDoc = (row) => {
     doc.additionalContent = convertToNLC(String(nlcValue));
   }
 
-  const knownKeys = [
-    'sku', 'name', 'sellingprice', 'price', 'mrp', 'category', 'brand',
-    'imageurl', 'stock', 'modelnumber', 'color', 'subcategory', 'childcategory',
-    '_resolvedcategory', '_resolvedbrand', 'nlc', 'additionalcontent',
-    'highlights', 'keyhighlights', 'shortdescription',
-  ];
-  const categoryFields = {};
-  for (const key of Object.keys(row)) {
-    const lk = key.toLowerCase();
-    if (
-      !knownKeys.includes(lk) && !lk.startsWith('nlc')
-      && !lk.includes('highlight') && !lk.includes('color')
-      && !lk.includes('warranty')
-      && !(lk.includes('short') && lk.includes('desc'))
-      && !(lk.includes('full')  && lk.includes('desc'))
-      && !lk.includes('box')
-      && !lk.includes('youtube')
-      && row[key] !== ''
-    ) {
-      // Try to maintain key case matching schema if possible, or just use what we have.
-      categoryFields[key] = typeof row[key] === 'string' ? row[key].trim() : row[key];
+  // Child Category Logic - Only if category is Gas Stove & Chimney or Fan & Air Cooler
+  if (row.childcategory && row.childcategory !== '') {
+    if (row._resolvedCategory) {
+      const slug = row._resolvedCategory.slug;
+      if (slug === 'gas-stove' || slug === 'fan') {
+        doc.childCategory = row.childcategory.trim();
+      }
     }
   }
-  if (Object.keys(categoryFields).length > 0) doc.categoryFields = categoryFields;
 
   return doc;
 };

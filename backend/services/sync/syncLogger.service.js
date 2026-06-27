@@ -40,6 +40,23 @@ export const createSyncLog = async (logData) => {
     });
 
     await log.save();
+
+    // Prune old logs to keep only the 5 most recent
+    try {
+      const logsToKeep = await SyncLog.find({})
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select('_id')
+        .lean();
+
+      if (logsToKeep.length === 5) {
+        const keepIds = logsToKeep.map(l => l._id);
+        await SyncLog.deleteMany({ _id: { $nin: keepIds } });
+      }
+    } catch (pruneError) {
+      console.error('Error pruning sync logs:', pruneError);
+    }
+
     return log;
   } catch (error) {
     console.error('Error saving sync log:', error);
