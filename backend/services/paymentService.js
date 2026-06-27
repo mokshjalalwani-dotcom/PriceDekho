@@ -60,8 +60,18 @@ export const getOrCreatePaymentSession = async (reqBody, user) => {
     snapshotItems.push({
       product: product._id,
       name: product.name,
-      qty: item.qty,
-      priceAtPurchase: product.sellingPrice || product.price
+      slug: product.slug,
+      brand: product.brand?.name || product.brand || '',
+      category: product.category?.name || product.category || '',
+      childCategory: product.childCategory || '',
+      subCategory: product.subCategory || '',
+      sku: product.sku || '',
+      mainImage: product.mainImage || (product.images && product.images[0]) || '',
+      mrp: product.mrp || 0,
+      sellingPrice: product.sellingPrice || product.price || 0,
+      discount: product.discountPercentage || 0,
+      priceAtPurchase: product.sellingPrice || product.price || 0,
+      qty: item.qty
     });
   }
 
