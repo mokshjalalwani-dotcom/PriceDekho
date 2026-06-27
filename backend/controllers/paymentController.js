@@ -65,3 +65,15 @@ export const adminVerifyPayment = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+export const deleteAdminPayment = async (req, res) => {
+  try {
+    const payment = await Payment.findById(req.params.id);
+    if (!payment) return res.status(404).json({ message: 'Payment not found' });
+    
+    await Payment.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Payment verification record deleted' });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};

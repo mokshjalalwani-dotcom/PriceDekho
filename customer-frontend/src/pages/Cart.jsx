@@ -42,6 +42,9 @@ const Cart = () => {
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Link to="/shop" className="inline-flex items-center gap-2 text-sm text-[var(--color-primary)] font-medium hover:underline mb-4">
+          <ArrowLeft size={16} /> Continue Shopping
+        </Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
           Shopping Cart <span className="text-lg font-normal text-gray-500">({cartCount} items)</span>
         </h1>
@@ -92,10 +95,6 @@ const Cart = () => {
                 </button>
               </div>
             ))}
-
-            <Link to="/shop" className="inline-flex items-center gap-2 text-sm text-[var(--color-primary)] font-medium hover:underline mt-2">
-              <ArrowLeft size={16} /> Continue Shopping
-            </Link>
           </div>
 
           {/* Order Summary */}

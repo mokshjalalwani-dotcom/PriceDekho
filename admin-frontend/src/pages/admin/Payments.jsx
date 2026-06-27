@@ -37,6 +37,16 @@ const Payments = () => {
       addToast(err.response?.data?.message || 'Action failed', 'error');
     }
   };
+  const handleDeletePayment = async (paymentId) => {
+    if (!window.confirm('Are you sure you want to delete this payment record? This action cannot be undone.')) return;
+    try {
+      await axios.delete(`/api/payments/admin/${paymentId}`, authHeader);
+      addToast('Payment record deleted successfully', 'success');
+      fetchPayments();
+    } catch (err) {
+      addToast(err.response?.data?.message || 'Failed to delete payment', 'error');
+    }
+  };
 
   const getStatusColor = (status) => {
     switch(status) {
@@ -88,9 +98,14 @@ const Payments = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button onClick={() => setSelectedPayment(payment)} className="text-theme-primary hover:underline flex items-center gap-1">
-                      <Eye size={16} /> View
-                    </button>
+                    <div className="flex items-center gap-3">
+                      <button onClick={() => setSelectedPayment(payment)} className="text-theme-primary hover:underline flex items-center gap-1">
+                        <Eye size={16} /> View
+                      </button>
+                      <button onClick={() => handleDeletePayment(payment._id)} className="text-red-500 hover:text-red-700 flex items-center gap-1" title="Delete Record">
+                        <XCircle size={16} /> Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
