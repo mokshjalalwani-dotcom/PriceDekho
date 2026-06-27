@@ -644,6 +644,22 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
                   <label className={labelCls}>Warranty Details</label>
                   <input type="text" name="warrantyDetails" value={formData.warrantyDetails} onChange={handleChange} className={inputCls} placeholder="e.g. 1 Year Comprehensive" />
                 </div>
+                <div>
+                  <label className={labelCls}>NLC (Real Price / Code)</label>
+                  <input 
+                    type="text" 
+                    name="additionalContent" 
+                    value={formData.additionalContent} 
+                    onChange={handleChange} 
+                    className={inputCls} 
+                    placeholder="e.g. 12345" 
+                  />
+                  {formData.additionalContent && (
+                    <p className="mt-1.5 text-xs text-gray-500 font-mono bg-gray-50 p-1.5 rounded inline-block border border-gray-100">
+                      Preview: <span className="font-bold text-gray-800">{convertToNLC(formData.additionalContent)}</span>
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           )}
@@ -692,22 +708,6 @@ const ProductModal = ({ isOpen, onClose, onSave, product = null }) => {
               <div>
                 <label className={labelCls}>Product YouTube Video</label>
                 <input type="text" name="youtubeUrl" value={formData.youtubeUrl} onChange={handleChange} className={inputCls} placeholder="https://www.youtube.com/watch?v=XXXXXXXX" />
-              </div>
-              <div>
-                <label className={labelCls}>NLC (Real Price / Code)</label>
-                <input 
-                  type="text" 
-                  name="additionalContent" 
-                  value={formData.additionalContent} 
-                  onChange={handleChange} 
-                  className={inputCls} 
-                  placeholder="e.g. 12345" 
-                />
-                {formData.additionalContent && (
-                  <p className="mt-1.5 text-xs text-gray-500 font-mono bg-gray-50 p-1.5 rounded inline-block border border-gray-100">
-                    Preview: <span className="font-bold text-gray-800">{convertToNLC(formData.additionalContent)}</span>
-                  </p>
-                )}
               </div>
             </div>
           )}
