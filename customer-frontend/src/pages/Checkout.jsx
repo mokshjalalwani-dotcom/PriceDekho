@@ -104,8 +104,10 @@ const Checkout = () => {
       };
 
       const res = await axios.post('/api/orders', orderData);
-      dispatch({ type: 'CLEAR_CART' });
       navigate(`/order/${res.data._id}`);
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_CART' });
+      }, 50);
     } catch (err) {
       addToast(err.response?.data?.message || 'Failed to place order', 'error');
     } finally {
