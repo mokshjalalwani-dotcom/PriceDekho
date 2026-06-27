@@ -14,7 +14,7 @@ export const initSyncWorker = () => {
   }
 
   const worker = new Worker('syncQueue', async (job) => {
-    logger.info(\Processing sync job \...\);
+    logger.info(`Processing sync job ${job.id}...`);
     const { sheetReference, triggerSource } = job.data;
     
     const result = await runGoogleSheetSync({ sheetReference, triggerSource, dryRun: false });
@@ -22,10 +22,10 @@ export const initSyncWorker = () => {
   }, { connection: redisClient });
 
   worker.on('completed', (job, result) => {
-    logger.info(\Sync job \ completed. Inserted: \, Affected: \\);
+    logger.info(`Sync job ${job.id} completed. Inserted: ${result.summary.inserted}, Affected: ${result.summary.affected}`);
   });
 
   worker.on('failed', (job, err) => {
-    logger.error(\Sync job \ failed: \\);
+    logger.error(`Sync job ${job.id} failed: ${err.message}`);
   });
 };

@@ -4,24 +4,23 @@ const settingsSchema = new mongoose.Schema({
   // WhatsApp enquiry
   whatsappNumber: { type: String, default: '' },
   
-  // UPI info (keep for backward compat/display)
+  // Payments Config
+  isCodEnabled: { type: Boolean, default: true },
+  isUpiEnabled: { type: Boolean, default: true },
+  isRazorpayEnabled: { type: Boolean, default: false }, // Future-proofing
+  
+  // UPI Specifics
+  upiMerchantName: { type: String, default: '' },
   upiId: { type: String, default: '' },
-  upiQrImage: { type: String, default: '' },
+  bankName: { type: String, default: '' },
+  accountNumber: { type: String, default: '' },
   
-  // Generic Payments (e.g. [{ id: 'cod', enabled: true }, { id: 'upi', enabled: true }])
-  paymentMethods: [
-    {
-      id: { type: String, required: true },
-      enabled: { type: Boolean, default: true }
-    }
-  ],
-  
-  // Generic Advance Payment
+  // Advance Payment
   advancePaymentEnabled: { type: Boolean, default: false },
   advancePaymentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
   advancePaymentPercentage: { type: Number, default: 20 },
   advancePaymentFixed: { type: Number, default: 500 },
-  applicableAdvanceMethods: [{ type: String }], // e.g. ['cod']
+  applicableAdvanceMethods: [{ type: String, default: 'cod' }], // e.g. ['cod']
   
   // Shipping
   shippingEnabled: { type: Boolean, default: true },

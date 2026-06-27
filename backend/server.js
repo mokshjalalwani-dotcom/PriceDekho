@@ -25,8 +25,9 @@ import settingsRoutes from './routes/settingsRoutes.js';
 import subCategoryRoutes from './routes/subCategoryRoutes.js';
 import themeRoutes from './routes/themeRoutes.js';
 import syncRoutes from './routes/sync.routes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 import { initSyncScheduler } from './jobs/syncScheduler.job.js';
-import { initReservationExpiryJob } from './jobs/reservationExpiry.job.js';
+import { initPaymentExpiryJob } from './jobs/paymentExpiry.job.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,7 +39,7 @@ connectDB();
 
 // Initialize schedulers
 initSyncScheduler();
-initReservationExpiryJob();
+initPaymentExpiryJob();
 
 // Initialize BullMQ Workers (if Redis is running)
 import { initSyncWorker } from './jobs/syncQueue.js';
@@ -147,6 +148,7 @@ app.use('/api/settings', settingsRoutes); // /api/settings
 app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/theme', themeRoutes);
 app.use('/api/admin/sync', syncRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Health check route (Task 4 implementation)
 app.get('/api/health', async (req, res) => {

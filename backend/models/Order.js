@@ -39,13 +39,16 @@ const orderSchema = new mongoose.Schema({
   finalPayable: { type: Number, required: true, default: 0.0 }, // Grand total
   
   paymentMethod: { type: String, default: 'cod' },
-  isPaid: { type: Boolean, default: false },
+  isPaid: { type: Boolean, required: true, default: false },
+  paidAt: { type: Date },
   isDelivered: { type: Boolean, default: false },
+  deliveredAt: { type: Date },
   
   // Advance Payment
   advancePaid: { type: Boolean, default: false },
   advanceAmount: { type: Number, default: 0 },
-  upiTransactionId: { type: String, default: '' },
+  
+  payment: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment' },
   
   status: {
     type: String,

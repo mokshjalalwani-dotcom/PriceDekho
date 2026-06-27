@@ -14,6 +14,8 @@ import AdminBrands from './Brands';
 import ThemeSettings from './ThemeSettings';
 import GoogleSheetsSync from './GoogleSheetsSync';
 
+import AdminPayments from './Payments';
+
 const statusColors = {
   Pending: 'bg-yellow-100 text-yellow-700',
   Processing: 'bg-blue-100 text-blue-700',
@@ -188,6 +190,7 @@ const AdminDashboard = () => {
     { key: 'subcategories', label: 'Subcategories', icon: Tag },
     { key: 'brands', label: 'Brands', icon: ShoppingBag },
     { key: 'orders', label: 'Orders', icon: ShoppingBag },
+    { key: 'payments', label: 'Payments', icon: IndianRupee },
     { key: 'sheets-sync', label: 'Sheets Sync', icon: Database },
     { key: 'theme', label: 'Theme Builder', icon: Palette },
     { key: 'settings', label: 'Settings', icon: Settings },
@@ -245,6 +248,7 @@ const AdminDashboard = () => {
              activeTab === 'subcategories' ? 'Subcategory Management' : 
              activeTab === 'brands' ? 'Brand Management' : 
              activeTab === 'orders' ? 'Order Management' : 
+             activeTab === 'payments' ? 'Payment Verifications' : 
              activeTab === 'sheets-sync' ? 'Google Sheets Sync' : 
              activeTab === 'theme' ? 'Theme Builder' : 'Store Settings'}
           </h2>
@@ -470,6 +474,13 @@ const AdminDashboard = () => {
           {/* Sheets Sync Tab */}
           {activeTab === 'sheets-sync' && (
             <GoogleSheetsSync />
+          )}
+
+          {/* Payments Tab */}
+          {activeTab === 'payments' && (
+            <div className="p-6">
+              <AdminPayments />
+            </div>
           )}
 
           {/* Settings Tab */}

@@ -6,7 +6,7 @@ export const cache = (ttlSeconds = 300) => {
     if (!redisClient) return next();
     if (req.method !== 'GET') return next();
 
-    const key = \cache:\\;
+    const key = `cache:${req.originalUrl}`;
 
     try {
       const cachedData = await redisClient.get(key);
@@ -18,13 +18,13 @@ export const cache = (ttlSeconds = 300) => {
       const originalJson = res.json;
       res.json = (body) => {
         redisClient.setex(key, ttlSeconds, JSON.stringify(body)).catch(err => {
-          logger.error(\Redis Cache Set Error: \\);
+          logger.error(`Redis Cache Set Error: ${err.message}`);
         });
         originalJson.call(res, body);
       };
       next();
-    } catch (err) {
-      logger.error(\Redis Cache Get Error: \\);
+    } catch (error) {
+      logger.error(`Redis Cache Get Error: ${error.message}`);
       next();
     }
   };

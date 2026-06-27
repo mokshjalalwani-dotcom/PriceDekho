@@ -246,7 +246,6 @@ const productSchema = new mongoose.Schema({
 
   // Stock & Availability
   countInStock: { type: Number, default: 0, min: 0 },
-  reservedStock: { type: Number, default: 0, min: 0 },
   availability: {
     type: String,
     enum: ['In Stock', 'Out of Stock'],

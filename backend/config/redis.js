@@ -8,13 +8,13 @@ if (process.env.REDIS_URL) {
     maxRetriesPerRequest: null,
     enableReadyCheck: false,
     retryStrategy(times) {
-      logger.warn(Redis connection retrying ()...);
+      logger.warn(`Redis connection retrying (${times})...`);
       return Math.min(times * 50, 2000);
     }
   });
 
   redisClient.on('error', (err) => {
-    logger.error(Redis Error: );
+    logger.error(`Redis Error: ${err.message}`);
   });
 
   redisClient.on('connect', () => {

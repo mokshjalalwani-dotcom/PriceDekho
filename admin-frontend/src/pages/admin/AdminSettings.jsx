@@ -5,12 +5,13 @@ import { Save, AlertTriangle, Truck, CreditCard, Settings as SettingsIcon } from
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
     whatsappNumber: '',
+    isCodEnabled: true,
+    isUpiEnabled: true,
+    isRazorpayEnabled: false,
+    upiMerchantName: '',
     upiId: '',
-    upiQrImage: '',
-    paymentMethods: [
-      { id: 'cod', enabled: true },
-      { id: 'upi', enabled: true }
-    ],
+    bankName: '',
+    accountNumber: '',
     advancePaymentEnabled: false,
     advancePaymentType: 'percentage',
     advancePaymentPercentage: 20,
@@ -123,24 +124,32 @@ const AdminSettings = () => {
               <h4 className="text-md font-bold text-gray-800 border-b pb-2 flex items-center gap-2"><CreditCard size={18}/> Payment Methods</h4>
               <div className="flex gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={isMethodEnabled('cod')} onChange={() => handlePaymentMethodToggle('cod')} className="accent-[var(--color-primary)] w-4 h-4" />
+                  <input type="checkbox" name="isCodEnabled" checked={settings.isCodEnabled} onChange={handleChange} className="accent-[var(--color-primary)] w-4 h-4" />
                   <span className="font-medium text-gray-700">Cash on Delivery (COD)</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={isMethodEnabled('upi')} onChange={() => handlePaymentMethodToggle('upi')} className="accent-[var(--color-primary)] w-4 h-4" />
+                  <input type="checkbox" name="isUpiEnabled" checked={settings.isUpiEnabled} onChange={handleChange} className="accent-[var(--color-primary)] w-4 h-4" />
                   <span className="font-medium text-gray-700">Direct UPI</span>
                 </label>
               </div>
 
-              {isMethodEnabled('upi') && (
+              {settings.isUpiEnabled && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">UPI ID</label>
-                    <input type="text" name="upiId" value={settings.upiId} onChange={handleChange} placeholder="e.g. satguru@upi" className={inputCls} />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Merchant Name</label>
+                    <input type="text" name="upiMerchantName" value={settings.upiMerchantName} onChange={handleChange} placeholder="Satguru Electronics" className={inputCls} />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">UPI QR Code URL</label>
-                    <input type="text" name="upiQrImage" value={settings.upiQrImage} onChange={handleChange} className={inputCls} />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">UPI ID</label>
+                    <input type="text" name="upiId" value={settings.upiId} onChange={handleChange} placeholder="satguru@upi" className={inputCls} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                    <input type="text" name="bankName" value={settings.bankName} onChange={handleChange} placeholder="HDFC Bank" className={inputCls} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                    <input type="text" name="accountNumber" value={settings.accountNumber} onChange={handleChange} placeholder="XXXX XXXX 1234" className={inputCls} />
                   </div>
                 </div>
               )}
