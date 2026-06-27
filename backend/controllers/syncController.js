@@ -85,6 +85,19 @@ export const getSyncLogs = async (req, res) => {
   }
 };
 
+// @desc    Clear all sync logs
+// @route   DELETE /api/admin/sync/logs
+// @access  Private/Admin
+export const clearSyncLogs = async (req, res) => {
+  try {
+    await SyncLog.deleteMany({});
+    res.status(200).json({ message: 'Sync history cleared successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+
 // @desc    External trigger for Google Sheets Sync (Cron Jobs)
 // @route   POST /api/admin/sync/google-sheets/external-run
 // @access  Public (Protected by Webhook Secret)

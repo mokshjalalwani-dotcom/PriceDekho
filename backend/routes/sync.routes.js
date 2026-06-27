@@ -1,5 +1,5 @@
 import express from 'express';
-import { runSync, dryRunSync, getSyncLogs, externalRunSync, handleReplaySync, handleRollbackSync, handleSkuIntegrityCheck, handleGetSyncStatus } from '../controllers/syncController.js';
+import { runSync, dryRunSync, getSyncLogs, clearSyncLogs, externalRunSync, handleReplaySync, handleRollbackSync, handleSkuIntegrityCheck, handleGetSyncStatus } from '../controllers/syncController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import rateLimit from 'express-rate-limit';
 
@@ -17,6 +17,7 @@ const syncRateLimiter = rateLimit({
 router.post('/google-sheets/run', protect, admin, syncRateLimiter, runSync);
 router.post('/google-sheets/dry-run', protect, admin, syncRateLimiter, dryRunSync);
 router.get('/logs', protect, admin, getSyncLogs);
+router.delete('/logs', protect, admin, clearSyncLogs);
 router.post('/replay/:id', protect, admin, handleReplaySync);
 router.post('/rollback/:id', protect, admin, handleRollbackSync);
 router.post('/sku-integrity', protect, admin, handleSkuIntegrityCheck);
