@@ -18,8 +18,10 @@ import AdminPayments from './Payments';
 
 const statusColors = {
   Pending: 'bg-yellow-100 text-yellow-700',
-  Processing: 'bg-blue-100 text-blue-700',
+  Confirmed: 'bg-blue-100 text-blue-700',
+  Packed: 'bg-orange-100 text-orange-700',
   Shipped: 'bg-purple-100 text-purple-700',
+  'Out For Delivery': 'bg-indigo-100 text-indigo-700',
   Delivered: 'bg-green-100 text-green-700',
   Cancelled: 'bg-red-100 text-red-700',
 };
@@ -445,7 +447,7 @@ const AdminDashboard = () => {
                               onChange={(e) => handleOpenStatusModal(order, e.target.value)}
                               className={`text-xs font-semibold rounded-full px-3 py-1.5 border-0 cursor-pointer outline-none appearance-none pr-6 ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}
                             >
-                              {['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].map(s => (
+                              {['Pending', 'Confirmed', 'Packed', 'Shipped', 'Out For Delivery', 'Delivered', 'Cancelled'].map(s => (
                                 <option key={s} value={s}>{s}</option>
                               ))}
                             </select>
