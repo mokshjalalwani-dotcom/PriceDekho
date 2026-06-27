@@ -41,13 +41,6 @@ connectDB();
 initSyncScheduler();
 initPaymentExpiryJob();
 
-// Initialize BullMQ Workers (if Redis + bullmq are available)
-try {
-  const { initSyncWorker } = await import('./jobs/syncQueue.js');
-  initSyncWorker();
-} catch (err) {
-  console.warn('BullMQ sync worker skipped:', err.message);
-}
 
 const app = express();
 
