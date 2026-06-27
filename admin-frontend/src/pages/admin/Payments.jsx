@@ -63,6 +63,7 @@ const Payments = () => {
             <thead className="bg-gray-50 text-gray-600 border-b">
               <tr>
                 <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4">Customer</th>
                 <th className="px-6 py-4">Reference</th>
                 <th className="px-6 py-4">Amount</th>
                 <th className="px-6 py-4">Transaction ID</th>
@@ -74,6 +75,10 @@ const Payments = () => {
               {payments.map(payment => (
                 <tr key={payment._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">{new Date(payment.createdAt).toLocaleString()}</td>
+                  <td className="px-6 py-4">
+                    <div className="font-medium text-gray-900">{payment.customerName || 'N/A'}</div>
+                    <div className="text-xs text-gray-500">{payment.customerPhone || 'N/A'}</div>
+                  </td>
                   <td className="px-6 py-4 font-mono text-xs">{payment.reference}</td>
                   <td className="px-6 py-4 font-bold">₹{payment.amount}</td>
                   <td className="px-6 py-4 font-mono">{payment.transactionId || '-'}</td>
