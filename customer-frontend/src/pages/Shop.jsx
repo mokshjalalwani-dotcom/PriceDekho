@@ -183,6 +183,15 @@ const Shop = () => {
 
   const pageNum = Number(pageParam);
 
+  const getPaginationArray = (current, total) => {
+    if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
+    if (current <= 3) return [1, 2, 3, 4, '...', total];
+    if (current >= total - 2) return [1, '...', total - 3, total - 2, total - 1, total];
+    return [1, '...', current - 1, current, current + 1, '...', total];
+  };
+
+  const paginationArray = getPaginationArray(pageNum, pages);
+
   return (
     <div className="bg-[var(--color-background)] min-h-screen pb-16">
       {/* Breadcrumb Bar */}
@@ -484,17 +493,21 @@ const Shop = () => {
                 >
                   <ChevronLeft size={16} />
                 </button>
-                {[...Array(pages).keys()].map((x) => (
-                  <button
-                    key={x + 1}
-                    onClick={() => handlePageChange(x + 1)}
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-sm transition-colors ${pageNum === x + 1
-                        ? 'bg-theme-primary text-white shadow-md'
-                        : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
-                      }`}
-                  >
-                    {x + 1}
-                  </button>
+                {paginationArray.map((p, idx) => (
+                  p === '...' ? (
+                    <span key={`ellipsis-${idx}`} className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm">...</span>
+                  ) : (
+                    <button
+                      key={p}
+                      onClick={() => handlePageChange(p)}
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold text-sm transition-colors ${pageNum === p
+                          ? 'bg-theme-primary text-white shadow-md'
+                          : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
+                        }`}
+                    >
+                      {p}
+                    </button>
+                  )
                 ))}
                 <button
                   onClick={() => pageNum < pages && handlePageChange(pageNum + 1)}

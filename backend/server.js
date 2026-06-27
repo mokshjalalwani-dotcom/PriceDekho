@@ -4,6 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dns from 'dns';
+import rateLimit from 'express-rate-limit';
 
 // Fix for MongoDB Atlas ECONNREFUSED SRV errors on some Windows environments
 dns.setServers(['8.8.8.8', '8.8.4.4']);
@@ -34,6 +35,19 @@ connectDB();
 initSyncScheduler();
 
 const app = express();
+
+app.set('trust proxy', 1);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 500, // Limit each IP to 500 requests per `window` (here, per 15 minutes)
+  message: { message: 'Too many requests from this IP, please try again after 15 minutes' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply rate limiting to all /api routes
+app.use('/api', apiLimiter);
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
 // In development: allow all localhost/127.0.0.1 origins (any port).
