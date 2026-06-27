@@ -28,6 +28,8 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('products');
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [ordersCurrentPage, setOrdersCurrentPage] = useState(1);
+  const [ordersTotalPages, setOrdersTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [ordersLoading, setOrdersLoading] = useState(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -54,11 +56,13 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (page = 1) => {
     setOrdersLoading(true);
     try {
-      const res = await axios.get('/api/orders', authHeader);
+      const res = await axios.get(`/api/orders?pageNumber=${page}`, authHeader);
       setOrders(res.data.orders || res.data || []);
+      setOrdersCurrentPage(res.data.page || 1);
+      setOrdersTotalPages(res.data.pages || res.data.totalPages || 1);
     } catch (error) {
       console.error('Failed to fetch orders', error);
     } finally {
@@ -78,9 +82,12 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (!token) { navigate('/admin/login'); return; }
     fetchProducts();
-    fetchOrders();
     fetchCategories();
-  }, [navigate]);
+  }, []);
+
+  useEffect(() => {
+    fetchOrders(ordersCurrentPage);
+  }, [ordersCurrentPage]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -448,6 +455,28 @@ const AdminDashboard = () => {
                   </tbody>
                 </table>
               </div>
+
+              {ordersTotalPages > 1 && (
+                <div className="p-4 border-t border-gray-100 flex items-center justify-between text-sm bg-white rounded-b-xl">
+                  <span className="text-gray-500">Page {ordersCurrentPage} of {ordersTotalPages}</span>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setOrdersCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={ordersCurrentPage === 1}
+                      className="px-3 py-1 border border-gray-200 rounded text-gray-600 disabled:opacity-50 hover:bg-gray-50"
+                    >
+                      Previous
+                    </button>
+                    <button 
+                      onClick={() => setOrdersCurrentPage(p => Math.min(ordersTotalPages, p + 1))}
+                      disabled={ordersCurrentPage === ordersTotalPages}
+                      className="px-3 py-1 border border-gray-200 rounded text-gray-600 disabled:opacity-50 hover:bg-gray-50"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

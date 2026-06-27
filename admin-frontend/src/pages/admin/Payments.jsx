@@ -8,15 +8,19 @@ const Payments = () => {
   const [loading, setLoading] = useState(true);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [actionNotes, setActionNotes] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { addToast } = useToast();
 
   const token = localStorage.getItem('adminToken');
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
-  const fetchPayments = async () => {
+  const fetchPayments = async (page = 1) => {
     try {
-      const res = await axios.get('/api/payments/admin', authHeader);
+      const res = await axios.get(`/api/payments/admin?pageNumber=${page}`, authHeader);
       setPayments(res.data.payments || []);
+      setCurrentPage(res.data.page || 1);
+      setTotalPages(res.data.pages || 1);
     } catch (err) {
       addToast('Failed to fetch payments', 'error');
     } finally {
@@ -24,7 +28,7 @@ const Payments = () => {
     }
   };
 
-  useEffect(() => { fetchPayments(); }, []);
+  useEffect(() => { fetchPayments(currentPage); }, [currentPage]);
 
   const handleAction = async (paymentId, action) => {
     try {
@@ -111,6 +115,28 @@ const Payments = () => {
               ))}
             </tbody>
           </table>
+          
+          {totalPages > 1 && (
+            <div className="p-4 border-t border-gray-100 flex items-center justify-between text-sm">
+              <span className="text-gray-500">Page {currentPage} of {totalPages}</span>
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 border border-gray-200 rounded text-gray-600 disabled:opacity-50 hover:bg-gray-50"
+                >
+                  Previous
+                </button>
+                <button 
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 border border-gray-200 rounded text-gray-600 disabled:opacity-50 hover:bg-gray-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
