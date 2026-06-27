@@ -42,7 +42,6 @@ initSyncScheduler();
 initPaymentExpiryJob();
 
 // Initialize BullMQ Workers (if Redis is running)
-import { getCacheStats } from './middleware/cacheMiddleware.js';
 import { initSyncWorker } from './jobs/syncQueue.js';
 initSyncWorker();
 
@@ -159,7 +158,7 @@ app.get('/api/health', async (req, res) => {
     const isDbConnected = dbState === 1;
     if (!isDbConnected) throw new Error('Database not connected');
     
-    res.status(200).json({ status: 'ok', message: 'System healthy', dbState, cache: getCacheStats() });
+    res.status(200).json({ status: 'ok', message: 'System healthy', dbState });
   } catch (err) {
     logger.error(`Health check failed: ${err.message}`);
     res.status(503).json({ status: 'error', message: err.message });

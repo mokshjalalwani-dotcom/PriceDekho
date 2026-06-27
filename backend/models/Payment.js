@@ -16,8 +16,6 @@ const paymentSchema = new mongoose.Schema({
   cartHash: { type: String, required: true }, // To prevent cart modifications
   cartSnapshot: { type: Object, required: true }, // Immutable state at generation
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Optional, for logged in users
-  customerName: { type: String }, // Provided during checkout
-  customerPhone: { type: String }, // Provided during checkout
   expiresAt: { type: Date, required: true },
   verifiedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   verifiedAt: { type: Date },

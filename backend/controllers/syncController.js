@@ -4,7 +4,6 @@ import { replaySync, rollbackSync } from '../services/sync/syncReplay.service.js
 import { scanAndRepairSKUs } from '../services/sync/skuIntegrityValidator.service.js';
 import SyncLog from '../models/SyncLog.js';
 import Settings from '../models/Settings.js';
-import { invalidateCache } from '../middleware/cacheMiddleware.js';
 
 // @desc    Run Google Sheets Sync manually
 // @route   POST /api/admin/sync/google-sheets/run
@@ -27,7 +26,6 @@ export const runSync = async (req, res) => {
     });
 
     if (report.success) {
-      invalidateCache(/^\/api\/products/);
       res.status(200).json(report);
     } else {
       res.status(500).json({ message: 'Sync failed', report });
@@ -121,7 +119,6 @@ export const externalRunSync = async (req, res) => {
     });
 
     if (report.success) {
-      invalidateCache(/^\/api\/products/);
       res.status(200).json({ message: 'External sync successful', report });
     } else {
       res.status(500).json({ message: 'External sync failed', report });
@@ -137,7 +134,6 @@ export const externalRunSync = async (req, res) => {
 export const handleReplaySync = async (req, res) => {
   try {
     const result = await replaySync(req.params.id);
-    invalidateCache(/^\/api\/products/);
     res.status(200).json({ message: 'Sync replayed successfully', result });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -150,7 +146,6 @@ export const handleReplaySync = async (req, res) => {
 export const handleRollbackSync = async (req, res) => {
   try {
     const result = await rollbackSync(req.params.id);
-    invalidateCache(/^\/api\/products/);
     res.status(200).json({ message: 'Sync rolled back successfully', result });
   } catch (error) {
     res.status(400).json({ message: error.message });

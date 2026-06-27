@@ -1,0 +1,13 @@
+{"level":"warn","message":"REDIS_URL not provided. Running without Redis caching/queues.","service":"satguru-api","timestamp":"2026-06-27T16:57:14.689Z"}
+{"level":"warn","message":"Sync Worker skipped: Redis is not available","service":"satguru-api","timestamp":"2026-06-27T16:57:16.148Z"}
+{"level":"info","message":"Server running on port 5000 [development]","service":"satguru-api","timestamp":"2026-06-27T16:57:16.177Z"}
+{"level":"info","message":"Expired payment session: 6a3ffe755c10bf927daef2d3","service":"satguru-api","timestamp":"2026-06-27T17:02:00.450Z"}
+{"level":"info","message":"Expired payment session: 6a3ffe8a5c10bf927daef2e5","service":"satguru-api","timestamp":"2026-06-27T17:03:00.147Z"}
+{"level":"warn","message":"REDIS_URL not provided. Running without Redis caching/queues.","service":"satguru-api","timestamp":"2026-06-27T17:06:07.627Z"}
+{"level":"warn","message":"Sync Worker skipped: Redis is not available","service":"satguru-api","timestamp":"2026-06-27T17:06:07.855Z"}
+{"level":"info","message":"Server running on port 5000 [development]","service":"satguru-api","timestamp":"2026-06-27T17:06:07.860Z"}
+{"level":"warn","message":"REDIS_URL not provided. Running without Redis caching/queues.","service":"satguru-api","timestamp":"2026-06-27T17:10:33.397Z"}
+{"level":"warn","message":"Sync Worker skipped: Redis is not available","service":"satguru-api","timestamp":"2026-06-27T17:10:33.577Z"}
+{"level":"info","message":"Server running on port 5000 [development]","service":"satguru-api","timestamp":"2026-06-27T17:10:33.581Z"}
+{"level":"info","message":"Server running on port 5000 [development]","service":"satguru-api","timestamp":"2026-06-27T17:13:53.405Z"}
+{"level":"info","message":"Expired payment session: 6a4001635c10bf927daef439","service":"satguru-api","timestamp":"2026-06-27T17:15:00.116Z"}
