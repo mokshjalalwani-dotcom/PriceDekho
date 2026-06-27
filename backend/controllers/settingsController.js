@@ -20,8 +20,13 @@ export const updateSettings = async (req, res) => {
     let settings = await Settings.getSettings();
     
     const allowedFields = [
-      'whatsappNumber', 'upiId', 'upiQrImage', 'upiEnabled',
-      'codAdvanceEnabled', 'codAdvancePercent'
+      'whatsappNumber', 'upiId', 'upiQrImage', 
+      'paymentMethods',
+      'advancePaymentEnabled', 'advancePaymentType', 'advancePaymentPercentage', 'advancePaymentFixed', 'applicableAdvanceMethods',
+      'shippingEnabled', 'shippingCharge', 'freeShippingThreshold',
+      'gstPercentage',
+      'autoConfirmOrders', 'allowGuestCheckout', 'invoicePrefix',
+      'maxOrderQuantity'
     ];
     
     allowedFields.forEach(field => {

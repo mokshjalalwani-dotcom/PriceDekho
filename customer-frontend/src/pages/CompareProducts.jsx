@@ -28,14 +28,8 @@ const CompareProducts = () => {
     addToast(`${product.name} added to cart!`);
   };
 
-  // Find all unique specification keys across all products
-  const allSpecsKeys = new Set();
-  compareItems.forEach(p => {
-    if (p.specifications) {
-      Object.keys(p.specifications).forEach(k => allSpecsKeys.add(k));
-    }
-  });
-  const specKeysArray = Array.from(allSpecsKeys);
+  // Strict comparison fields requested by user
+  // No dynamic specification extraction needed.
 
   return (
     <div className="bg-gray-50 min-h-screen pt-8 pb-16">
@@ -137,52 +131,114 @@ const CompareProducts = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {/* General Specs */}
+                  {/* Comparison Rows */}
                   <tr>
-                    <td className="p-4 bg-gray-50 font-semibold text-gray-700 border-r border-gray-200" colSpan={5}>General Details</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Rating</td>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Model Number</td>
                     {compareItems.map(product => (
-                      <td key={product._id} className="p-4 text-gray-800">
-                        <div className="flex items-center gap-1 font-bold">
-                          {product.rating} <Star size={14} className="text-yellow-400 inline" fill="#FACC15"/> 
-                          <span className="text-xs text-gray-400 font-normal ml-1">({product.numReviews})</span>
-                        </div>
+                      <td key={product._id} className="p-4 text-gray-800 font-medium">
+                        {product.modelNumber || '-'}
                       </td>
                     ))}
-                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-rating-${i}`} className="p-4"></td>)}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-model-${i}`} className="p-4"></td>)}
                   </tr>
+                  
                   <tr>
-                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Availability</td>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Name</td>
                     {compareItems.map(product => (
-                      <td key={product._id} className="p-4">
-                        {product.countInStock > 0
-                          ? <span className="text-green-600 flex items-center gap-1 text-sm font-medium"><Check size={16}/> In Stock</span>
-                          : <span className="text-red-500 flex items-center gap-1 text-sm font-medium"><X size={16}/> Out of Stock</span>
-                        }
+                      <td key={product._id} className="p-4 text-gray-800 font-medium">
+                        {product.name || '-'}
                       </td>
                     ))}
-                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-avail-${i}`} className="p-4"></td>)}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-name-${i}`} className="p-4"></td>)}
                   </tr>
 
-                  {/* Dynamic Specifications */}
-                  {specKeysArray.length > 0 && (
-                    <tr>
-                      <td className="p-4 bg-gray-50 font-semibold text-gray-700 border-r border-gray-200" colSpan={5}>Technical Specifications</td>
-                    </tr>
-                  )}
-                  {specKeysArray.map(key => (
-                    <tr key={key}>
-                      <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">{key}</td>
-                      {compareItems.map(product => (
-                        <td key={product._id} className="p-4 text-gray-800 text-sm">
-                          {product.specifications && product.specifications[key] ? product.specifications[key] : '-'}
-                        </td>
-                      ))}
-                      {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-spec-${key}-${i}`} className="p-4"></td>)}
-                    </tr>
-                  ))}
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Selling Price</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-900 font-bold">
+                        ₹{(product.sellingPrice || product.price || 0).toLocaleString('en-IN')}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-sp-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">MRP</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-500 line-through text-sm">
+                        {product.mrp ? `₹${product.mrp.toLocaleString('en-IN')}` : '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-mrp-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Category</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-800">
+                        {product.category?.name || '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-cat-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30">Brand</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-[var(--color-primary)] font-semibold">
+                        {product.brand?.name || '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-brand-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30 align-top">Key Highlights</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-800 text-sm">
+                        {product.highlights && product.highlights.length > 0 ? (
+                          <ul className="list-disc pl-4 space-y-1">
+                            {product.highlights.map((h, idx) => <li key={idx}>{h}</li>)}
+                          </ul>
+                        ) : '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-hl-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30 align-top">Short Description</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-800 text-sm">
+                        {product.shortDescription || '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-sd-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30 align-top">Full Description</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-800 text-sm line-clamp-6">
+                        {product.fullDescription || product.detailedDescription || '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-fd-${i}`} className="p-4"></td>)}
+                  </tr>
+
+                  <tr>
+                    <td className="p-4 font-medium text-gray-600 border-r border-gray-200 bg-gray-50/30 align-top">Box Contents</td>
+                    {compareItems.map(product => (
+                      <td key={product._id} className="p-4 text-gray-800 text-sm">
+                        {product.boxContents && product.boxContents.length > 0 ? (
+                          <ul className="list-disc pl-4 space-y-1">
+                            {product.boxContents.map((b, idx) => <li key={idx}>{b}</li>)}
+                          </ul>
+                        ) : '-'}
+                      </td>
+                    ))}
+                    {[...Array(Math.max(0, 4 - compareItems.length))].map((_, i) => <td key={`emp-box-${i}`} className="p-4"></td>)}
+                  </tr>
 
                 </tbody>
               </table>

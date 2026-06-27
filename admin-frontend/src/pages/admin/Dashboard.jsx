@@ -146,6 +146,26 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleClearAllOrders = async () => {
+    if (!window.confirm('Are you sure you want to delete ALL orders? This cannot be undone.')) return;
+    try {
+      await axios.delete('/api/orders', authHeader);
+      fetchOrders();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Error clearing orders');
+    }
+  };
+
+  const handleDeleteOrder = async (id) => {
+    if (!window.confirm('Delete this order?')) return;
+    try {
+      await axios.delete(`/api/orders/${id}`, authHeader);
+      fetchOrders();
+    } catch (error) {
+      alert(error.response?.data?.message || 'Error deleting order');
+    }
+  };
+
   // --- Filtering ---
   const filteredProducts = products.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
@@ -356,8 +376,13 @@ const AdminDashboard = () => {
           {/* Orders Tab */}
           {activeTab === 'orders' && (
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-gray-200 bg-gray-50/50">
+              <div className="p-6 border-b border-gray-200 bg-gray-50/50 flex justify-between items-center">
                 <h3 className="text-lg font-bold text-gray-900">All Orders</h3>
+                {orders.length > 0 && (
+                  <button onClick={handleClearAllOrders} className="text-red-600 hover:text-red-700 font-medium text-sm flex items-center gap-2 px-3 py-1.5 border border-red-200 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+                    <Trash2 size={16} /> Clear All Orders
+                  </button>
+                )}
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
@@ -369,6 +394,7 @@ const AdminDashboard = () => {
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
                       <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -407,6 +433,11 @@ const AdminDashboard = () => {
                             </select>
                             <ChevronDown size={12} className="absolute right-1.5 top-2 pointer-events-none text-current opacity-70" />
                           </div>
+                        </td>
+                        <td className="p-4 text-right">
+                          <button onClick={() => handleDeleteOrder(order._id)} className="text-gray-400 hover:text-red-500 transition-colors" title="Delete Order">
+                            <Trash2 size={18} />
+                          </button>
                         </td>
                       </tr>
                     ))}

@@ -57,8 +57,17 @@ const OrderConfirmation = () => {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
             <CheckCircle size={42} className="text-green-500" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
-          <p className="text-gray-500">Thank you, <strong>{order.name}</strong>. Your order has been placed successfully.</p>
+          {order.status === 'Pending' ? (
+            <>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Submitted - Pending Approval</h1>
+              <p className="text-gray-500">Thank you, <strong>{order.name}</strong>. Your order has been submitted and is currently waiting for admin verification.</p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Order Confirmed!</h1>
+              <p className="text-gray-500">Thank you, <strong>{order.name}</strong>. Your order is now in process.</p>
+            </>
+          )}
           <div className="mt-3 inline-flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-600 font-mono">
             Order ID: <span className="font-bold text-gray-900">#{order._id.slice(-8).toUpperCase()}</span>
           </div>
@@ -98,12 +107,12 @@ const OrderConfirmation = () => {
             <div className="space-y-4">
               {order.orderItems.map((item, i) => (
                 <div key={i} className="flex gap-4 items-center">
-                  <img src={item.image} alt={item.name} className="w-14 h-14 object-contain border border-gray-100 rounded-lg p-1 bg-gray-50 shrink-0" />
+                  <img src={item.mainImage || item.image} alt={item.name} className="w-14 h-14 object-contain border border-gray-100 rounded-lg p-1 bg-gray-50 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-gray-900 line-clamp-1">{item.name}</p>
                     <p className="text-sm text-gray-500">Qty: {item.qty}</p>
                   </div>
-                  <p className="font-semibold text-gray-900">₹{(item.price * item.qty).toLocaleString()}</p>
+                  <p className="font-semibold text-gray-900">₹{((item.sellingPrice || item.price) * item.qty).toLocaleString()}</p>
                 </div>
               ))}
             </div>
@@ -124,17 +133,29 @@ const OrderConfirmation = () => {
           {/* Total */}
           <div className="p-6 bg-gray-50">
             <div className="flex justify-between text-sm text-gray-600 mb-2">
-              <span>Items Total</span>
-              <span>₹{order.itemsPrice.toLocaleString()}</span>
+              <span>Subtotal</span>
+              <span>₹{(order.itemsPrice || 0).toLocaleString()}</span>
             </div>
+            {(order.taxPrice || 0) > 0 && (
+              <div className="flex justify-between text-sm text-gray-600 mb-2">
+                <span>Tax</span>
+                <span>₹{order.taxPrice.toLocaleString()}</span>
+              </div>
+            )}
             <div className="flex justify-between text-sm text-gray-600 mb-2">
               <span>Shipping</span>
               <span className={order.shippingPrice === 0 ? 'text-green-600' : ''}>{order.shippingPrice === 0 ? 'FREE' : `₹${order.shippingPrice}`}</span>
             </div>
             <div className="flex justify-between font-bold text-gray-900 text-lg border-t border-gray-200 pt-3 mt-2">
-              <span>Total Paid (COD)</span>
-              <span>₹{order.totalPrice.toLocaleString()}</span>
+              <span>Total Payable</span>
+              <span>₹{(order.finalPayable || order.totalPrice || 0).toLocaleString()}</span>
             </div>
+            {order.advanceAmount > 0 && (
+              <div className="flex justify-between text-theme-primary text-sm pt-2 mt-2">
+                <span className="font-medium">Advance Paid</span>
+                <span className="font-bold">₹{order.advanceAmount.toLocaleString()}</span>
+              </div>
+            )}
           </div>
         </div>
 

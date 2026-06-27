@@ -4,15 +4,38 @@ const settingsSchema = new mongoose.Schema({
   // WhatsApp enquiry
   whatsappNumber: { type: String, default: '' },
   
-  // UPI payment
+  // UPI info (keep for backward compat/display)
   upiId: { type: String, default: '' },
   upiQrImage: { type: String, default: '' },
-  upiEnabled: { type: Boolean, default: false },
   
-  // COD advance payment
-  codAdvanceEnabled: { type: Boolean, default: true },
-  codAdvancePercent: { type: Number, default: 50 },
+  // Generic Payments (e.g. [{ id: 'cod', enabled: true }, { id: 'upi', enabled: true }])
+  paymentMethods: [
+    {
+      id: { type: String, required: true },
+      enabled: { type: Boolean, default: true }
+    }
+  ],
   
+  // Generic Advance Payment
+  advancePaymentEnabled: { type: Boolean, default: false },
+  advancePaymentType: { type: String, enum: ['percentage', 'fixed'], default: 'percentage' },
+  advancePaymentPercentage: { type: Number, default: 20 },
+  advancePaymentFixed: { type: Number, default: 500 },
+  applicableAdvanceMethods: [{ type: String }], // e.g. ['cod']
+  
+  // Shipping
+  shippingEnabled: { type: Boolean, default: true },
+  shippingCharge: { type: Number, default: 60 },
+  freeShippingThreshold: { type: Number, default: 999 },
+  
+  // Tax
+  gstPercentage: { type: Number, default: 18 },
+  
+  // Order Configs
+  autoConfirmOrders: { type: Boolean, default: false },
+  allowGuestCheckout: { type: Boolean, default: true },
+  invoicePrefix: { type: String, default: 'ORD-' },
+
   // Order limits
   maxOrderQuantity: { type: Number, default: 10 },
 }, {
