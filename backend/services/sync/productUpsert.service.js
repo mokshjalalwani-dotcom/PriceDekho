@@ -108,6 +108,11 @@ const buildSetDoc = (row) => {
     }
   }
 
+  // SubCategory Logic
+  if (row.subcategory && row.subcategory !== '') {
+    doc.subCategory = row.subcategory.trim();
+  }
+
   return doc;
 };
 

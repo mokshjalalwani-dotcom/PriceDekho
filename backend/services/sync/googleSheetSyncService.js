@@ -75,14 +75,18 @@ export const runGoogleSheetSync = async ({ sheetReference, triggerSource, dryRun
       }
     } else {
       // Dry-run: report what would happen without writing anything
-      const modelNumbers = validRows.map(r => r.modelnumber).filter(Boolean);
-      const existingInDB = await Product.find({ modelNumber: { $in: modelNumbers } })
-                                        .lean()
-                                        .select('modelNumber');
-      const existingSet  = new Set(existingInDB.map(p => p.modelNumber));
-      for (const row of validRows) {
-        if (existingSet.has(row.modelnumber)) affectedCount++; // would-be update
-        else                                  insertedCount++; // would-be insert
+      const BATCH_SIZE = 500;
+      for (let i = 0; i < validRows.length; i += BATCH_SIZE) {
+        const batch = validRows.slice(i, i + BATCH_SIZE);
+        const modelNumbers = batch.map(r => r.modelnumber).filter(Boolean);
+        const existingInDB = await Product.find({ modelNumber: { $in: modelNumbers } })
+                                          .lean()
+                                          .select('modelNumber');
+        const existingSet  = new Set(existingInDB.map(p => p.modelNumber));
+        for (const row of batch) {
+          if (existingSet.has(row.modelnumber)) affectedCount++; // would-be update
+          else                                  insertedCount++; // would-be insert
+        }
       }
     }
 
@@ -96,8 +100,12 @@ export const runGoogleSheetSync = async ({ sheetReference, triggerSource, dryRun
       affectedCount,
       failedCount,
       durationMs,
-      errors,
-      snapshots: { inputRows: validRows, previousStates },
+      errors: errors.slice(0, 500), // Cap at 500 errors to prevent BSON overflow
+      snapshots: { 
+        inputRows: validRows.slice(0, 500), 
+        previousStates: previousStates.slice(0, 500),
+        truncated: validRows.length > 500 
+      },
     };
 
     if (!dryRun) await createSyncLog(logData);
