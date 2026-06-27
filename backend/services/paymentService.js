@@ -160,7 +160,7 @@ export const verifyPayment = async (paymentId, adminId, action, notes) => {
       order.isPaid = true;
       order.paidAt = new Date();
       if (payment.method === 'upi') {
-        order.status = 'Processing';
+        order.status = 'Confirmed';
       }
       await order.save();
     }

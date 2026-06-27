@@ -36,7 +36,6 @@ const AdminDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderToUpdate, setOrderToUpdate] = useState(null);
-  const [statusMessage, setStatusMessage] = useState('');
   const [productSearch, setProductSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [categories, setCategories] = useState([]);
@@ -138,15 +137,13 @@ const AdminDashboard = () => {
   const handleOpenStatusModal = (order, newStatus) => {
     if (order.status === newStatus) return;
     setOrderToUpdate({ ...order, newStatus });
-    setStatusMessage(order.adminMessage || '');
   };
 
   const submitOrderStatus = async () => {
     if (!orderToUpdate) return;
     try {
       await axios.put(`/api/orders/${orderToUpdate._id}/status`, { 
-        status: orderToUpdate.newStatus, 
-        adminMessage: statusMessage 
+        status: orderToUpdate.newStatus
       }, authHeader);
       fetchOrders();
       setOrderToUpdate(null);
@@ -553,16 +550,6 @@ const AdminDashboard = () => {
                 <div className={`inline-flex px-3 py-1 rounded-full text-sm font-semibold ${statusColors[orderToUpdate.newStatus] || 'bg-gray-100 text-gray-700'}`}>
                   {orderToUpdate.newStatus}
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Message to Customer (Optional)</label>
-                <textarea
-                  value={statusMessage}
-                  onChange={(e) => setStatusMessage(e.target.value)}
-                  placeholder="e.g. We have confirmed your order and will ship it tomorrow!"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-theme-focus resize-none h-24 text-sm"
-                />
-              </div>
             </div>
             <div className="p-5 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
               <button onClick={() => setOrderToUpdate(null)} className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">Cancel</button>

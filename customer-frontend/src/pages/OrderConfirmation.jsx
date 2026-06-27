@@ -73,17 +73,15 @@ const OrderConfirmation = () => {
           </div>
         </div>
 
-        {order.adminMessage && (
-          <div className="mb-8 bg-blue-50 border border-blue-200 rounded-xl p-5 flex items-start gap-4">
-            <div className="p-2 bg-blue-100 text-blue-600 rounded-full shrink-0">
-              <MessageSquareText size={20} />
-            </div>
-            <div>
-              <h3 className="font-bold text-blue-900 text-sm mb-1">Message from Satguru Electricals</h3>
-              <p className="text-blue-800 text-sm">{order.adminMessage}</p>
-            </div>
+        <div className="mb-8 bg-blue-50 border border-blue-200 rounded-xl p-5 flex items-start gap-4">
+          <div className="p-2 bg-blue-100 text-blue-600 rounded-full shrink-0">
+            <MessageSquareText size={20} />
           </div>
-        )}
+          <div>
+            <h3 className="font-bold text-blue-900 text-sm mb-1">Order Updates</h3>
+            <p className="text-blue-800 text-sm">Further updates regarding your order status will be sent to you by a message or call on your registered mobile number.</p>
+          </div>
+        </div>
 
         {/* Order Details Card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
