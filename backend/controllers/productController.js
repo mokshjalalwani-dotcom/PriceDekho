@@ -278,21 +278,38 @@ export const searchProducts = async (req, res) => {
       return res.json({ products: [], total: 0 });
     }
 
-    const products = await Product.find({
-      isVisible: { $ne: false },
-      $or: [
-        { name: { $regex: q, $options: 'i' } },
-        { tags: { $regex: q, $options: 'i' } },
-        { shortDescription: { $regex: q, $options: 'i' } },
-        { modelNumber: { $regex: q, $options: 'i' } },
-      ]
-    })
+    let filter = { isVisible: { $ne: false } };
+
+    // Hybrid Search Strategy
+    if (q.length < 3) {
+      // Regex prefix search for short queries
+      filter.$or = [
+        { name: { $regex: '^' + q, $options: 'i' } },
+        { modelNumber: { $regex: '^' + q, $options: 'i' } }
+      ];
+    } else {
+      // $text search for full-word matching on longer queries
+      filter.$text = { $search: q };
+    }
+
+    let query = Product.find(filter)
       .populate('category', 'name slug')
       .populate('brand', 'name slug')
-      .limit(20)
-      .sort({ isFeatured: -1, rating: -1 });
+      .limit(20);
 
-    res.json({ products: adaptProductsListForFrontend(products), total: products.length });
+    // Sort by text score if using $text, otherwise default sort
+    if (q.length >= 3) {
+      query = query.sort({ score: { $meta: 'textScore' } });
+    } else {
+      query = query.sort({ isFeatured: -1, rating: -1 });
+    }
+
+    const products = await query;
+
+    res.json({
+      products: adaptProductsListForFrontend(products),
+      total: products.length
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }

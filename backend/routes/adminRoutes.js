@@ -44,17 +44,65 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 
 // =====================================================
+// DASHBOARD METRICS
+// =====================================================
+
+// Admin: Get Dashboard Aggregate Metrics
+router.get('/dashboard-metrics', protect, admin, async (req, res) => {
+  try {
+    const totalProducts = await Product.countDocuments();
+    const totalCategories = await Category.countDocuments();
+    const totalBrands = await Brand.countDocuments();
+    
+    // Lazy import Order to avoid circular dep if any, or just import at top
+    const Order = (await import('../models/Order.js')).default;
+    const totalOrders = await Order.countDocuments();
+    
+    // Revenue calculation (only Paid orders or Delivered, depending on business logic)
+    const revenueStats = await Order.aggregate([
+      { $match: { isPaid: true } },
+      { $group: { _id: null, totalRevenue: { $sum: '$finalPayable' } } }
+    ]);
+    const totalRevenue = revenueStats.length > 0 ? revenueStats[0].totalRevenue : 0;
+
+    res.json({
+      totalProducts,
+      totalCategories,
+      totalBrands,
+      totalOrders,
+      totalRevenue
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// =====================================================
 // PRODUCT CRUD
 // =====================================================
 
 // Admin: Get all products (including hidden)
 router.get('/products', protect, admin, async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const totalProducts = await Product.countDocuments();
     const products = await Product.find({})
       .populate('category', 'name slug icon')
       .populate('brand', 'name slug logo')
-      .sort({ createdAt: -1 });
-    res.json({ products: adaptProductsListForFrontend(products) });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      products: adaptProductsListForFrontend(products),
+      page,
+      limit,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

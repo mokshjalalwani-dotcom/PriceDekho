@@ -173,8 +173,29 @@ export const createOrder = async (req, res) => {
 // @access  Admin
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find({}).sort({ createdAt: -1 });
-    res.json(orders);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    // Optional status filter
+    const filter = {};
+    if (req.query.status) {
+      filter.status = req.query.status;
+    }
+
+    const totalOrders = await Order.countDocuments(filter);
+    const orders = await Order.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      orders,
+      page,
+      limit,
+      totalPages: Math.ceil(totalOrders / limit),
+      totalOrders
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

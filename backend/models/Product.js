@@ -341,5 +341,14 @@ productSchema.index({ availability: 1 });
 productSchema.index({ modelNumber: 1 });
 productSchema.index({ createdAt: -1 });
 
+// Added for 10k-100k scalability
+productSchema.index({ slug: 1 });
+productSchema.index({ sku: 1 });
+productSchema.index({ isVisible: 1 });
+productSchema.index({ category: 1, brand: 1 });
+productSchema.index({ category: 1, isVisible: 1 });
+productSchema.index({ brand: 1, isVisible: 1 });
+productSchema.index({ isFeatured: -1, rating: -1 });
+
 const Product = mongoose.model('Product', productSchema);
 export default Product;

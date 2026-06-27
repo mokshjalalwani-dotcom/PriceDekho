@@ -56,5 +56,11 @@ const orderSchema = new mongoose.Schema({
   idempotencyKey: { type: String, unique: true, sparse: true },
 }, { timestamps: true });
 
+// Performance indexes
+orderSchema.index({ createdAt: -1 });
+orderSchema.index({ status: 1 });
+orderSchema.index({ user: 1 });
+orderSchema.index({ isPaid: 1 });
+
 const Order = mongoose.model('Order', orderSchema);
 export default Order;
