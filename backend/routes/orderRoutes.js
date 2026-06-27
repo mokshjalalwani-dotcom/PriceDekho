@@ -1,9 +1,11 @@
 import express from 'express';
 import { createOrder, getAllOrders, getOrderById, updateOrderStatus, clearAllOrders, deleteOrderById } from '../controllers/orderController.js';
+import { razorpayWebhook } from '../controllers/webhookController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+router.post('/webhook', razorpayWebhook);                         // Payment Webhook
 router.post('/', createOrder);                                    // Guest checkout
 router.get('/', protect, admin, getAllOrders);                    // Admin: all orders
 router.get('/:id', getOrderById);                                 // Get order by ID

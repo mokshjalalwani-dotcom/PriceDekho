@@ -22,6 +22,7 @@ import subCategoryRoutes from './routes/subCategoryRoutes.js';
 import themeRoutes from './routes/themeRoutes.js';
 import syncRoutes from './routes/sync.routes.js';
 import { initSyncScheduler } from './jobs/syncScheduler.job.js';
+import { initReservationExpiryJob } from './jobs/reservationExpiry.job.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +34,7 @@ connectDB();
 
 // Initialize schedulers
 initSyncScheduler();
+initReservationExpiryJob();
 
 const app = express();
 

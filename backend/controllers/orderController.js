@@ -59,22 +59,38 @@ export const createOrder = async (req, res) => {
         return res.status(400).json({ message: `Invalid quantity for item ${item.name}` });
       }
 
-      const product = await Product.findById(item.product);
+      // Atomically check stock, visibility, and reserve the stock
+      const product = await Product.findOneAndUpdate(
+        { 
+          _id: item.product, 
+          isVisible: true,
+          countInStock: { $gte: item.qty } 
+        },
+        { 
+          $inc: { countInStock: -item.qty, reservedStock: item.qty } 
+        },
+        { new: true, session }
+      );
+
       if (!product) {
-        if (session) await session.abortTransaction();
-        return res.status(400).json({ message: `Product ${item.name} not found or deleted.` });
-      }
-      
-      // Validate visibility (assuming 'isVisible' or 'availability' is used)
-      if (product.isVisible === false) {
-        if (session) await session.abortTransaction();
-        return res.status(400).json({ message: `Product ${product.name} is not available for purchase.` });
+        // If no session is active (fallback mode), we must manually rollback previous reservations
+        if (!session) {
+          for (const rollbackItem of snapshotItems) {
+            await Product.updateOne(
+              { _id: rollbackItem.product },
+              { $inc: { countInStock: rollbackItem.qty, reservedStock: -rollbackItem.qty } }
+            );
+          }
+        } else {
+          await session.abortTransaction();
+        }
+        return res.status(400).json({ message: `Insufficient stock or product unavailable for ${item.name}` });
       }
 
-      // Validate stock
-      if (product.countInStock < item.qty) {
-        if (session) await session.abortTransaction();
-        return res.status(400).json({ message: `Insufficient stock for ${product.name}` });
+      // Auto-set availability if stock just hit 0
+      if (product.countInStock === 0) {
+        product.availability = 'Out of Stock';
+        await product.save({ session });
       }
 
       // Calculate total for this item
@@ -207,35 +223,57 @@ export const updateOrderStatus = async (req, res) => {
       order.adminMessage = req.body.adminMessage;
     }
     if (newStatus === 'Delivered') order.isDelivered = true;
-    
-    // Deduct stock: Moving from Pending/Cancelled to Approved
-    const wasUnapproved = oldStatus === 'Pending' || oldStatus === 'Cancelled';
-    const isApproved = ['Confirmed', 'Processing', 'Shipped', 'Delivered'].includes(newStatus);
-    
-    if (wasUnapproved && isApproved) {
+
+    const isOldPending = oldStatus === 'Pending';
+    const isOldApproved = ['Confirmed', 'Processing', 'Shipped', 'Delivered'].includes(oldStatus);
+    const isOldCancelled = oldStatus === 'Cancelled';
+
+    const isNewPending = newStatus === 'Pending';
+    const isNewApproved = ['Confirmed', 'Processing', 'Shipped', 'Delivered'].includes(newStatus);
+    const isNewCancelled = newStatus === 'Cancelled';
+
+    // Build bulk updates for products based on state transitions
+    const bulkOps = [];
+
+    if (oldStatus !== newStatus) {
       for (const item of order.orderItems) {
-        const p = await Product.findById(item.product);
-        if (p) {
-          p.countInStock -= item.qty;
-          if (p.countInStock < 0) p.countInStock = 0;
-          p.availability = p.countInStock > 0 ? 'In Stock' : 'Out of Stock';
-          await p.save({ session });
+        let countInc = 0;
+        let reserveInc = 0;
+
+        if (isOldPending && isNewApproved) { reserveInc -= item.qty; }
+        else if (isOldPending && isNewCancelled) { countInc += item.qty; reserveInc -= item.qty; }
+        else if (isOldApproved && isNewCancelled) { countInc += item.qty; }
+        else if (isOldCancelled && isNewPending) { countInc -= item.qty; reserveInc += item.qty; }
+        else if (isOldCancelled && isNewApproved) { countInc -= item.qty; }
+        else if (isOldApproved && isNewPending) { reserveInc += item.qty; }
+
+        if (countInc !== 0 || reserveInc !== 0) {
+          bulkOps.push({
+            updateOne: {
+              filter: { _id: item.product },
+              update: { 
+                $inc: { countInStock: countInc, reservedStock: reserveInc }
+              }
+            }
+          });
         }
       }
-    }
 
-    // Restore stock: Moving from Approved to Cancelled
-    const wasApproved = ['Confirmed', 'Processing', 'Shipped', 'Delivered'].includes(oldStatus);
-    const isCancelled = newStatus === 'Cancelled' || newStatus === 'Pending';
-
-    if (wasApproved && isCancelled) {
-      for (const item of order.orderItems) {
-        const p = await Product.findById(item.product);
-        if (p) {
-          p.countInStock += item.qty;
-          p.availability = 'In Stock';
-          await p.save({ session });
-        }
+      if (bulkOps.length > 0) {
+        await Product.bulkWrite(bulkOps, { session });
+        
+        // Auto-update availability for affected products (can't easily do in bulkWrite without aggregation)
+        // so we run a background check or a simple updateMany
+        await Product.updateMany(
+          { _id: { $in: order.orderItems.map(i => i.product) }, countInStock: { $lte: 0 } },
+          { $set: { availability: 'Out of Stock' } },
+          { session }
+        );
+        await Product.updateMany(
+          { _id: { $in: order.orderItems.map(i => i.product) }, countInStock: { $gt: 0 } },
+          { $set: { availability: 'In Stock' } },
+          { session }
+        );
       }
     }
 
@@ -287,18 +325,44 @@ export const deleteOrderById = async (req, res) => {
       return res.status(404).json({ message: 'Order not found' });
     }
     
-    // If order was in a confirmed state, restore the stock before deleting
-    if (['Confirmed', 'Processing', 'Shipped', 'Delivered'].includes(order.status)) {
+    const isPending = order.status === 'Pending';
+    const isApproved = ['Confirmed', 'Processing', 'Shipped', 'Delivered'].includes(order.status);
+    
+    // If order was Pending, restore reserved stock. 
+    // If order was Approved, restore sold stock.
+    // If order was Cancelled, stock was already restored during cancellation.
+    if (isPending || isApproved) {
+      const bulkOps = [];
       for (const item of order.orderItems) {
-        const p = await Product.findById(item.product);
-        if (p) {
-          p.countInStock += item.qty;
-          p.availability = 'In Stock';
-          await p.save({ session });
+        let countInc = 0;
+        let reserveInc = 0;
+        
+        if (isPending) {
+          countInc += item.qty;
+          reserveInc -= item.qty;
+        } else if (isApproved) {
+          countInc += item.qty;
+        }
+
+        if (countInc !== 0 || reserveInc !== 0) {
+          bulkOps.push({
+            updateOne: {
+              filter: { _id: item.product },
+              update: { $inc: { countInStock: countInc, reservedStock: reserveInc } }
+            }
+          });
         }
       }
-    }
 
+      if (bulkOps.length > 0) {
+        await Product.bulkWrite(bulkOps, { session });
+        await Product.updateMany(
+          { _id: { $in: order.orderItems.map(i => i.product) }, countInStock: { $gt: 0 } },
+          { $set: { availability: 'In Stock' } },
+          { session }
+        );
+      }
+    }
     await order.deleteOne({ session });
     
     if (session) {
