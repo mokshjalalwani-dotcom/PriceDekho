@@ -341,7 +341,6 @@ productSchema.index({ modelNumber: 1 });
 productSchema.index({ createdAt: -1 });
 
 // Added for 10k-100k scalability
-productSchema.index({ slug: 1 });
 productSchema.index({ sku: 1 });
 productSchema.index({ isVisible: 1 });
 productSchema.index({ category: 1, brand: 1 });

@@ -21,7 +21,7 @@ const syncLogSchema = new mongoose.Schema({
     inputRows: { type: mongoose.Schema.Types.Mixed }, // Array of valid rows
     previousStates: { type: mongoose.Schema.Types.Mixed } // Array of pre-sync product states
   }
-}, { timestamps: true });
+}, { timestamps: true, suppressReservedKeysWarning: true });
 
 // Indexes for faster log fetching
 syncLogSchema.index({ createdAt: -1 });
