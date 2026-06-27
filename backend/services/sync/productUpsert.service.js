@@ -65,6 +65,9 @@ const buildSetDoc = (row) => {
   // Only track mainImage — NOT images[] to prevent hook conflict loop
   if (row.imageurl && row.imageurl !== '') doc.mainImage = row.imageurl.trim();
 
+  const youtubeKey = Object.keys(row).find(k => k.toLowerCase().includes('youtube'));
+  if (youtubeKey && row[youtubeKey] !== '') doc.youtubeUrl = row[youtubeKey].trim();
+
   if (row.modelnumber && row.modelnumber !== '') doc.modelNumber = row.modelnumber.trim();
 
   const colorKey = Object.keys(row).find(k => k.toLowerCase().includes('color') || k.toLowerCase() === 'colour');
@@ -117,6 +120,7 @@ const buildSetDoc = (row) => {
       && !(lk.includes('short') && lk.includes('desc'))
       && !(lk.includes('full')  && lk.includes('desc'))
       && !lk.includes('box')
+      && !lk.includes('youtube')
       && row[key] !== ''
     ) {
       // Try to maintain key case matching schema if possible, or just use what we have.
