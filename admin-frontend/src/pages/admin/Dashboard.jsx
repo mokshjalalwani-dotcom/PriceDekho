@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
   Package, ShoppingBag, IndianRupee, Plus, Edit, Trash2, LogOut,
   ArrowUpRight, Search, X, ChevronDown, Tag, Eye, EyeOff, AlertTriangle,
-  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings, Palette, Database
+  BarChart3, Filter, Menu, ChevronRight, ChevronLeft, Settings, Palette, Database, MessageCircle
 } from 'lucide-react';
 import ProductModal from './ProductModal';
 import AdminSettings from './AdminSettings';
@@ -173,6 +173,13 @@ const AdminDashboard = () => {
     } catch (error) {
       alert(error.response?.data?.message || 'Error deleting order');
     }
+  };
+
+  const handleWhatsAppCustomer = (order) => {
+    const text = `Hello ${order.name},\n\nThank you for your order #${order._id.slice(-8).toUpperCase()} at Satguru! We have received your order (Amount: ₹${order.totalPrice.toLocaleString()}) and will process it shortly.`;
+    let phone = order.phone.replace(/\D/g, '');
+    if (phone.length === 10) phone = `91${phone}`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   // --- Filtering ---
@@ -446,9 +453,14 @@ const AdminDashboard = () => {
                           </div>
                         </td>
                         <td className="p-4 text-right">
-                          <button onClick={() => handleDeleteOrder(order._id)} className="text-gray-400 hover:text-red-500 transition-colors" title="Delete Order">
-                            <Trash2 size={18} />
-                          </button>
+                          <div className="flex items-center justify-end gap-3">
+                            <button onClick={() => handleWhatsAppCustomer(order)} className="text-gray-400 hover:text-green-500 transition-colors" title="Message on WhatsApp">
+                              <MessageCircle size={18} />
+                            </button>
+                            <button onClick={() => handleDeleteOrder(order._id)} className="text-gray-400 hover:text-red-500 transition-colors" title="Delete Order">
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
