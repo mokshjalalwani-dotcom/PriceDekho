@@ -5,18 +5,22 @@ export const generateUpiUri = (upiId, merchantName, amount, reference, transacti
     throw new Error('UPI ID and Amount are required to generate a UPI link.');
   }
 
-  const uri = new URL('upi://pay');
-  uri.searchParams.append('pa', upiId);
-  if (merchantName) uri.searchParams.append('pn', merchantName);
-  uri.searchParams.append('am', amount.toString());
-  uri.searchParams.append('cu', 'INR');
+  const params = new URLSearchParams();
+  params.append('pa', upiId);
+  if (merchantName) params.append('pn', merchantName);
+  params.append('am', amount.toString());
+  params.append('cu', 'INR');
   
-  if (transactionNote) uri.searchParams.append('tn', transactionNote);
+  if (transactionNote) params.append('tn', transactionNote);
   if (reference) {
-    uri.searchParams.append('tr', reference);
+    params.append('tr', reference);
   }
 
-  return uri.toString();
+  // URLSearchParams encodes spaces as '+' and '@' as '%40'
+  // Many UPI apps (like PhonePe) strictly expect '%20' for spaces and unencoded '@' in the pa parameter.
+  const queryString = params.toString().replace(/\+/g, '%20').replace(/%40/g, '@');
+
+  return `upi://pay?${queryString}`;
 };
 
 export const generateQrCode = async (upiUri) => {
