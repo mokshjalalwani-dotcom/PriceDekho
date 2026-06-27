@@ -3,15 +3,20 @@ import { validateWebhookSecret, getSyncStatus } from '../services/sync/externalS
 import { replaySync, rollbackSync } from '../services/sync/syncReplay.service.js';
 import { scanAndRepairSKUs } from '../services/sync/skuIntegrityValidator.service.js';
 import SyncLog from '../models/SyncLog.js';
+import Settings from '../models/Settings.js';
 
 // @desc    Run Google Sheets Sync manually
 // @route   POST /api/admin/sync/google-sheets/run
 // @access  Private/Admin
 export const runSync = async (req, res) => {
   try {
-    const { sheetReference } = req.body;
+    let { sheetReference } = req.body;
     if (!sheetReference) {
-      return res.status(400).json({ message: 'Sheet reference (URL or ID) is required' });
+      const settings = await Settings.findOne();
+      sheetReference = settings?.googleSheetUrl;
+    }
+    if (!sheetReference) {
+      return res.status(400).json({ message: 'Sheet reference is required. Please configure it in Settings.' });
     }
 
     const report = await runGoogleSheetSync({
@@ -35,9 +40,13 @@ export const runSync = async (req, res) => {
 // @access  Private/Admin
 export const dryRunSync = async (req, res) => {
   try {
-    const { sheetReference } = req.body;
+    let { sheetReference } = req.body;
     if (!sheetReference) {
-      return res.status(400).json({ message: 'Sheet reference (URL or ID) is required' });
+      const settings = await Settings.findOne();
+      sheetReference = settings?.googleSheetUrl;
+    }
+    if (!sheetReference) {
+      return res.status(400).json({ message: 'Sheet reference is required. Please configure it in Settings.' });
     }
 
     const report = await runGoogleSheetSync({

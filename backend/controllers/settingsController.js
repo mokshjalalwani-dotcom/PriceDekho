@@ -26,7 +26,8 @@ export const updateSettings = async (req, res) => {
       'shippingEnabled', 'shippingCharge', 'freeShippingThreshold',
       'gstPercentage',
       'autoConfirmOrders', 'allowGuestCheckout', 'invoicePrefix',
-      'maxOrderQuantity'
+      'maxOrderQuantity',
+      'googleSheetUrl'
     ];
     
     allowedFields.forEach(field => {

@@ -23,7 +23,8 @@ const AdminSettings = () => {
     autoConfirmOrders: false,
     allowGuestCheckout: true,
     invoicePrefix: 'ORD-',
-    maxOrderQuantity: 10
+    maxOrderQuantity: 10,
+    googleSheetUrl: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -226,6 +227,15 @@ const AdminSettings = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Max Order Quantity (Per Item)</label>
                   <input type="number" name="maxOrderQuantity" value={settings.maxOrderQuantity} onChange={handleChange} min="1" className={inputCls} />
                 </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="text-md font-bold text-gray-800 border-b pb-2 flex items-center gap-2">Integrations</h4>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Google Sheet URL</label>
+                <input type="text" name="googleSheetUrl" value={settings.googleSheetUrl} onChange={handleChange} placeholder="https://docs.google.com/spreadsheets/d/..." className={inputCls} />
+                <p className="text-xs text-gray-500 mt-1">This sheet will be used for the product sync engine.</p>
               </div>
             </div>
 

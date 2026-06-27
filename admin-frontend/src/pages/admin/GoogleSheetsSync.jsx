@@ -4,7 +4,6 @@ import { useToast } from '../../context/ToastContext';
 import { RefreshCw, Database, AlertTriangle, CheckCircle, Clock, Settings } from 'lucide-react';
 
 const GoogleSheetsSync = () => {
-  const [sheetUrl, setSheetUrl] = useState(localStorage.getItem('syncSheetUrl') || '');
   const [isSyncing, setIsSyncing] = useState(false);
   const [isDryRun, setIsDryRun] = useState(false);
   const [logs, setLogs] = useState([]);
@@ -49,20 +48,14 @@ const GoogleSheetsSync = () => {
   };
 
   const handleSync = async (dryRun = false) => {
-    if (!sheetUrl.trim()) {
-      showToast('Please enter a valid Google Sheets URL', 'error');
-      return;
-    }
-    
-    localStorage.setItem('syncSheetUrl', sheetUrl);
-    
     setIsSyncing(true);
     setIsDryRun(dryRun);
     setReport(null);
 
     try {
       const endpoint = dryRun ? '/api/admin/sync/google-sheets/dry-run' : '/api/admin/sync/google-sheets/run';
-      const { data } = await axios.post(endpoint, { sheetReference: sheetUrl }, authHeader);
+      // We no longer send sheetReference; backend fetches it from Settings
+      const { data } = await axios.post(endpoint, {}, authHeader);
       
       setReport(data);
       if (data.success) {
@@ -154,21 +147,10 @@ const GoogleSheetsSync = () => {
       )}
 
       {/* Control Panel */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Google Sheet URL</label>
-          <input
-            type="text"
-            className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none"
-            placeholder="https://docs.google.com/spreadsheets/d/.../edit"
-            value={sheetUrl}
-            onChange={(e) => setSheetUrl(e.target.value)}
-          />
-          <p className="text-xs text-gray-500 mt-2">
-            Make sure your sheet is "Published to Web" as CSV, or the URL is publicly readable.
-          </p>
-        </div>
-
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8 flex flex-col gap-4">
+        <p className="text-sm text-gray-600 font-medium">
+          Note: Make sure your Google Sheet URL is configured in <span className="font-bold text-gray-800">Store Settings &gt; General Config &gt; Integrations</span>.
+        </p>
         <div className="flex gap-4">
           <button
             onClick={() => handleSync(true)}

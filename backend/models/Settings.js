@@ -38,6 +38,9 @@ const settingsSchema = new mongoose.Schema({
 
   // Order limits
   maxOrderQuantity: { type: Number, default: 10 },
+
+  // Integrations
+  googleSheetUrl: { type: String, default: '' },
 }, {
   timestamps: true,
 });
