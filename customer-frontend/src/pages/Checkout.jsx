@@ -50,7 +50,7 @@ const Checkout = () => {
   const shipping = settings?.shippingEnabled ? (cartTotal >= (settings.freeShippingThreshold || 999) ? 0 : (settings.shippingCharge || 60)) : 0;
   const grandTotal = cartTotal + shipping;
   const isAdvanceApplicable = settings?.advancePaymentEnabled && settings?.applicableAdvanceMethods?.includes(paymentMethod);
-  const advanceRequired = isAdvanceApplicable ? Math.min(settings?.advancePaymentType === 'fixed' ? (settings?.advancePaymentFixed || 0) : (cartTotal * (settings?.advancePaymentPercentage || 0)) / 100, cartTotal) : 0;
+  const advanceRequired = isAdvanceApplicable ? (cartTotal * (settings.advancePaymentPercentage || 0)) / 100 : 0;
 
   const handleAddressSubmit = (e) => {
     e.preventDefault();
