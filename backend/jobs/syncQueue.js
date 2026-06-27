@@ -3,9 +3,9 @@ import redisClient from '../config/redis.js';
 import logger from '../utils/logger.js';
 import { runGoogleSheetSync } from '../services/sync/googleSheetSyncService.js';
 
-export const syncQueue = new Queue('syncQueue', {
+export const syncQueue = redisClient ? new Queue('syncQueue', {
   connection: redisClient,
-});
+}) : null;
 
 export const initSyncWorker = () => {
   if (!redisClient) {
