@@ -58,7 +58,7 @@ const AdminDashboard = () => {
     setOrdersLoading(true);
     try {
       const res = await axios.get('/api/orders', authHeader);
-      setOrders(res.data || []);
+      setOrders(res.data.orders || res.data || []);
     } catch (error) {
       console.error('Failed to fetch orders', error);
     } finally {
