@@ -9,6 +9,7 @@ import Subcategory from '../models/Subcategory.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { convertToNLC } from '../utils/nlcConverter.js';
 import { adaptProductForFrontend, adaptProductsListForFrontend } from '../utils/productResponseAdapter.js';
+import { invalidateCache } from '../middleware/cacheMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -130,6 +131,7 @@ router.post('/products', protect, admin, async (req, res) => {
     const populated = await Product.findById(createdProduct._id)
       .populate('category', 'name slug')
       .populate('brand', 'name slug');
+    invalidateCache(/^\/api\/products/);
     res.status(201).json(adaptProductForFrontend(populated));
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -172,6 +174,7 @@ router.put('/products/:id', protect, admin, async (req, res) => {
       .populate('brand', 'name slug');
 
     if (product) {
+      invalidateCache(/^\/api\/products/);
       res.json(adaptProductForFrontend(product));
     } else {
       res.status(404).json({ message: 'Product not found' });
@@ -186,6 +189,7 @@ router.delete('/products/:id', protect, admin, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (product) {
+      invalidateCache(/^\/api\/products/);
       res.json({ message: 'Product removed' });
     } else {
       res.status(404).json({ message: 'Product not found' });
@@ -213,6 +217,7 @@ router.patch('/products/:id/stock', protect, admin, async (req, res) => {
     product.countInStock = countInStock;
     product.availability = countInStock > 0 ? 'In Stock' : 'Out of Stock';
     await product.save();
+    invalidateCache(/^\/api\/products/);
 
     res.json({ message: 'Stock updated', countInStock: product.countInStock, availability: product.availability });
   } catch (error) {
@@ -228,6 +233,7 @@ router.patch('/products/:id/visibility', protect, admin, async (req, res) => {
 
     product.isVisible = !product.isVisible;
     await product.save();
+    invalidateCache(/^\/api\/products/);
 
     res.json({ message: `Product ${product.isVisible ? 'visible' : 'hidden'}`, isVisible: product.isVisible });
   } catch (error) {
