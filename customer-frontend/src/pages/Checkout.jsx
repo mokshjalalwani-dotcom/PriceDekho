@@ -196,10 +196,27 @@ const Checkout = () => {
                 </div>
 
                 <div className="mb-8">
-                  <a href={paymentSession.upiUri} className="inline-block w-full max-w-sm btn-primary py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                  <a href={paymentSession.upiUri} className="inline-block w-full max-w-sm btn-primary py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 mb-4">
                     Pay ₹{paymentSession.amount.toLocaleString()} via UPI App
                   </a>
-                  <p className="text-sm text-gray-500 mt-3">Payment Reference: <span className="font-mono font-medium text-gray-700">{paymentSession.reference}</span></p>
+                  
+                  <div className="max-w-sm mx-auto bg-amber-50 border border-amber-200 rounded-lg p-4 text-left shadow-sm">
+                    <p className="text-xs text-amber-800 font-semibold mb-2">If the button above fails in PhonePe for security reasons, please copy the UPI ID below and pay manually:</p>
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 bg-white px-3 py-2 border border-amber-100 rounded font-mono text-sm text-gray-800 break-all select-all">{paymentSession.upiId}</code>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(paymentSession.upiId);
+                          addToast('UPI ID copied to clipboard!', 'success');
+                        }}
+                        className="px-4 py-2 bg-theme-primary text-white text-sm font-bold rounded shadow hover:bg-theme-secondary transition-colors whitespace-nowrap"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-gray-500 mt-4">Payment Reference: <span className="font-mono font-medium text-gray-700">{paymentSession.reference}</span></p>
                 </div>
 
                 <div className="max-w-md mx-auto text-left bg-gray-50 p-6 rounded-xl border border-gray-200">
