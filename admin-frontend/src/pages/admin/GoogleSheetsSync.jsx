@@ -13,7 +13,7 @@ const GoogleSheetsSync = () => {
   const [engineStatus, setEngineStatus] = useState(null);
   const [showClearHistoryPrompt, setShowClearHistoryPrompt] = useState(false);
   const [clearHistoryConfirmText, setClearHistoryConfirmText] = useState('');
-  const { showToast } = useToast();
+  const { addToast: showToast } = useToast();
 
   const authHeader = {
     headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
