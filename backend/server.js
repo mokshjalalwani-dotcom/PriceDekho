@@ -40,6 +40,10 @@ connectDB();
 initSyncScheduler();
 initReservationExpiryJob();
 
+// Initialize BullMQ Workers (if Redis is running)
+import { initSyncWorker } from './jobs/syncQueue.js';
+initSyncWorker();
+
 const app = express();
 
 app.set('trust proxy', 1);
