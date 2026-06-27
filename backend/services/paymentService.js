@@ -20,7 +20,7 @@ export const generateCartHash = (orderItems, method) => {
 };
 
 export const getOrCreatePaymentSession = async (reqBody, user) => {
-  const { orderItems, paymentMethod } = reqBody;
+  const { orderItems, paymentMethod, customerName, customerPhone } = reqBody;
 
   if (!orderItems || orderItems.length === 0) {
     throw new Error('No items in cart');
@@ -92,6 +92,8 @@ export const getOrCreatePaymentSession = async (reqBody, user) => {
     status: 'CREATED',
     cartHash,
     cartSnapshot: { snapshotItems, calculatedSubtotal, shippingPrice, taxPrice, discountPrice, finalPayable, requiredAdvance },
+    customerName,
+    customerPhone,
     user: user || undefined,
     expiresAt: new Date(Date.now() + 15 * 60 * 1000) // 15 mins expiry
   });

@@ -63,6 +63,7 @@ const Payments = () => {
             <thead className="bg-gray-50 text-gray-600 border-b">
               <tr>
                 <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4">Customer</th>
                 <th className="px-6 py-4">Reference</th>
                 <th className="px-6 py-4">Amount</th>
                 <th className="px-6 py-4">Transaction ID</th>
@@ -74,6 +75,10 @@ const Payments = () => {
               {payments.map(payment => (
                 <tr key={payment._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">{new Date(payment.createdAt).toLocaleString()}</td>
+                  <td className="px-6 py-4">
+                    <div className="font-medium text-gray-900">{payment.customerName || '-'}</div>
+                    <div className="text-xs text-gray-500">{payment.customerPhone || ''}</div>
+                  </td>
                   <td className="px-6 py-4 font-mono text-xs">{payment.reference}</td>
                   <td className="px-6 py-4 font-bold">₹{payment.amount}</td>
                   <td className="px-6 py-4 font-mono">{payment.transactionId || '-'}</td>
@@ -103,6 +108,10 @@ const Payments = () => {
             </div>
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div><p className="text-sm text-gray-500">Customer</p>
+                  <p className="font-medium">{selectedPayment.customerName || 'N/A'}</p>
+                  <p className="text-xs text-gray-500">{selectedPayment.customerPhone}</p>
+                </div>
                 <div><p className="text-sm text-gray-500">Reference</p><p className="font-mono font-medium">{selectedPayment.reference}</p></div>
                 <div><p className="text-sm text-gray-500">Amount to Verify</p><p className="text-lg font-bold text-theme-primary">₹{selectedPayment.amount}</p></div>
                 <div><p className="text-sm text-gray-500">Customer UTR</p><p className="font-mono font-bold">{selectedPayment.transactionId || 'Not submitted'}</p></div>

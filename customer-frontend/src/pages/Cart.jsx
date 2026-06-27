@@ -15,10 +15,11 @@ const Cart = () => {
   }, []);
 
   const shippingEnabled = settings?.shippingEnabled ?? true;
-  const freeThreshold = settings?.freeShippingThreshold ?? 999;
-  const defaultCharge = settings?.shippingCharge ?? 60;
+  const freeThreshold = settings?.freeShippingThreshold ?? 0; // Changed default from 999 to 0
+  const defaultCharge = settings?.shippingCharge ?? 0; // Changed default from 60 to 0
 
-  const shippingPrice = shippingEnabled ? (cartTotal >= freeThreshold ? 0 : defaultCharge) : 0;
+  // If settings haven't loaded yet, don't calculate shipping to avoid flashing incorrect amounts
+  const shippingPrice = settings ? (shippingEnabled ? (cartTotal >= freeThreshold ? 0 : defaultCharge) : 0) : 0;
   const totalWithShipping = cartTotal + shippingPrice;
 
   if (cart.length === 0) {
@@ -112,11 +113,6 @@ const Cart = () => {
                     {shippingPrice === 0 ? 'FREE' : `₹${shippingPrice}`}
                   </span>
                 </div>
-                {shippingPrice > 0 && (
-                  <p className="text-xs text-theme-primary bg-theme-light rounded-lg p-2">
-                    Add ₹{(freeThreshold - cartTotal).toLocaleString()} more for free shipping
-                  </p>
-                )}
                 <div className="border-t border-gray-100 pt-3 flex justify-between font-bold text-gray-900 text-base">
                   <span>Total</span>
                   <span>₹{totalWithShipping.toLocaleString()}</span>

@@ -64,8 +64,14 @@ const Checkout = () => {
     if (selectedAddressIndex < 0) return addToast('Please select an address first', 'error');
     setGeneratingSession(true);
     try {
+      const address = savedAddresses[selectedAddressIndex];
       const orderItems = cart.map(item => ({ product: item._id, qty: item.qty, name: item.name }));
-      const res = await axios.post('/api/payments/session', { orderItems, paymentMethod });
+      const res = await axios.post('/api/payments/session', { 
+        orderItems, 
+        paymentMethod,
+        customerName: address.name,
+        customerPhone: address.phone
+      });
       setPaymentSession(res.data);
       setStep(3); // Payment Session step
     } catch (err) {
