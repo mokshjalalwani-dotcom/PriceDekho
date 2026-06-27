@@ -11,6 +11,10 @@ export const generateUpiUri = (upiId, merchantName, amount, reference, transacti
   params.append('am', amount.toString());
   params.append('cu', 'INR');
   
+  // PhonePe and GPay often reject intents if 'mc' (Merchant Category Code) is missing when 'tr' is present.
+  // We use '0000' as a generic fallback.
+  params.append('mc', '0000');
+  
   if (transactionNote) params.append('tn', transactionNote);
   if (reference) {
     params.append('tr', reference);

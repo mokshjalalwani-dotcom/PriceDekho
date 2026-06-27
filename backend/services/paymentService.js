@@ -10,7 +10,7 @@ import logger from '../utils/logger.js';
 export const generatePaymentReference = () => {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const randomStr = crypto.randomBytes(3).toString('hex').toUpperCase();
-  return `SG-${date}-${randomStr}`;
+  return `SG${date}${randomStr}`;
 };
 
 export const generateCartHash = (orderItems, method) => {
