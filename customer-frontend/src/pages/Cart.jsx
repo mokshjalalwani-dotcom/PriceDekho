@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
@@ -7,7 +8,17 @@ const Cart = () => {
   const { cart, cartCount, cartTotal, dispatch } = useCart();
   const navigate = useNavigate();
 
-  const shippingPrice = cartTotal > 999 ? 0 : 60;
+  const [settings, setSettings] = useState(null);
+  
+  useEffect(() => {
+    axios.get('/api/settings').then(res => setSettings(res.data)).catch(console.error);
+  }, []);
+
+  const shippingEnabled = settings?.shippingEnabled ?? true;
+  const freeThreshold = settings?.freeShippingThreshold ?? 999;
+  const defaultCharge = settings?.shippingCharge ?? 60;
+
+  const shippingPrice = shippingEnabled ? (cartTotal >= freeThreshold ? 0 : defaultCharge) : 0;
   const totalWithShipping = cartTotal + shippingPrice;
 
   if (cart.length === 0) {
@@ -103,7 +114,7 @@ const Cart = () => {
                 </div>
                 {shippingPrice > 0 && (
                   <p className="text-xs text-theme-primary bg-theme-light rounded-lg p-2">
-                    Add ₹{(999 - cartTotal).toLocaleString()} more for free shipping
+                    Add ₹{(freeThreshold - cartTotal).toLocaleString()} more for free shipping
                   </p>
                 )}
                 <div className="border-t border-gray-100 pt-3 flex justify-between font-bold text-gray-900 text-base">
