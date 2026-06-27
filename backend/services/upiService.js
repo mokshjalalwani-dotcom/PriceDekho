@@ -11,14 +11,11 @@ export const generateUpiUri = (upiId, merchantName, amount, reference, transacti
   params.append('am', amount.toString());
   params.append('cu', 'INR');
   
-  // PhonePe and GPay often reject intents if 'mc' (Merchant Category Code) is missing when 'tr' is present.
-  // We use '0000' as a generic fallback.
-  params.append('mc', '0000');
-  
-  if (transactionNote) params.append('tn', transactionNote);
-  if (reference) {
-    params.append('tr', reference);
-  }
+  // We are intentionally omitting 'mc' (Merchant Code), 'tr' (Transaction Ref), and 'tn' (Note).
+  // When these fields are present, PhonePe enforces strict Merchant Intent validation and 
+  // will reject the payment if the 'mc' doesn't perfectly match the bank's records, 
+  // or if the 'tr' format is rejected.
+  // A minimal URI (pa, pn, am, cu) mimics a static shop QR code and has the highest success rate.
 
   // URLSearchParams encodes spaces as '+' and '@' as '%40'
   // Many UPI apps (like PhonePe) strictly expect '%20' for spaces and unencoded '@' in the pa parameter.
