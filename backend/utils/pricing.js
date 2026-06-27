@@ -20,9 +20,17 @@ export const calculateAdvance = (settings, paymentMethod, subtotal) => {
     return 0;
   }
 
-  // Always use percentage based on subtotal (Selling Price), not grandTotal
-  const pct = settings.advancePaymentPercentage || 0;
-  return (subtotal * pct) / 100;
+  let advance = 0;
+  if (settings.advancePaymentType === 'fixed') {
+    advance = settings.advancePaymentFixed || 0;
+  } else {
+    // Always use percentage based on subtotal (Selling Price), not grandTotal
+    const pct = settings.advancePaymentPercentage || 0;
+    advance = (subtotal * pct) / 100;
+  }
+
+  // Advance cannot exceed the subtotal
+  return Math.min(advance, subtotal);
 };
 
 export const calculateGrandTotal = (subtotal, shipping, tax, discount) => {

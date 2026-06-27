@@ -13,10 +13,10 @@ export const generatePaymentReference = () => {
   return `SG-${date}-${randomStr}`;
 };
 
-export const generateCartHash = (orderItems, method) => {
-  // We only hash the product IDs, quantities, and the method, because everything else is computed by backend
+export const generateCartHash = (orderItems, method, amountToPay) => {
+  // We hash the product IDs, quantities, method, and the calculated amountToPay
   const simplifiedCart = orderItems.map(item => ({ product: item.product, qty: item.qty })).sort((a, b) => a.product.localeCompare(b.product));
-  return crypto.createHash('sha256').update(JSON.stringify({ simplifiedCart, method })).digest('hex');
+  return crypto.createHash('sha256').update(JSON.stringify({ simplifiedCart, method, amountToPay })).digest('hex');
 };
 
 export const getOrCreatePaymentSession = async (reqBody, user) => {
@@ -27,20 +27,8 @@ export const getOrCreatePaymentSession = async (reqBody, user) => {
   }
 
   const settings = await Settings.getSettings();
-  const cartHash = generateCartHash(orderItems, paymentMethod);
 
-  // 1. Check for existing active session to reuse
-  const activePayment = await Payment.findOne({ 
-    cartHash, 
-    status: 'CREATED',
-    expiresAt: { $gt: new Date() }
-  });
-
-  if (activePayment) {
-    return activePayment;
-  }
-
-  // 2. Fetch fresh products and validate Max Order Qty
+  // 1. Fetch fresh products and validate Max Order Qty
   const snapshotItems = [];
   let calculatedSubtotal = 0;
 
@@ -76,6 +64,20 @@ export const getOrCreatePaymentSession = async (reqBody, user) => {
 
   if (amountToPay <= 0 && paymentMethod !== 'cod') {
     throw new Error('Calculated amount is 0. Cannot generate payment session.');
+  }
+
+  // Generate cart hash including the final payable amount so if price changes, hash changes.
+  const cartHash = generateCartHash(orderItems, paymentMethod, amountToPay);
+
+  // 3. Check for existing active session to reuse
+  const activePayment = await Payment.findOne({ 
+    cartHash, 
+    status: 'CREATED',
+    expiresAt: { $gt: new Date() }
+  });
+
+  if (activePayment) {
+    return activePayment;
   }
 
   // 4. Generate Session
