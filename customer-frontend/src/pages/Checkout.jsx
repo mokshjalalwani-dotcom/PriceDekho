@@ -83,7 +83,11 @@ const Checkout = () => {
 
   const handlePlaceOrder = async () => {
     if (selectedAddressIndex < 0) return addToast('Please select an address', 'error');
-    if ((paymentMethod === 'upi' || isAdvanceApplicable) && !upiTransactionId) return addToast('Please enter Transaction ID', 'error');
+    
+    if (paymentMethod === 'upi' || isAdvanceApplicable) {
+      if (!upiTransactionId) return addToast('Please enter the Transaction ID', 'error');
+      if (upiTransactionId.length < 12) return addToast('Please enter a valid 12-digit UTR number', 'error');
+    }
 
     setLoading(true);
     try {
