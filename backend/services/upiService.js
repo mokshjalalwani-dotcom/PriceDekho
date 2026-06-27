@@ -11,11 +11,11 @@ export const generateUpiUri = (upiId, merchantName, amount, reference, transacti
   params.append('am', amount.toString());
   params.append('cu', 'INR');
   
-  // We are intentionally omitting 'mc' (Merchant Code), 'tr' (Transaction Ref), and 'tn' (Note).
-  // When these fields are present, PhonePe enforces strict Merchant Intent validation and 
-  // will reject the payment if the 'mc' doesn't perfectly match the bank's records, 
-  // or if the 'tr' format is rejected.
-  // A minimal URI (pa, pn, am, cu) mimics a static shop QR code and has the highest success rate.
+  // PhonePe strictly blocks web-initiated intents to unverified UPI IDs for security reasons.
+  // We can try to bypass this by appending mode=02 (Secure QR code) and purpose=00 (Default)
+  // to trick the app into treating this intent identically to a scanned physical QR code.
+  params.append('mode', '02');
+  params.append('purpose', '00');
 
   // URLSearchParams encodes spaces as '+' and '@' as '%40'
   // Many UPI apps (like PhonePe) strictly expect '%20' for spaces and unencoded '@' in the pa parameter.
