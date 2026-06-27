@@ -5,6 +5,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dns from 'dns';
 import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import compression from 'compression';
+import mongoose from 'mongoose';
+import logger from './utils/logger.js';
 
 // Fix for MongoDB Atlas ECONNREFUSED SRV errors on some Windows environments
 dns.setServers(['8.8.8.8', '8.8.4.4']);
@@ -118,8 +122,11 @@ app.use(cors({
 }));
 // ──────────────────────────────────────────────────────────────────────────────
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(helmet({ crossOriginResourcePolicy: false })); // Apply security headers (allow image loads)
+app.use(compression()); // Compress responses for performance
+
+app.use(express.json({ limit: '2mb' })); // Strict limit for payloads
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
 // Serve uploaded images as static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -137,9 +144,19 @@ app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/theme', themeRoutes);
 app.use('/api/admin/sync', syncRoutes);
 
-// Health check route
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'API running' });
+// Health check route (Task 4 implementation)
+app.get('/api/health', async (req, res) => {
+  try {
+    // Check DB Connection
+    const dbState = mongoose.connection.readyState;
+    const isDbConnected = dbState === 1;
+    if (!isDbConnected) throw new Error('Database not connected');
+    
+    res.status(200).json({ status: 'ok', message: 'System healthy', dbState });
+  } catch (err) {
+    logger.error(`Health check failed: ${err.message}`);
+    res.status(503).json({ status: 'error', message: err.message });
+  }
 });
 
 // Basic test route
@@ -149,7 +166,7 @@ app.get('/', (req, res) => {
 
 // Global error handler – catches anything thrown by routes/middleware
 app.use((err, req, res, next) => {
-  console.error('[Global Error]', err.stack);
+  logger.error(`[Global Error] ${err.message}`, { stack: err.stack, path: req.path });
   res.status(err.status || 500).json({
     message: err.message || 'Internal Server Error',
   });
@@ -158,5 +175,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
+  logger.info(`Server running on port ${PORT} [${process.env.NODE_ENV || 'development'}]`);
 });

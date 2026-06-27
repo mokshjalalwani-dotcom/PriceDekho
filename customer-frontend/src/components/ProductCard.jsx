@@ -77,8 +77,9 @@ const ProductCard = ({ product }) => {
           src={imgSrc}
           alt={product.name}
           referrerPolicy="no-referrer"
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
+          decoding="async"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             e.target.src = 'https://placehold.co/300x300/f8fafc/94a3b8?text=No+Image';
             e.target.onerror = null;
