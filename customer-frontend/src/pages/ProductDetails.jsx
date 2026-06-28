@@ -257,36 +257,37 @@ Please share more details.`;
       {structuredData && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       )}
-      {/* Breadcrumb */      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-8 py-2 md:py-3">
-          <div className="flex items-center text-xs md:text-sm text-gray-500 flex-wrap">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-gray-100 hidden sm:block">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-8 py-1 md:py-3">
+          <div className="flex items-center text-[10px] md:text-sm text-gray-500 flex-wrap">
             <Link to="/" className="hover:text-theme-primary transition-colors">Home</Link>
-            <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
+            <ChevronRight size={10} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
             <Link to="/shop" className="hover:text-theme-primary transition-colors">Shop</Link>
             {product.category && (
               <>
-                <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
+                <ChevronRight size={10} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
                 <Link to={`/shop?category=${product.category.slug}`} className="hover:text-theme-primary transition-colors">{product.category.name}</Link>
               </>
             )}
             {product.subCategory && (
               <>
-                <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
+                <ChevronRight size={10} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
                 <span className="text-gray-900 font-medium">{product.subCategory}</span>
               </>
             )}
-            <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
-            <span className="text-gray-900 font-medium truncate max-w-[150px] md:max-w-[200px]">{product.name}</span>
+            <ChevronRight size={10} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
+            <span className="text-gray-900 font-medium truncate max-w-[120px] md:max-w-[200px]">{product.name}</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 py-3 md:py-8">
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 py-1.5 md:py-8">
         {/* Main Product Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 lg:gap-12 mb-6 md:mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-8 lg:gap-12 mb-4 md:mb-12">
           {/* Image Gallery */}
-          <div className="space-y-2 md:space-y-4">
-            <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden aspect-[4/3] md:aspect-square flex items-center justify-center p-3 md:p-6 relative group">
+          <div className="space-y-1.5 md:space-y-4">
+            <div className="bg-white rounded-lg md:rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden h-[30vh] min-h-[180px] max-h-[250px] md:max-h-none md:h-auto md:aspect-square flex items-center justify-center p-2 md:p-6 relative group">
               <img
                 src={uniqueImages[selectedImage] || 'https://placehold.co/500x500/f8fafc/94a3b8?text=No+Image'}
                 alt={product.name}
@@ -300,16 +301,16 @@ Please share more details.`;
                 }}
               />
               {discount > 0 && (
-                <span className="absolute top-2 left-2 md:top-4 md:left-4 badge-discount text-[10px] md:text-xs px-2 py-0.5 md:px-3 md:py-1 rounded md:rounded-lg shadow">{discount}% OFF</span>
+                <span className="absolute top-1.5 left-1.5 md:top-4 md:left-4 badge-discount text-[9px] md:text-xs px-1.5 py-0.5 md:px-3 md:py-1 rounded md:rounded-lg shadow">{discount}% OFF</span>
               )}
             </div>
             {uniqueImages.length > 1 && (
-              <div className="flex gap-2 md:gap-3 overflow-x-auto pb-1 md:pb-2 scrollbar-hide">
+              <div className="flex gap-1.5 md:gap-3 overflow-x-auto pb-1 md:pb-2 scrollbar-hide">
                 {uniqueImages.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`w-14 h-14 md:w-20 md:h-20 border-2 rounded-lg md:rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-1 md:p-1.5 transition-all ${selectedImage === idx ? 'border-theme-primary shadow-md ring-1 ring-theme-focus' : 'border-gray-200 hover:border-gray-300'}`}
+                    className={`w-10 h-10 md:w-20 md:h-20 border-2 rounded-md md:rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-0.5 md:p-1.5 transition-all ${selectedImage === idx ? 'border-theme-primary shadow-md ring-1 ring-theme-focus' : 'border-gray-200 hover:border-gray-300'}`}
                   >
                     <img 
                       src={img} 
@@ -330,19 +331,19 @@ Please share more details.`;
           </div>
 
           {/* Product Info */}
-          <div className="space-y-3 md:space-y-5">
+          <div className="space-y-1.5 md:space-y-5">
             {/* Brand + Model & Real Price */}
-            <div className="flex items-start justify-between gap-2 md:gap-3 w-full">
-              <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                <span className="text-[10px] md:text-sm uppercase tracking-wider text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded">{product.brand?.name}</span>
+            <div className="flex items-start justify-between gap-1 md:gap-3 w-full">
+              <div className="flex items-center gap-1.5 md:gap-3 flex-wrap">
+                <span className="text-[9px] md:text-sm uppercase tracking-wider text-gray-500 font-medium bg-gray-100 px-1.5 py-0.5 rounded">{product.brand?.name}</span>
                 {product.modelNumber && (
-                  <span className="text-[10px] md:text-sm bg-gray-50 px-1.5 md:px-2 py-0.5 rounded text-gray-400 font-medium font-mono border border-gray-100">{product.modelNumber}</span>
+                  <span className="text-[9px] md:text-sm bg-gray-50 px-1 md:px-2 py-0.5 rounded text-gray-400 font-medium font-mono border border-gray-100">{product.modelNumber}</span>
                 )}
               </div>
               
               {product.additionalContent && (
                 <div 
-                  className={`text-[10px] md:text-sm px-2 md:px-3 py-0.5 md:py-1 cursor-pointer transition-all duration-300 select-none whitespace-nowrap ${
+                  className={`text-[9px] md:text-sm px-1.5 md:px-3 py-0.5 md:py-1 cursor-pointer transition-all duration-300 select-none whitespace-nowrap ${
                     showRealPrice 
                       ? 'text-gray-700 font-medium' 
                       : 'text-transparent bg-transparent'
@@ -355,35 +356,35 @@ Please share more details.`;
             </div>
 
             {/* Title */}
-            <h1 className="text-lg md:text-3xl font-bold text-gray-900 leading-snug">{product.name}</h1>
+            <h1 className="text-base md:text-3xl font-bold text-gray-900 leading-tight">{product.name}</h1>
 
             {/* Rating */}
             {product.rating > 0 && (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-0.5 md:px-2.5 md:py-1 rounded-md md:rounded-lg">
-                  <Star size={12} className="md:w-3.5 md:h-3.5" fill="currentColor" />
-                  <span className="text-xs md:text-sm font-bold">{product.rating}</span>
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <div className="flex items-center gap-0.5 md:gap-1 bg-green-50 text-green-700 px-1.5 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-lg">
+                  <Star size={10} className="md:w-3.5 md:h-3.5" fill="currentColor" />
+                  <span className="text-[10px] md:text-sm font-bold">{product.rating}</span>
                 </div>
                 {product.numReviews > 0 && (
-                  <span className="text-xs md:text-sm text-gray-400">{product.numReviews} reviews</span>
+                  <span className="text-[10px] md:text-sm text-gray-400">{product.numReviews} reviews</span>
                 )}
               </div>
             )}
 
             {/* Price Section */}
-            <div className="bg-theme-light/60 rounded-lg md:rounded-xl p-3 md:p-5 border border-theme-light/50">
-              <div className="flex items-baseline gap-2 md:gap-3 flex-wrap">
-                <span className="text-xl md:text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
+            <div className="md:bg-theme-light/60 md:rounded-xl md:p-5 md:border md:border-theme-light/50 flex flex-col md:block mt-0.5 md:mt-0">
+              <div className="flex items-baseline gap-1.5 md:gap-3 flex-wrap">
+                <span className="text-lg md:text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
                 {mrp > price && (
                   <>
-                    <span className="text-sm md:text-lg text-gray-400 line-through">₹{mrp.toLocaleString('en-IN')}</span>
-                    <span className="text-[10px] md:text-sm font-bold text-green-600 bg-green-100 px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md">
+                    <span className="text-[11px] md:text-lg text-gray-400 line-through">₹{mrp.toLocaleString('en-IN')}</span>
+                    <span className="text-[9px] md:text-sm font-bold text-green-600 bg-green-100 px-1.5 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md">
                       Save ₹{(mrp - price).toLocaleString('en-IN')} ({discount}%)
                     </span>
                   </>
                 )}
               </div>
-              <p className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-1.5">Inclusive of all taxes</p>
+              <p className="text-[8px] md:text-xs text-gray-500 mt-0.5 md:mt-1.5">Inclusive of all taxes</p>
             </div>
 
             {/* Availability */}
@@ -395,16 +396,16 @@ Please share more details.`;
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
               <div>
-                <h3 className="text-xs md:text-sm font-semibold text-gray-700 mb-1.5 md:mb-2">Variants</h3>
-                <div className="flex gap-1.5 md:gap-2 flex-wrap">
+                <h3 className="text-[10px] md:text-sm font-semibold text-gray-700 mb-1 md:mb-2 hidden md:block">Variants</h3>
+                <div className="flex gap-1 md:gap-2 flex-wrap">
                   {product.variants.map((v, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedVariant(selectedVariant === v ? null : v)}
-                      className={`px-2.5 py-1.5 md:px-3.5 md:py-2 text-xs md:text-sm font-medium rounded-md md:rounded-lg border-2 transition-colors ${selectedVariant === v ? 'border-theme-primary bg-theme-light text-theme-dark' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
+                      className={`px-2 py-1 md:px-3.5 md:py-2 text-[10px] md:text-sm font-medium rounded md:rounded-lg border-2 transition-colors ${selectedVariant === v ? 'border-theme-primary bg-theme-light text-theme-dark' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
                     >
                       {v.variantName}
-                      {v.color && <span className="text-gray-400 ml-1">({v.color})</span>}
+                      {v.color && <span className="text-gray-400 ml-0.5 md:ml-1">({v.color})</span>}
                     </button>
                   ))}
                 </div>
@@ -432,32 +433,32 @@ Please share more details.`;
             )}
 
             {/* Quantity & Action Buttons */}
-            <div className="flex flex-col gap-2 md:gap-3 pt-1 md:pt-2">
+            <div className="flex flex-col gap-1.5 md:gap-3 pt-0.5 md:pt-2">
               {/* Row 1: Qty + Add to Cart */}
-              <div className="flex items-center gap-2 md:gap-3 w-full">
-                <div className="flex items-center border border-gray-200 rounded-md md:rounded-lg overflow-hidden shrink-0 bg-white">
-                  <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-8 h-9 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={14} className="md:w-[15px]" /></button>
-                  <span className="w-8 md:w-10 text-center text-xs md:text-sm font-bold border-x border-gray-100">{qty}</span>
-                  <button onClick={() => setQty(q => q + 1)} className="w-8 h-9 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Plus size={14} className="md:w-[15px]" /></button>
+              <div className="flex items-center gap-1.5 md:gap-3 w-full">
+                <div className="flex items-center border border-gray-200 rounded md:rounded-lg overflow-hidden shrink-0 bg-white h-7 md:h-11">
+                  <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-7 h-7 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={12} className="md:w-[15px]" /></button>
+                  <span className="w-7 md:w-10 text-center text-[10px] md:text-sm font-bold border-x border-gray-100">{qty}</span>
+                  <button onClick={() => setQty(q => q + 1)} className="w-7 h-7 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Plus size={12} className="md:w-[15px]" /></button>
                 </div>
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 btn-primary py-2 md:py-3 flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm font-bold"
+                  className="flex-1 btn-primary py-1.5 md:py-3 flex items-center justify-center gap-1 md:gap-2 text-[10px] md:text-sm font-bold h-7 md:h-11 rounded"
                 >
-                  <ShoppingCart size={16} className="md:w-[18px]" />
+                  <ShoppingCart size={12} className="md:w-[18px]" />
                   Add to Cart
                 </button>
               </div>
 
               {/* Row 2: Secondary Actions */}
-              <div className="grid grid-cols-3 gap-2 md:gap-3 w-full">
+              <div className="grid grid-cols-3 gap-1.5 md:gap-3 w-full">
                 <button
                   onClick={handleToggleWishlist}
-                  className={`w-full py-1.5 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded-md md:rounded-lg border-2 transition-colors ${isWishlisted(product._id) ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-400'}`}
+                  className={`w-full py-1 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded md:rounded-lg border transition-colors ${isWishlisted(product._id) ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-400'}`}
                 >
-                  <Heart size={14} className="md:w-4 md:h-4" fill={isWishlisted(product._id) ? 'currentColor' : 'none'} />
-                  <span className="text-[10px] md:text-xs font-semibold">Wishlist</span>
+                  <Heart size={10} className="md:w-4 md:h-4" fill={isWishlisted(product._id) ? 'currentColor' : 'none'} />
+                  <span className="text-[9px] md:text-xs font-semibold">Wishlist</span>
                 </button>
 
                 <button
@@ -474,31 +475,31 @@ Please share more details.`;
                       addToast('Added to compare');
                     }
                   }}
-                  className={`w-full py-1.5 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded-md md:rounded-lg border-2 transition-colors ${
+                  className={`w-full py-1 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded md:rounded-lg border transition-colors ${
                     isInCompare(product._id)
                       ? 'bg-blue-50 border-blue-200 text-blue-500'
                       : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-blue-400'
                   }`}
                   title={isInCompare(product._id) ? 'Remove from compare' : 'Add to compare'}
                 >
-                  <GitCompare size={14} className="md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs font-semibold">Compare</span>
+                  <GitCompare size={10} className="md:w-4 md:h-4" />
+                  <span className="text-[9px] md:text-xs font-semibold">Compare</span>
                 </button>
 
-                <button onClick={handleShare} className="w-full py-1.5 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded-md md:rounded-lg border-2 border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
-                  <Share2 size={14} className="md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs font-semibold">Share</span>
+                <button onClick={handleShare} className="w-full py-1 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded md:rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
+                  <Share2 size={10} className="md:w-4 md:h-4" />
+                  <span className="text-[9px] md:text-xs font-semibold">Share</span>
                 </button>
               </div>
             </div>
 
             {/* WhatsApp Enquiry */}
-            <div className="pt-1 md:pt-2">
+            <div className="pt-0.5 md:pt-2">
               <button
                 onClick={handleWhatsAppEnquiry}
-                className="w-full flex items-center justify-center gap-1.5 md:gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-2 md:py-3 rounded-md md:rounded-lg font-bold text-sm md:text-base transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-1 md:gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-1.5 md:py-3 rounded md:rounded-lg font-bold text-[11px] md:text-base transition-colors shadow-sm"
               >
-                <MessageCircle size={16} className="md:w-5 md:h-5" />
+                <MessageCircle size={12} className="md:w-5 md:h-5" />
                 Send Enquiry
               </button>
             </div>
@@ -644,8 +645,7 @@ Please share more details.`;
           </div>
         )}
 
-      </div>  </div>
-
+      </div>
 
     </div>
   );
