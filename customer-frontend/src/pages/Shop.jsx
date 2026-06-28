@@ -270,14 +270,14 @@ const Shop = () => {
           {/* Mobile Filter Overlay Backdrop */}
           {mobileFiltersOpen && (
             <div
-              className="fixed inset-0 bg-black/30 z-30 md:hidden"
+              className="fixed inset-0 bg-black/30 z-[60] md:hidden"
               onClick={() => setMobileFiltersOpen(false)}
             />
           )}
 
           {/* Sidebar Filters */}
-          <div className={`${mobileFiltersOpen ? 'fixed inset-y-0 left-0 z-40 w-72 animate-slide-in-left' : 'hidden'} md:relative md:block md:w-60 lg:w-64 shrink-0`}>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200/60 p-4 md:sticky md:top-24 max-h-[calc(100vh-120px)] overflow-y-auto h-full md:h-auto">
+          <div className={`${mobileFiltersOpen ? 'fixed inset-y-0 left-0 z-[70] w-72 animate-slide-in-left' : 'hidden'} md:relative md:block md:w-60 lg:w-64 shrink-0`}>
+            <div className="bg-white md:rounded-xl shadow-xl md:shadow-sm border-r md:border border-gray-200/60 p-4 md:sticky md:top-24 h-full md:max-h-[calc(100vh-120px)] overflow-y-auto">
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
                 <div className="flex items-center gap-2">
                   <Filter size={18} className="text-theme-primary" />
