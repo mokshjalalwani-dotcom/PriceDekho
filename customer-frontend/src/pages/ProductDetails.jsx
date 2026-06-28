@@ -257,37 +257,36 @@ Please share more details.`;
       {structuredData && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       )}
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center text-sm text-gray-500 flex-wrap">
+      {/* Breadcrumb */      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 lg:px-8 py-2 md:py-3">
+          <div className="flex items-center text-xs md:text-sm text-gray-500 flex-wrap">
             <Link to="/" className="hover:text-theme-primary transition-colors">Home</Link>
-            <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
+            <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
             <Link to="/shop" className="hover:text-theme-primary transition-colors">Shop</Link>
             {product.category && (
               <>
-                <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
+                <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
                 <Link to={`/shop?category=${product.category.slug}`} className="hover:text-theme-primary transition-colors">{product.category.name}</Link>
               </>
             )}
             {product.subCategory && (
               <>
-                <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
+                <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
                 <span className="text-gray-900 font-medium">{product.subCategory}</span>
               </>
             )}
-            <ChevronRight size={14} className="mx-1.5 shrink-0 text-gray-300" />
-            <span className="text-gray-900 font-medium truncate max-w-[200px]">{product.name}</span>
+            <ChevronRight size={12} className="mx-1 md:mx-1.5 shrink-0 text-gray-300 md:w-3.5 md:h-3.5" />
+            <span className="text-gray-900 font-medium truncate max-w-[150px] md:max-w-[200px]">{product.name}</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 py-3 md:py-8">
         {/* Main Product Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 lg:gap-12 mb-6 md:mb-12">
           {/* Image Gallery */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden aspect-square flex items-center justify-center p-6 relative group">
+          <div className="space-y-2 md:space-y-4">
+            <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden aspect-[4/3] md:aspect-square flex items-center justify-center p-3 md:p-6 relative group">
               <img
                 src={uniqueImages[selectedImage] || 'https://placehold.co/500x500/f8fafc/94a3b8?text=No+Image'}
                 alt={product.name}
@@ -301,16 +300,16 @@ Please share more details.`;
                 }}
               />
               {discount > 0 && (
-                <span className="absolute top-4 left-4 badge-discount text-xs px-3 py-1 rounded-lg shadow">{discount}% OFF</span>
+                <span className="absolute top-2 left-2 md:top-4 md:left-4 badge-discount text-[10px] md:text-xs px-2 py-0.5 md:px-3 md:py-1 rounded md:rounded-lg shadow">{discount}% OFF</span>
               )}
             </div>
             {uniqueImages.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-2 md:gap-3 overflow-x-auto pb-1 md:pb-2 scrollbar-hide">
                 {uniqueImages.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`w-20 h-20 border-2 rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-1.5 transition-all ${selectedImage === idx ? 'border-theme-primary shadow-md ring-1 ring-theme-focus' : 'border-gray-200 hover:border-gray-300'}`}
+                    className={`w-14 h-14 md:w-20 md:h-20 border-2 rounded-lg md:rounded-xl overflow-hidden shrink-0 bg-white flex items-center justify-center p-1 md:p-1.5 transition-all ${selectedImage === idx ? 'border-theme-primary shadow-md ring-1 ring-theme-focus' : 'border-gray-200 hover:border-gray-300'}`}
                   >
                     <img 
                       src={img} 
@@ -331,19 +330,19 @@ Please share more details.`;
           </div>
 
           {/* Product Info */}
-          <div className="space-y-5">
+          <div className="space-y-3 md:space-y-5">
             {/* Brand + Model & Real Price */}
-            <div className="flex items-start justify-between gap-3 w-full">
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-sm uppercase tracking-wider text-gray-500 font-medium bg-gray-100 px-2.5 py-0.5 rounded">{product.brand?.name}</span>
+            <div className="flex items-start justify-between gap-2 md:gap-3 w-full">
+              <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                <span className="text-[10px] md:text-sm uppercase tracking-wider text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded">{product.brand?.name}</span>
                 {product.modelNumber && (
-                  <span className="text-sm bg-gray-50 px-2 py-0.5 rounded text-gray-400 font-medium font-mono border border-gray-100">{product.modelNumber}</span>
+                  <span className="text-[10px] md:text-sm bg-gray-50 px-1.5 md:px-2 py-0.5 rounded text-gray-400 font-medium font-mono border border-gray-100">{product.modelNumber}</span>
                 )}
               </div>
               
               {product.additionalContent && (
                 <div 
-                  className={`text-sm px-3 py-1 cursor-pointer transition-all duration-300 select-none whitespace-nowrap ${
+                  className={`text-[10px] md:text-sm px-2 md:px-3 py-0.5 md:py-1 cursor-pointer transition-all duration-300 select-none whitespace-nowrap ${
                     showRealPrice 
                       ? 'text-gray-700 font-medium' 
                       : 'text-transparent bg-transparent'
@@ -356,53 +355,53 @@ Please share more details.`;
             </div>
 
             {/* Title */}
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-snug">{product.name}</h1>
+            <h1 className="text-lg md:text-3xl font-bold text-gray-900 leading-snug">{product.name}</h1>
 
             {/* Rating */}
             {product.rating > 0 && (
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2.5 py-1 rounded-lg">
-                  <Star size={14} fill="currentColor" />
-                  <span className="text-sm font-bold">{product.rating}</span>
+                <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-0.5 md:px-2.5 md:py-1 rounded-md md:rounded-lg">
+                  <Star size={12} className="md:w-3.5 md:h-3.5" fill="currentColor" />
+                  <span className="text-xs md:text-sm font-bold">{product.rating}</span>
                 </div>
                 {product.numReviews > 0 && (
-                  <span className="text-sm text-gray-400">{product.numReviews} reviews</span>
+                  <span className="text-xs md:text-sm text-gray-400">{product.numReviews} reviews</span>
                 )}
               </div>
             )}
 
             {/* Price Section */}
-            <div className="bg-theme-light/60 rounded-xl p-5 border border-theme-light/50">
-              <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
+            <div className="bg-theme-light/60 rounded-lg md:rounded-xl p-3 md:p-5 border border-theme-light/50">
+              <div className="flex items-baseline gap-2 md:gap-3 flex-wrap">
+                <span className="text-xl md:text-3xl font-extrabold text-gray-900">₹{price.toLocaleString('en-IN')}</span>
                 {mrp > price && (
                   <>
-                    <span className="text-lg text-gray-400 line-through">₹{mrp.toLocaleString('en-IN')}</span>
-                    <span className="text-sm font-bold text-green-600 bg-green-100 px-2.5 py-1 rounded-md">
+                    <span className="text-sm md:text-lg text-gray-400 line-through">₹{mrp.toLocaleString('en-IN')}</span>
+                    <span className="text-[10px] md:text-sm font-bold text-green-600 bg-green-100 px-2 py-0.5 md:px-2.5 md:py-1 rounded md:rounded-md">
                       Save ₹{(mrp - price).toLocaleString('en-IN')} ({discount}%)
                     </span>
                   </>
                 )}
               </div>
-              <p className="text-xs text-gray-500 mt-1.5">Inclusive of all taxes</p>
+              <p className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-1.5">Inclusive of all taxes</p>
             </div>
 
             {/* Availability */}
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-green-500 stock-pulse"></span>
-              <span className="text-sm font-semibold text-green-600">In Stock</span>
+            <div className="flex items-center gap-1.5 md:gap-2 hidden md:flex">
+              <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500 stock-pulse"></span>
+              <span className="text-xs md:text-sm font-semibold text-green-600">In Stock</span>
             </div>
 
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Variants</h3>
-                <div className="flex gap-2 flex-wrap">
+                <h3 className="text-xs md:text-sm font-semibold text-gray-700 mb-1.5 md:mb-2">Variants</h3>
+                <div className="flex gap-1.5 md:gap-2 flex-wrap">
                   {product.variants.map((v, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedVariant(selectedVariant === v ? null : v)}
-                      className={`px-3.5 py-2 text-sm font-medium rounded-lg border-2 transition-colors ${selectedVariant === v ? 'border-theme-primary bg-theme-light text-theme-dark' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
+                      className={`px-2.5 py-1.5 md:px-3.5 md:py-2 text-xs md:text-sm font-medium rounded-md md:rounded-lg border-2 transition-colors ${selectedVariant === v ? 'border-theme-primary bg-theme-light text-theme-dark' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`}
                     >
                       {v.variantName}
                       {v.color && <span className="text-gray-400 ml-1">({v.color})</span>}
@@ -414,7 +413,7 @@ Please share more details.`;
 
             {/* Highlights */}
             {product.highlights && product.highlights.length > 0 && (
-              <div>
+              <div className="hidden md:block">
                 <h3 className="text-sm font-semibold text-gray-700 mb-2.5">Key Highlights</h3>
                 <ul className="space-y-2">
                   {product.highlights.map((h, i) => (
@@ -429,36 +428,36 @@ Please share more details.`;
 
             {/* Short Description */}
             {product.shortDescription && (
-              <p className="text-sm text-gray-600 leading-relaxed">{product.shortDescription}</p>
+              <p className="text-xs md:text-sm text-gray-600 leading-relaxed hidden md:block">{product.shortDescription}</p>
             )}
 
             {/* Quantity & Action Buttons */}
-            <div className="flex flex-col gap-3 pt-2">
+            <div className="flex flex-col gap-2 md:gap-3 pt-1 md:pt-2">
               {/* Row 1: Qty + Add to Cart */}
-              <div className="flex items-center gap-3 w-full">
-                <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shrink-0 bg-white">
-                  <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={15} /></button>
-                  <span className="w-10 text-center text-sm font-bold border-x border-gray-100">{qty}</span>
-                  <button onClick={() => setQty(q => q + 1)} className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Plus size={15} /></button>
+              <div className="flex items-center gap-2 md:gap-3 w-full">
+                <div className="flex items-center border border-gray-200 rounded-md md:rounded-lg overflow-hidden shrink-0 bg-white">
+                  <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-8 h-9 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={14} className="md:w-[15px]" /></button>
+                  <span className="w-8 md:w-10 text-center text-xs md:text-sm font-bold border-x border-gray-100">{qty}</span>
+                  <button onClick={() => setQty(q => q + 1)} className="w-8 h-9 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Plus size={14} className="md:w-[15px]" /></button>
                 </div>
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 btn-primary py-3 flex items-center justify-center gap-2 text-sm font-bold"
+                  className="flex-1 btn-primary py-2 md:py-3 flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm font-bold"
                 >
-                  <ShoppingCart size={18} />
+                  <ShoppingCart size={16} className="md:w-[18px]" />
                   Add to Cart
                 </button>
               </div>
 
               {/* Row 2: Secondary Actions */}
-              <div className="grid grid-cols-3 gap-3 w-full">
+              <div className="grid grid-cols-3 gap-2 md:gap-3 w-full">
                 <button
                   onClick={handleToggleWishlist}
-                  className={`w-full py-2.5 flex items-center justify-center gap-1.5 rounded-lg border-2 transition-colors ${isWishlisted(product._id) ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-400'}`}
+                  className={`w-full py-1.5 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded-md md:rounded-lg border-2 transition-colors ${isWishlisted(product._id) ? 'bg-red-50 border-red-200 text-red-500' : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-400'}`}
                 >
-                  <Heart size={16} fill={isWishlisted(product._id) ? 'currentColor' : 'none'} />
-                  <span className="text-xs font-semibold">Wishlist</span>
+                  <Heart size={14} className="md:w-4 md:h-4" fill={isWishlisted(product._id) ? 'currentColor' : 'none'} />
+                  <span className="text-[10px] md:text-xs font-semibold">Wishlist</span>
                 </button>
 
                 <button
@@ -475,46 +474,46 @@ Please share more details.`;
                       addToast('Added to compare');
                     }
                   }}
-                  className={`w-full py-2.5 flex items-center justify-center gap-1.5 rounded-lg border-2 transition-colors ${
+                  className={`w-full py-1.5 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded-md md:rounded-lg border-2 transition-colors ${
                     isInCompare(product._id)
                       ? 'bg-blue-50 border-blue-200 text-blue-500'
                       : 'border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-blue-400'
                   }`}
                   title={isInCompare(product._id) ? 'Remove from compare' : 'Add to compare'}
                 >
-                  <GitCompare size={16} />
-                  <span className="text-xs font-semibold">Compare</span>
+                  <GitCompare size={14} className="md:w-4 md:h-4" />
+                  <span className="text-[10px] md:text-xs font-semibold">Compare</span>
                 </button>
 
-                <button onClick={handleShare} className="w-full py-2.5 flex items-center justify-center gap-1.5 rounded-lg border-2 border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
-                  <Share2 size={16} />
-                  <span className="text-xs font-semibold">Share</span>
+                <button onClick={handleShare} className="w-full py-1.5 md:py-2.5 flex items-center justify-center gap-1 md:gap-1.5 rounded-md md:rounded-lg border-2 border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors">
+                  <Share2 size={14} className="md:w-4 md:h-4" />
+                  <span className="text-[10px] md:text-xs font-semibold">Share</span>
                 </button>
               </div>
             </div>
 
             {/* WhatsApp Enquiry */}
-            <div className="pt-2">
+            <div className="pt-1 md:pt-2">
               <button
                 onClick={handleWhatsAppEnquiry}
-                className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-3 rounded-lg font-bold transition-colors shadow-sm"
+                className="w-full flex items-center justify-center gap-1.5 md:gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white py-2 md:py-3 rounded-md md:rounded-lg font-bold text-sm md:text-base transition-colors shadow-sm"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={16} className="md:w-5 md:h-5" />
                 Send Enquiry
               </button>
             </div>
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
+            <div className="grid grid-cols-2 gap-2 md:gap-3 pt-2 md:pt-3">
               {[
                 { icon: ShieldCheck, label: 'Genuine Product', color: 'text-green-500', bg: 'bg-green-50' },
                 { icon: Truck, label: 'Fast Delivery', color: 'text-blue-500', bg: 'bg-blue-50' },
                 { icon: CreditCard, label: 'Secure Checkout', color: 'text-theme-primary', bg: 'bg-theme-light' },
                 { icon: Package, label: product.warrantyDetails || '1 Year Warranty', color: 'text-purple-500', bg: 'bg-purple-50' },
               ].map((item, i) => (
-                <div key={i} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg ${item.bg}`}>
-                  <item.icon size={16} className={item.color} />
-                  <span className="text-xs font-medium text-gray-700">{item.label}</span>
+                <div key={i} className={`flex items-center gap-1.5 md:gap-2.5 px-2 py-1.5 md:px-3 md:py-2.5 rounded-md md:rounded-lg ${item.bg}`}>
+                  <item.icon size={14} className={`md:w-4 md:h-4 ${item.color}`} />
+                  <span className="text-[10px] md:text-xs font-medium text-gray-700">{item.label}</span>
                 </div>
               ))}
             </div>
@@ -522,7 +521,7 @@ Please share more details.`;
         </div>
 
         {/* Below Fold Tabs */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden mb-12">
+        <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden mb-8 md:mb-12">
           {/* Tab Headers */}
           <div className="flex border-b border-gray-100 overflow-x-auto scrollbar-hide">
             {[
@@ -533,7 +532,7 @@ Please share more details.`;
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 ${activeTab === tab.key ? 'border-theme-primary text-theme-primary bg-theme-light/30' : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50/50'}`}
+                className={`px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 ${activeTab === tab.key ? 'border-theme-primary text-theme-primary bg-theme-light/30' : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50/50'}`}
               >
                 {tab.label}
               </button>
@@ -541,21 +540,21 @@ Please share more details.`;
           </div>
 
           {/* Tab Content */}
-          <div className="p-6 min-h-[200px]">
+          <div className="p-4 md:p-6 min-h-[150px] md:min-h-[200px]">
             {/* Specifications Tab */}
             {activeTab === 'specs' && (
               <div>
                 {specSections.length > 0 ? (
                   specSections.map((section, sIdx) => (
-                    <div key={sIdx} className="mb-8 last:mb-0">
-                      <h3 className="text-base font-bold text-gray-900 mb-3 pb-2 border-b border-gray-100">{section.title}</h3>
-                      <div className="rounded-lg overflow-hidden border border-gray-100">
-                        <table className="w-full text-sm">
+                    <div key={sIdx} className="mb-6 md:mb-8 last:mb-0">
+                      <h3 className="text-sm md:text-base font-bold text-gray-900 mb-2 md:mb-3 pb-1 md:pb-2 border-b border-gray-100">{section.title}</h3>
+                      <div className="rounded-md md:rounded-lg overflow-hidden border border-gray-100">
+                        <table className="w-full text-xs md:text-sm">
                           <tbody>
                             {(showAllSpecs ? section.rows : section.rows.slice(0, 8)).map((row, rIdx) => (
                               <tr key={rIdx} className={rIdx % 2 === 0 ? 'bg-gray-50/70' : 'bg-white'}>
-                                <td className="px-4 py-3 text-gray-500 font-medium w-1/3 border-r border-gray-100">{row.label}</td>
-                                <td className="px-4 py-3 text-gray-800 font-medium">{row.value}</td>
+                                <td className="px-3 py-2 md:px-4 md:py-3 text-gray-500 font-medium w-1/3 border-r border-gray-100">{row.label}</td>
+                                <td className="px-3 py-2 md:px-4 md:py-3 text-gray-800 font-medium">{row.value}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -564,7 +563,7 @@ Please share more details.`;
                       {section.rows.length > 8 && (
                         <button
                           onClick={() => setShowAllSpecs(!showAllSpecs)}
-                          className="flex items-center gap-1 text-sm text-theme-primary font-medium mt-3 hover:underline"
+                          className="flex items-center gap-1 text-xs md:text-sm text-theme-primary font-medium mt-2 md:mt-3 hover:underline"
                         >
                           {showAllSpecs ? 'Show Less' : `Show All ${section.rows.length} Specs`}
                           {showAllSpecs ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -573,20 +572,20 @@ Please share more details.`;
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-sm">No specifications available for this product.</p>
+                  <p className="text-gray-500 text-xs md:text-sm">No specifications available for this product.</p>
                 )}
               </div>
             )}
 
             {/* Description Tab */}
             {activeTab === 'description' && (
-              <div className="prose max-w-none">
+              <div className="prose prose-sm md:prose max-w-none">
                 {product.fullDescription ? (
                   <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{product.fullDescription}</p>
                 ) : product.shortDescription ? (
                   <p className="text-gray-600 leading-relaxed">{product.shortDescription}</p>
                 ) : (
-                  <p className="text-gray-500 text-sm">No description available.</p>
+                  <p className="text-gray-500 text-xs md:text-sm">No description available.</p>
                 )}
               </div>
             )}
@@ -595,16 +594,16 @@ Please share more details.`;
             {activeTab === 'box' && (
               <div>
                 {product.boxContents && product.boxContents.length > 0 ? (
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-2 md:space-y-2.5">
                     {product.boxContents.map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-gray-700 text-sm">
-                        <CheckCircle size={16} className="text-green-500 shrink-0" />
+                      <li key={i} className="flex items-center gap-2 md:gap-3 text-gray-700 text-xs md:text-sm">
+                        <CheckCircle size={14} className="md:w-4 md:h-4 text-green-500 shrink-0" />
                         {item}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-500 text-sm">Box contents not specified.</p>
+                  <p className="text-gray-500 text-xs md:text-sm">Box contents not specified.</p>
                 )}
               </div>
             )}
@@ -613,9 +612,9 @@ Please share more details.`;
 
         {/* Product Video Section */}
         {product.youtubeUrl && getEmbedUrl(product.youtubeUrl) && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden mb-12 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Product Video</h2>
-            <div className="relative w-full overflow-hidden rounded-xl bg-gray-100" style={{ paddingBottom: '56.25%' }}>
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden mb-8 md:mb-12 p-4 md:p-6">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Product Video</h2>
+            <div className="relative w-full overflow-hidden rounded-lg md:rounded-xl bg-gray-100" style={{ paddingBottom: '56.25%' }}>
               <iframe
                 src={getEmbedUrl(product.youtubeUrl)}
                 title="Product Video"
@@ -630,14 +629,14 @@ Please share more details.`;
 
         {/* Similar Products */}
         {similarProducts.length > 0 && (
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="section-heading">Similar Products</h2>
-              <Link to={`/shop?category=${product.category?.slug}`} className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors">
+          <div className="mb-8 md:mb-12">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-lg md:text-2xl font-bold text-gray-900">Similar Products</h2>
+              <Link to={`/shop?category=${product.category?.slug}`} className="text-xs md:text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors">
                 View All <ChevronRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5">
               {similarProducts.slice(0, 4).map(p => (
                 <ProductCard key={p._id} product={p} />
               ))}
@@ -645,8 +644,7 @@ Please share more details.`;
           </div>
         )}
 
-
-      </div>
+      </div>  </div>
 
 
     </div>
