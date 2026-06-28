@@ -215,7 +215,7 @@ Price: ₹${price.toLocaleString('en-IN')}
 
 Please share more details.`;
 
-    let waNumber = settings.whatsappNumber.replace(/[^0-9]/g, '');
+    let waNumber = String(settings.whatsappNumber || '').replace(/[^0-9]/g, '');
     // Strip leading 0 (Indian convention) and auto-add 91 country code if needed
     waNumber = waNumber.replace(/^0+/, '');
     if (waNumber.length === 10) {

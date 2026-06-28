@@ -73,8 +73,9 @@ const Payments = () => {
         <div>Loading...</div>
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-gray-50 text-gray-600 border-b">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm whitespace-nowrap">
+              <thead className="bg-gray-50 text-gray-600 border-b">
               <tr>
                 <th className="px-6 py-4">Date</th>
                 <th className="px-6 py-4">Customer</th>
@@ -115,6 +116,7 @@ const Payments = () => {
               ))}
             </tbody>
           </table>
+          </div>
           
           {totalPages > 1 && (
             <div className="p-4 border-t border-gray-100 flex items-center justify-between text-sm">

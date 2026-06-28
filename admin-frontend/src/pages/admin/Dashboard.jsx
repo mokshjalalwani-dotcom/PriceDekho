@@ -180,6 +180,7 @@ const AdminDashboard = () => {
   const handleWhatsAppCustomer = (order) => {
     const text = `Hello ${order.name},\n\nThank you for your order #${order._id.slice(-8).toUpperCase()} at Satguru! We have received your order (Amount: ₹${order.totalPrice.toLocaleString()}) and will process it shortly.`;
     let phone = order.phone.replace(/\D/g, '');
+    phone = phone.replace(/^0+/, '');
     if (phone.length === 10) phone = `91${phone}`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
   };
