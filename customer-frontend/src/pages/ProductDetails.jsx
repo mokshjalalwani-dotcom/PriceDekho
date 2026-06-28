@@ -428,15 +428,15 @@ Please share more details.`;
               </div>
             )}
 
-            {/* Highlights - hidden on mobile */}
+            {/* Highlights */}
             {product.highlights && product.highlights.length > 0 && (
-              <div className="hidden md:block">
-                <h3 className="text-sm font-semibold text-gray-700 mb-2.5">Key Highlights</h3>
-                <ul className="space-y-2">
-                  {product.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm text-gray-600">
-                      <CheckCircle size={15} className="text-green-500 shrink-0 mt-0.5" />
-                      {h}
+              <div>
+                <h3 className="text-xs md:text-sm font-semibold text-gray-700 mb-1.5 md:mb-2.5">Key Highlights</h3>
+                <ul className="space-y-1 md:space-y-2">
+                  {product.highlights.slice(0, window.innerWidth < 768 ? 3 : product.highlights.length).map((h, i) => (
+                    <li key={i} className="flex items-start gap-1.5 md:gap-2.5 text-xs md:text-sm text-gray-600">
+                      <CheckCircle size={13} className="md:w-[15px] md:h-[15px] text-green-500 shrink-0 mt-0.5" />
+                      <span className="line-clamp-1 md:line-clamp-none">{h}</span>
                     </li>
                   ))}
                 </ul>
@@ -450,7 +450,7 @@ Please share more details.`;
 
             {/* Quantity & Action Buttons */}
             <div className="flex flex-col gap-2 md:gap-3 pt-1 md:pt-2">
-              {/* Row 1: Qty + Add to Cart */}
+              {/* Row 1: Qty + Add to Cart + Buy Now */}
               <div className="flex items-center gap-2 md:gap-3 w-full">
                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shrink-0 bg-white">
                   <button onClick={() => setQty(q => Math.max(1, q - 1))} className="w-9 h-9 md:w-10 md:h-11 flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors"><Minus size={14} /></button>
@@ -460,17 +460,18 @@ Please share more details.`;
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 btn-primary py-2 md:py-3 flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm font-bold"
+                  className="py-2 md:py-3 px-3 md:px-5 flex items-center justify-center gap-1.5 text-xs md:text-sm font-bold border-2 border-[var(--color-primary)] text-[var(--color-primary)] bg-white hover:bg-theme-light rounded-lg transition-colors"
                 >
-                  <ShoppingCart size={16} />
-                  Add to Cart
+                  <ShoppingCart size={14} className="md:w-4 md:h-4" />
+                  <span className="hidden sm:inline">Add to Cart</span>
+                  <span className="sm:hidden">Cart</span>
                 </button>
 
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 py-2 md:py-3 flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm font-bold bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors shadow-sm"
+                  className="flex-1 btn-primary py-2 md:py-3 flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm font-bold shadow-md"
                 >
-                  <Zap size={16} />
+                  <Zap size={16} className="md:w-[18px]" />
                   Buy Now
                 </button>
               </div>
