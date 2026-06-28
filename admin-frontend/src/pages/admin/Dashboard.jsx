@@ -522,9 +522,7 @@ const AdminDashboard = () => {
 
           {/* Payments Tab */}
           {activeTab === 'payments' && (
-            <div className="p-6">
-              <AdminPayments />
-            </div>
+            <AdminPayments />
           )}
 
           {/* Settings Tab */}
