@@ -94,7 +94,7 @@ const Checkout = () => {
       const address = savedAddresses[selectedAddressIndex];
       const orderData = {
         name: address.name, email: address.email, phone: address.phone,
-        shippingAddress: { address: address.address, city: address.city, state: address.state, pincode: address.pincode, country: 'India' },
+        shippingAddress: { address: address.address, city: address.city, state: address.state, pincode: address.pincode },
         orderItems: cart.map(item => ({ product: item._id, qty: item.qty, name: item.name })),
         paymentMethod,
         advancePaid,
