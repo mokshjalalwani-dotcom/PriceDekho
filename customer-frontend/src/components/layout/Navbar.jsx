@@ -96,6 +96,14 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-1.5 shrink-0">
+            <Link to="/compare" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
+              <GitCompare size={20} />
+              {compareCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
+                  {compareCount}
+                </span>
+              )}
+            </Link>
             <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
               <ShoppingCart size={20} />
               {cartCount > 0 && (
@@ -149,7 +157,10 @@ const Navbar = () => {
 
 
 
-            <div className="grid grid-cols-2 gap-2 border-t border-gray-100 pt-4 mt-2">
+            <div className="grid grid-cols-3 gap-2 border-t border-gray-100 pt-4 mt-2">
+              <Link to="/compare" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <GitCompare size={16} /> Compare {compareCount > 0 && `(${compareCount})`}
+              </Link>
               <Link to="/wishlist" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                 <Heart size={16} /> Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
               </Link>
