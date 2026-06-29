@@ -24,8 +24,8 @@ export const resolveCategory = (categoryName) => {
     throw new Error('Categories must be preloaded before resolution');
   }
   const match = fuzzyMatch(categoryName, categoryMap);
-  // fuzzyMatch returns the mapped object we stored.
-  return match ? match : null;
+  // fuzzyMatch wraps the map value inside match.id — extract it so we return { id, slug } directly
+  return match ? match.id : null;
 };
 
 export const preloadBrands = async () => {
