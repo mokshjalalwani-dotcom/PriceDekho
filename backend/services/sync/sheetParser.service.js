@@ -1,5 +1,12 @@
 import { parse } from 'csv-parse/sync';
 
+// Maps common column header variations to the canonical keys used by the sync engine.
+// After the raw header is trimmed, lowercased, and whitespace-stripped, we check this map.
+const COLUMN_ALIASES = {
+  'productname': 'name',
+  'sp': 'sellingprice',
+};
+
 export const parseSheet = async (sheetReference) => {
   try {
     let csvData = '';
@@ -36,11 +43,16 @@ export const parseSheet = async (sheetReference) => {
       trim: true
     });
 
-    // Normalize keys: trim and lowercase
+    // Normalize keys: trim, lowercase, strip whitespace, then apply aliases
     const normalizedRecords = records.map(record => {
       const normalizedRow = {};
       for (const [key, value] of Object.entries(record)) {
-        normalizedRow[key.trim().toLowerCase().replace(/\s+/g, '')] = value ? value.trim() : '';
+        let normalizedKey = key.trim().toLowerCase().replace(/\s+/g, '');
+        // Apply alias mapping for common header variations
+        if (COLUMN_ALIASES[normalizedKey]) {
+          normalizedKey = COLUMN_ALIASES[normalizedKey];
+        }
+        normalizedRow[normalizedKey] = value ? value.trim() : '';
       }
       return normalizedRow;
     });
