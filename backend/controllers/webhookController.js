@@ -3,7 +3,11 @@ import Order from '../models/Order.js';
 
 export const razorpayWebhook = async (req, res) => {
   try {
-    const secret = process.env.RAZORPAY_WEBHOOK_SECRET || 'secret';
+    const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    if (!secret) {
+      console.error('[Webhook] RAZORPAY_WEBHOOK_SECRET not configured');
+      return res.status(500).json({ status: 'error', message: 'Webhook secret not configured' });
+    }
     const shasum = crypto.createHmac('sha256', secret);
     shasum.update(JSON.stringify(req.body));
     const digest = shasum.digest('hex');

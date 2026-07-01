@@ -38,7 +38,7 @@ const AdminSettings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await axios.get('/api/settings');
+        const res = await axios.get('/api/settings/admin', authHeader);
         if (res.data) {
           // Merge defaults in case new fields are missing
           setSettings(prev => ({ ...prev, ...res.data }));

@@ -5,6 +5,8 @@ const paymentSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   method: { type: String, required: true, default: 'upi' }, // upi, razorpay, etc.
   upiUri: { type: String },
+  intentUri: { type: String },  // Android intent:// deep link
+  gpayUri: { type: String },    // Google Pay (tez://) deep link
   merchantName: { type: String },
   upiId: { type: String },
   status: { 

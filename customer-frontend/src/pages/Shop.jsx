@@ -160,6 +160,7 @@ const Shop = () => {
     const params = new URLSearchParams(location.search);
     params.set('page', page);
     navigate(`/shop?${params.toString()}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Active filters count

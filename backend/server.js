@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import dns from 'dns';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression';
 import mongoose from 'mongoose';
 import logger from './utils/logger.js';
@@ -129,6 +130,7 @@ app.use(compression()); // Compress responses for performance
 
 app.use(express.json({ limit: '2mb' })); // Strict limit for payloads
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(mongoSanitize()); // Prevent NoSQL injection attacks
 
 // Serve uploaded images as static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
