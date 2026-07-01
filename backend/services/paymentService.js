@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import Payment from '../models/Payment.js';
 import Settings from '../models/Settings.js';
 import Product from '../models/Product.js';
-import { generateUpiLinks } from './upiService.js';
+import { generateUpiUri } from './upiService.js';
 import { calculateDiscount, calculateShipping, calculateTax, calculateAdvance, calculateGrandTotal } from '../utils/pricing.js';
 import logger from '../utils/logger.js';
 
@@ -90,17 +90,14 @@ export const getOrCreatePaymentSession = async (reqBody, user) => {
 
   // 4. Generate Session
   const reference = generatePaymentReference();
-  const merchantName = settings.upiMerchantName || 'Satguru Electronics';
-  const { upiUri, intentUri, gpayUri } = generateUpiLinks(settings.upiId, merchantName, amountToPay, reference);
+  const upiUri = generateUpiUri(settings.upiId, settings.upiMerchantName || 'Satguru Electronics', amountToPay, reference);
 
   const payment = new Payment({
     reference,
     amount: amountToPay,
     method: paymentMethod,
     upiUri,
-    intentUri,
-    gpayUri,
-    merchantName,
+    merchantName: settings.upiMerchantName || 'Satguru Electronics',
     upiId: settings.upiId,
     status: 'CREATED',
     cartHash,

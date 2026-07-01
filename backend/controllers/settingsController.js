@@ -1,29 +1,12 @@
 import Settings from '../models/Settings.js';
 
-// @desc    Get store settings (public — filtered)
+// @desc    Get store settings
 // @route   GET /api/settings
 // @access  Public
 export const getSettings = async (req, res) => {
   try {
     const settings = await Settings.getSettings();
-    
-    // Only expose fields the customer frontend needs — hide sensitive business config
-    const publicSettings = {
-      isCodEnabled: settings.isCodEnabled,
-      isUpiEnabled: settings.isUpiEnabled,
-      isRazorpayEnabled: settings.isRazorpayEnabled,
-      shippingEnabled: settings.shippingEnabled,
-      shippingCharge: settings.shippingCharge,
-      freeShippingThreshold: settings.freeShippingThreshold,
-      advancePaymentEnabled: settings.advancePaymentEnabled,
-      advancePaymentPercentage: settings.advancePaymentPercentage,
-      applicableAdvanceMethods: settings.applicableAdvanceMethods,
-      maxOrderQuantity: settings.maxOrderQuantity,
-      allowGuestCheckout: settings.allowGuestCheckout,
-      whatsappNumber: settings.whatsappNumber,
-    };
-    
-    res.json(publicSettings);
+    res.json(settings);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -55,18 +38,6 @@ export const updateSettings = async (req, res) => {
     
     const updated = await settings.save();
     res.json(updated);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// @desc    Get full store settings (admin only — unfiltered)
-// @route   GET /api/settings/admin
-// @access  Admin
-export const getAdminSettings = async (req, res) => {
-  try {
-    const settings = await Settings.getSettings();
-    res.json(settings);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

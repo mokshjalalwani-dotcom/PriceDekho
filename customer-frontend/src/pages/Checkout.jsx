@@ -188,87 +188,26 @@ const Checkout = () => {
               </div>
             )}
 
-            {step === 3 && paymentSession && (() => {
-              // Platform detection for the right UPI deep link
-              const ua = navigator.userAgent || '';
-              const isAndroid = /android/i.test(ua);
-              const isIOS = /iphone|ipad|ipod/i.test(ua);
-              const isMobile = isAndroid || isIOS;
-
-              // Build the payment link that will actually work on this device:
-              // - Android Chrome blocks upi:// from <a> clicks → use intent://
-              // - iOS Safari handles upi:// fine
-              // - Desktop: no app link, rely on QR code
-              const primaryPayLink = isAndroid
-                ? paymentSession.intentUri
-                : paymentSession.upiUri;
-
-              // Build UPI query string for individual app deep links
-              const upiParams = paymentSession.upiUri?.replace('upi://pay?', '') || '';
-
-              // Individual app deep links (use specific schemes that each app registers)
-              const appLinks = [
-                { name: 'Google Pay', scheme: `tez://upi/pay?${upiParams}`, color: '#1a73e8', icon: '🟦' },
-                { name: 'PhonePe',   scheme: `phonepe://pay?${upiParams}`, color: '#5f259f', icon: '🟪' },
-                { name: 'Paytm',     scheme: `paytmmp://pay?${upiParams}`, color: '#00baf2', icon: '🟦' },
-              ];
-
-              return (
+            {step === 3 && paymentSession && (
               <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 md:p-8 text-center">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Complete your Payment</h2>
-                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-                  {isMobile ? 'Tap a button below to pay using your UPI app.' : 'Scan the QR code with any UPI app to pay.'}
-                </p>
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Scan the QR code or tap the button below to pay using any UPI app.</p>
 
-                {/* QR Code — prominent on desktop, collapsible on mobile */}
-                <div className={`flex justify-center ${isMobile ? 'mb-3' : 'mb-4 sm:mb-6'}`}>
+                <div className="flex justify-center mb-4 sm:mb-6">
                   {paymentSession.qrCode ? (
-                    <img src={paymentSession.qrCode} alt="Payment QR" className={`object-contain p-3 sm:p-4 border border-gray-200 rounded-xl bg-gray-50 ${isMobile ? 'w-40 h-40' : 'w-48 h-48 sm:w-64 sm:h-64'}`} />
+                    <img src={paymentSession.qrCode} alt="Payment QR" className="w-48 h-48 sm:w-64 sm:h-64 object-contain p-3 sm:p-4 border border-gray-200 rounded-xl bg-gray-50" />
                   ) : (
                     <QrCode size={100} className="text-gray-300 sm:w-[120px] sm:h-[120px]" />
                   )}
                 </div>
 
-                <div className="mb-6 sm:mb-8 max-w-sm mx-auto">
-                  {/* Primary "Open UPI App" button — only on mobile */}
-                  {isMobile && primaryPayLink && (
-                    <a
-                      href={primaryPayLink}
-                      className="inline-block w-full btn-primary py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 mb-4"
-                    >
-                      Pay ₹{paymentSession.amount.toLocaleString()} via UPI App
-                    </a>
-                  )}
-
-                  {/* Individual app buttons — mobile only */}
-                  {isMobile && (
-                    <div className="grid grid-cols-3 gap-2 mb-4">
-                      {appLinks.map(app => (
-                        <a
-                          key={app.name}
-                          href={app.scheme}
-                          className="flex flex-col items-center gap-1 p-2.5 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all text-center"
-                        >
-                          <span className="text-2xl">{app.icon}</span>
-                          <span className="text-[10px] sm:text-xs font-medium text-gray-700 leading-tight">{app.name}</span>
-                        </a>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Amount display for desktop */}
-                  {!isMobile && (
-                    <div className="bg-theme-light/30 border border-theme-light rounded-xl p-4 mb-4">
-                      <p className="text-sm text-gray-600">Amount to Pay</p>
-                      <p className="text-2xl font-bold text-theme-primary">₹{paymentSession.amount.toLocaleString()}</p>
-                    </div>
-                  )}
+                <div className="mb-6 sm:mb-8">
+                  <a href={paymentSession.upiUri} className="inline-block w-full max-w-sm btn-primary py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 mb-4">
+                    Pay ₹{paymentSession.amount.toLocaleString()} via UPI App
+                  </a>
                   
-                  {/* Manual UPI ID fallback */}
-                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 text-left shadow-sm">
-                    <p className="text-[11px] sm:text-xs text-amber-800 font-semibold mb-2">
-                      {isMobile ? 'If the buttons above don\'t work, copy this UPI ID and pay manually in your app:' : 'Or pay manually using this UPI ID in any UPI app:'}
-                    </p>
+                  <div className="max-w-sm mx-auto bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4 text-left shadow-sm">
+                    <p className="text-[11px] sm:text-xs text-amber-800 font-semibold mb-2">If the button above fails in PhonePe for security reasons, please copy the UPI ID below and pay manually:</p>
                     <div className="flex items-stretch gap-2">
                       <code className="flex-1 min-w-0 bg-white px-2 sm:px-3 py-2 border border-amber-100 rounded font-mono text-xs sm:text-sm text-gray-800 break-all select-all flex items-center">{paymentSession.upiId}</code>
                       <button 
@@ -287,15 +226,15 @@ const Checkout = () => {
                 </div>
 
                 <div className="max-w-md mx-auto text-left bg-gray-50 p-4 sm:p-6 rounded-xl border border-gray-200">
-                  <h3 className="font-bold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">After paying, confirm your payment</h3>
-                  <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">Enter the 12-digit UTR / Transaction ID from your UPI app to verify your order.</p>
+                  <h3 className="font-bold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Waiting for customer...</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">After completing the payment in your UPI app, enter the 12-digit UTR / Transaction ID below to verify your order.</p>
                   
                   <input 
                     type="text" 
                     required 
                     placeholder="Enter 12-digit UPI Transaction ID" 
                     value={upiTransactionId} 
-                    onChange={(e) => setUpiTransactionId(e.target.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase())} 
+                    onChange={(e) => setUpiTransactionId(e.target.value.toUpperCase())} 
                     maxLength={12}
                     className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg font-mono text-center text-sm sm:text-base tracking-widest outline-none focus:border-theme-primary focus:ring-2 focus:ring-theme-primary/20 mb-3 sm:mb-4" 
                   />
@@ -310,8 +249,7 @@ const Checkout = () => {
                   </button>
                 </div>
               </div>
-              );
-            })()}
+            )}
           </div>
 
           {/* Sidebar */}
