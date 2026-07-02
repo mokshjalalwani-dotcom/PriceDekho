@@ -42,6 +42,7 @@ const AdminDashboard = () => {
   const [productSearch, setProductSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [categories, setCategories] = useState([]);
+  const [totalProductCount, setTotalProductCount] = useState(0);
   const navigate = useNavigate();
 
   const token = localStorage.getItem('adminToken');
@@ -49,8 +50,9 @@ const AdminDashboard = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('/api/admin/products', authHeader);
+      const res = await axios.get('/api/admin/products?limit=1000', authHeader);
       setProducts(res.data.products || []);
+      setTotalProductCount(res.data.totalProducts || (res.data.products || []).length);
     } catch (error) {
       console.error('Failed to fetch products', error);
     } finally {
@@ -284,7 +286,7 @@ const AdminDashboard = () => {
                   <span className="flex items-center text-xs md:text-sm font-medium text-green-600"><ArrowUpRight size={14} className="md:w-4 md:h-4" /> Live</span>
                 </div>
                 <h3 className="text-gray-500 text-[10px] md:text-xs font-medium tracking-wide uppercase">Total Products</h3>
-                <p className="text-xl md:text-2xl font-bold text-gray-900 mt-1">{loading ? '...' : products.length}</p>
+                <p className="text-xl md:text-2xl font-bold text-gray-900 mt-1">{loading ? '...' : totalProductCount}</p>
               </div>
               <div className="bg-white rounded-xl p-4 md:p-5 border border-gray-100 shadow-sm">
                 <div className="flex justify-between items-start mb-2 md:mb-3">
