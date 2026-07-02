@@ -72,14 +72,14 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Image */}
-      <div className="relative bg-gray-50/50 flex items-center justify-center p-4 aspect-square">
+      <div className="relative bg-gray-50/50 flex items-center justify-center p-4" style={{ height: '200px' }}>
         <img
           src={imgSrc}
           alt={product.name}
           referrerPolicy="no-referrer"
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             e.target.src = 'https://placehold.co/300x300/f8fafc/94a3b8?text=No+Image';
             e.target.onerror = null;
