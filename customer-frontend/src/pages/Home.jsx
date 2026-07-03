@@ -39,7 +39,7 @@ const Home = () => {
   /* Skeleton card for loading states */
   const SkeletonCard = () => (
     <div className="bg-white rounded-xl border border-gray-200/60 overflow-hidden">
-      <div className="aspect-square skeleton-shimmer" />
+      <div className="h-[160px] sm:h-[200px] skeleton-shimmer" />
       <div className="p-4 space-y-2.5">
         <div className="h-3 skeleton-shimmer rounded w-1/3" />
         <div className="h-4 skeleton-shimmer rounded w-4/5" />

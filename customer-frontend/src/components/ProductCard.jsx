@@ -72,14 +72,14 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Image */}
-      <div className="relative bg-gray-50/50 flex items-center justify-center p-2 sm:p-4 aspect-square sm:aspect-auto sm:h-[200px]">
+      <div className="relative bg-gray-50/50 flex items-center justify-center p-2 sm:p-4 h-[160px] sm:h-[200px]">
         <img
           src={imgSrc}
           alt={product.name}
           referrerPolicy="no-referrer"
           loading="lazy"
           decoding="async"
-          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
             e.target.src = 'https://placehold.co/300x300/f8fafc/94a3b8?text=No+Image';
             e.target.onerror = null;
@@ -88,7 +88,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content */}
-      <div className="p-2 sm:p-3.5 flex flex-col flex-grow border-t border-gray-100">
+      <div className="p-2 sm:p-3.5 flex flex-col flex-grow min-h-0 overflow-hidden border-t border-gray-100">
         {/* Brand */}
         <span className="inline-block text-sm text-gray-500 font-medium uppercase tracking-wider mb-1 bg-gray-100 px-2 py-0.5 rounded w-fit max-w-full truncate">
           {product.brand?.name || 'Brand'}
