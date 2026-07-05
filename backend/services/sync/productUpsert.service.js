@@ -113,6 +113,19 @@ const buildSetDoc = (row) => {
     doc.subCategory = row.subcategory.trim();
   }
 
+  // Warranty
+  const warrantyKey = Object.keys(row).find(k => k.toLowerCase().includes('warranty'));
+  if (warrantyKey && row[warrantyKey] !== '') {
+    const raw = row[warrantyKey].trim();
+    // If it's just a number (e.g. "1", "2"), auto-format to "X Year Warranty"
+    const num = Number(raw);
+    if (!isNaN(num) && String(num) === raw) {
+      doc.warrantyDetails = `${num} Year${num !== 1 ? 's' : ''} Warranty`;
+    } else {
+      doc.warrantyDetails = raw;
+    }
+  }
+
   return doc;
 };
 
