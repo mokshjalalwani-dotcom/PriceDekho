@@ -113,13 +113,6 @@ const buildSetDoc = (row) => {
     doc.subCategory = row.subcategory.trim();
   }
 
-  // Warranty → warrantyDetails (accepts integer like 1, 2, 3 → "X Year Warranty")
-  const warrantyKey = Object.keys(row).find(k => k.toLowerCase().includes('warranty'));
-  if (warrantyKey && row[warrantyKey] !== '') {
-    const yrs = Number(row[warrantyKey]);
-    doc.warrantyDetails = !isNaN(yrs) ? `${yrs} Year Warranty` : row[warrantyKey].trim();
-  }
-
   return doc;
 };
 
