@@ -20,7 +20,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
-  const [activeTab, setActiveTab] = useState('specs');
+  const [activeTab, setActiveTab] = useState('box');
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showAllSpecs, setShowAllSpecs] = useState(false);
   const [settings, setSettings] = useState(null);
@@ -65,7 +65,7 @@ const ProductDetails = () => {
     setSelectedImage(0);
     setQty(1);
     setSelectedVariant(null);
-    setActiveTab('specs');
+    setActiveTab('box');
     window.scrollTo(0, 0);
   }, [slug]);
 
@@ -551,9 +551,9 @@ Please share more details.`;
           {/* Tab Headers */}
           <div className="flex border-b border-gray-100 overflow-x-auto scrollbar-hide">
             {[
-              { key: 'specs', label: 'Specifications' },
-              { key: 'description', label: 'Description' },
               { key: 'box', label: "What's in the Box" },
+              { key: 'description', label: 'Description' },
+              { key: 'specs', label: 'Specifications' },
             ].map(tab => (
               <button
                 key={tab.key}
