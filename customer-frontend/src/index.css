@@ -216,15 +216,9 @@
   border-top: 2px solid #ccc;
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15), inset 0 2px 4px rgba(255,255,255,0.3);
   z-index: 3;
-  opacity: 0;
-  transition: opacity 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.splash-bar-visible {
-  opacity: 1;
 }
 
 /* Lock handle — vertical bar that rotates to horizontal (unlocked) */

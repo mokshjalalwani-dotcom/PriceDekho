@@ -35,6 +35,9 @@ const SplashScreen = ({ onComplete }) => {
     return (
       <div className="splash-overlay" aria-hidden="true">
         <div className="splash-shutter-slats" />
+        <div className="splash-shutter-bar">
+          <div className="splash-lock-handle" />
+        </div>
       </div>
     );
   }
@@ -48,7 +51,7 @@ const SplashScreen = ({ onComplete }) => {
       <div className="splash-shutter-slats" />
 
       {/* Bottom lock bar with rotating handle */}
-      <div className={`splash-shutter-bar ${phase !== 'enter' ? 'splash-bar-visible' : ''}`}>
+      <div className="splash-shutter-bar">
         <div className={`splash-lock-handle ${phase === 'unlock' || phase === 'exit' ? 'splash-lock-open' : ''}`} />
       </div>
 
