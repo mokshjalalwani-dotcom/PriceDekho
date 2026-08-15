@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight, Zap, ShieldCheck, Truck, Clock, ChevronRight, Star, Headphones } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { useCategory } from '../context/CategoryContext';
 import useSEO from '../hooks/useSEO';
+import SplashScreen from '../components/SplashScreen';
 
 const Home = () => {
   useSEO({
@@ -16,7 +17,10 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
   const { categories, loading: categoriesLoading } = useCategory();
+
+  const handleSplashComplete = useCallback(() => setShowSplash(false), []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +57,7 @@ const Home = () => {
 
   return (
     <div className="w-full">
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       {/* Shop by Category */}
       <section className="py-4 sm:pt-8 sm:pb-12 bg-white min-h-[calc(100dvh-130px)] sm:min-h-0 flex flex-col justify-center">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col w-full my-auto">
