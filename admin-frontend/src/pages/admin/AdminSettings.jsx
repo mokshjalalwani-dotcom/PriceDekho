@@ -5,6 +5,7 @@ import { Save, AlertTriangle, Truck, CreditCard, Settings as SettingsIcon } from
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
     whatsappNumber: '',
+    inquiryNumber: '',
     isCodEnabled: true,
     isUpiEnabled: true,
     isRazorpayEnabled: false,
@@ -226,7 +227,12 @@ const AdminSettings = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Enquiry Number</label>
-                  <input type="text" name="whatsappNumber" value={settings.whatsappNumber} onChange={handleChange} className={inputCls} />
+                  <input type="text" name="whatsappNumber" value={settings.whatsappNumber} onChange={handleChange} placeholder="91XXXXXXXXXX" className={inputCls} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Inquiry Phone Number</label>
+                  <input type="text" name="inquiryNumber" value={settings.inquiryNumber} onChange={handleChange} placeholder="+91 98765 43210" className={inputCls} />
+                  <p className="text-xs text-gray-500 mt-1">Shown on the customer website as a "Call Us" button.</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Invoice Prefix</label>

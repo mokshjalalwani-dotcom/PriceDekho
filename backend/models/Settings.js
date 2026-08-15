@@ -4,6 +4,9 @@ const settingsSchema = new mongoose.Schema({
   // WhatsApp enquiry
   whatsappNumber: { type: String, default: '' },
   
+  // Phone inquiry
+  inquiryNumber: { type: String, default: '' },
+  
   // Payments Config
   isCodEnabled: { type: Boolean, default: true },
   isUpiEnabled: { type: Boolean, default: true },
