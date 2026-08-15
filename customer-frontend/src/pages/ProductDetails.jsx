@@ -598,7 +598,7 @@ Please share more details.`;
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-xs md:text-sm">No specifications available for this product.</p>
+                  <p className="text-gray-500 text-xs md:text-sm">All details mentioned in description</p>
                 )}
               </div>
             )}
