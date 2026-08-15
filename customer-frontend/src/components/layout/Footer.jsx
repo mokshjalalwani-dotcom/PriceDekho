@@ -66,7 +66,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="text-[var(--color-primary)] shrink-0 mt-1" size={20} />
                 <span className="text-sm">
-                  <a className="no-underline hover:text-[var(--color-primary)] transition-colors" href="https://maps.app.goo.gl/4DD5ZJtqQZTtkvGs7" target="_blank" rel="noopener noreferrer">
+                  <a className="no-underline hover:text-[var(--color-primary)] transition-colors" href="https://maps.app.goo.gl/vB2veSaAAPX6E7FA7?g_st=ac" target="_blank" rel="noopener noreferrer">
                     Parsiwad Main Bazaar, Near Kabutar Khana, Vyara, Gujarat - 394650
                   </a>
                 </span>
