@@ -537,9 +537,9 @@ Please share more details.`;
                 { icon: CreditCard, label: 'Secure Checkout', color: 'text-theme-primary', bg: 'bg-theme-light' },
                 { icon: Package, label: product.warrantyDetails || '1 Year Warranty', color: 'text-purple-500', bg: 'bg-purple-50' },
               ].map((item, i) => (
-                <div key={i} className={`flex items-center gap-1.5 md:gap-2.5 px-2 py-1.5 md:px-3 md:py-2.5 rounded-md md:rounded-lg ${item.bg}`}>
-                  <item.icon size={14} className={`md:w-4 md:h-4 ${item.color}`} />
-                  <span className="text-[10px] md:text-xs font-medium text-gray-700">{item.label}</span>
+                <div key={i} className={`flex items-center gap-1.5 md:gap-2.5 px-2 py-1.5 md:px-3 md:py-2.5 rounded-md md:rounded-lg ${item.bg} min-h-[36px] md:min-h-[44px]`}>
+                  <item.icon size={14} className={`md:w-4 md:h-4 ${item.color} shrink-0`} />
+                  <span className="text-[10px] md:text-xs font-medium text-gray-700 line-clamp-1">{item.label}</span>
                 </div>
               ))}
             </div>
