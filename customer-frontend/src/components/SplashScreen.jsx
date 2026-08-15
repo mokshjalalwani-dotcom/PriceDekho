@@ -1,31 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const SplashScreen = ({ onComplete }) => {
-  // Start in 'loading' phase so animation doesn't begin until image is ready
-  const [phase, setPhase] = useState('loading'); 
+  const [phase, setPhase] = useState('loading'); // 'loading' | 'enter' | 'unlock' | 'exit'
+  const timersRef = useRef([]);
 
   useEffect(() => {
-    // Don't start timers until the image has actually loaded
-    if (phase === 'loading') return;
-
-    const unlockTimer = setTimeout(() => setPhase('unlock'), 800);
-    const exitTimer = setTimeout(() => setPhase('exit'), 1200);
-    const doneTimer = setTimeout(() => onComplete(), 2000);
-    return () => {
-      clearTimeout(unlockTimer);
-      clearTimeout(exitTimer);
-      clearTimeout(doneTimer);
-    };
-  }, [phase, onComplete]);
-
-  // Failsafe: if the image is already cached, onLoad might not fire
-  useEffect(() => {
+    // Preload the splash image before starting any animation
     const img = new Image();
     img.src = '/satguru-splash.png';
+
+    const startAnimation = () => {
+      setPhase('enter');
+      timersRef.current = [
+        setTimeout(() => setPhase('unlock'), 800),
+        setTimeout(() => setPhase('exit'), 1200),
+        setTimeout(() => onComplete(), 2000),
+      ];
+    };
+
     if (img.complete) {
-      setPhase(p => p === 'loading' ? 'enter' : p);
+      // Already cached
+      startAnimation();
+    } else {
+      img.onload = startAnimation;
+      // If image fails to load, still run the animation after 1s fallback
+      img.onerror = () => setTimeout(startAnimation, 100);
     }
-  }, []);
+
+    return () => timersRef.current.forEach(clearTimeout);
+  }, [onComplete]);
+
+  // Don't render anything visible until image is ready
+  if (phase === 'loading') {
+    return (
+      <div className="splash-overlay" aria-hidden="true">
+        <div className="splash-shutter-slats" />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -36,19 +48,18 @@ const SplashScreen = ({ onComplete }) => {
       <div className="splash-shutter-slats" />
 
       {/* Bottom lock bar with rotating handle */}
-      <div className={`splash-shutter-bar ${phase === 'unlock' || phase === 'exit' ? 'splash-bar-visible' : ''}`}>
+      <div className={`splash-shutter-bar ${phase !== 'enter' ? 'splash-bar-visible' : ''}`}>
         <div className={`splash-lock-handle ${phase === 'unlock' || phase === 'exit' ? 'splash-lock-open' : ''}`} />
       </div>
 
-      {/* Logo content — only animate enter once loaded */}
-      <div className={`splash-content ${phase === 'exit' ? 'splash-content-exit' : ''} ${phase === 'loading' ? 'opacity-0' : ''}`}>
+      {/* Logo content */}
+      <div className={`splash-content ${phase === 'exit' ? 'splash-content-exit' : ''}`}>
         <img
           src="/satguru-splash.png"
           alt=""
           className="splash-logo"
-          onLoad={() => setPhase(p => p === 'loading' ? 'enter' : p)}
         />
-        {phase !== 'loading' && <div className="splash-shimmer" />}
+        <div className="splash-shimmer" />
       </div>
     </div>
   );
