@@ -301,7 +301,7 @@ Please share more details.`;
         {/* Main Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-8 lg:gap-12 mb-6 md:mb-12">
           {/* Image Gallery */}
-          <div className="space-y-2 md:space-y-4">
+          <div className="space-y-2 md:space-y-4 lg:sticky lg:top-[76px] lg:self-start">
             <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden h-[32dvh] md:h-auto md:aspect-square flex items-center justify-center p-3 md:p-6 relative group">
               <img
                 src={uniqueImages[selectedImage] || 'https://placehold.co/500x500/f8fafc/94a3b8?text=No+Image'}
@@ -605,11 +605,27 @@ Please share more details.`;
 
             {/* Description Tab */}
             {activeTab === 'description' && (
-              <div className="prose prose-sm md:prose max-w-none">
-                {product.fullDescription ? (
-                  <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{product.fullDescription}</p>
-                ) : product.shortDescription ? (
-                  <p className="text-gray-600 leading-relaxed">{product.shortDescription}</p>
+              <div className="max-h-[400px] md:max-h-[500px] overflow-y-auto pr-2 scrollbar-thin">
+                {(product.fullDescription || product.shortDescription) ? (
+                  <div className="space-y-4 text-sm md:text-[15px] text-gray-600 leading-[1.8]">
+                    {(product.fullDescription || product.shortDescription)
+                      .split(/\n\s*\n|\n/)
+                      .filter(p => p.trim())
+                      .flatMap((paragraph, pIdx) => {
+                        // Split very long paragraphs (300+ chars) on sentence boundaries
+                        if (paragraph.length > 300) {
+                          return paragraph
+                            .split(/(?<=\.)\s+(?=[A-Z])/)
+                            .filter(s => s.trim())
+                            .map((sentence, sIdx) => ({ text: sentence.trim(), key: `${pIdx}-${sIdx}` }));
+                        }
+                        return [{ text: paragraph.trim(), key: `${pIdx}` }];
+                      })
+                      .map(({ text, key }) => (
+                        <p key={key}>{text}</p>
+                      ))
+                    }
+                  </div>
                 ) : (
                   <p className="text-gray-500 text-xs md:text-sm">No description available.</p>
                 )}
