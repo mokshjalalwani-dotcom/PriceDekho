@@ -77,7 +77,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="text-[var(--color-primary)] shrink-0" size={20} />
-                <span className="text-sm">satguruelectricals.online@gmail.com</span>
+                <span className="text-sm"><a href="mailto:satguruelectricals.shop@gmail.com" className="no-underline hover:text-[var(--color-primary)] transition-colors">satguruelectricals.shop@gmail.com</a></span>
               </li>
             </ul>
 
