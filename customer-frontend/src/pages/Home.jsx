@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { ArrowRight, Zap, ShieldCheck, Truck, Clock, ChevronRight, Star, Headphones, Phone } from 'lucide-react';
+import { ArrowRight, Zap, ShieldCheck, Truck, Clock, ChevronRight, Star, Headphones } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { useCategory } from '../context/CategoryContext';
 import useSEO from '../hooks/useSEO';
@@ -16,7 +16,6 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [inquiryNumber, setInquiryNumber] = useState('');
   const { categories, loading: categoriesLoading } = useCategory();
 
   useEffect(() => {
@@ -35,19 +34,6 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
-
-  // Fetch inquiry number from settings
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const res = await axios.get('/api/settings');
-        if (res.data?.inquiryNumber) {
-          setInquiryNumber(res.data.inquiryNumber);
-        }
-      } catch (e) { /* ignore */ }
-    };
-    fetchSettings();
   }, []);
 
   /* Skeleton card for loading states */
@@ -75,20 +61,9 @@ const Home = () => {
               <h2 className="section-heading text-[clamp(1.1rem,4vw,1.5rem)] leading-tight sm:text-2xl">What do you want to buy today?</h2>
               <p className="text-sm text-gray-500 mt-1 sm:mt-1.5 hidden sm:block">Browse from our wide range of home appliances</p>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-              {inquiryNumber && (
-                <a
-                  href={`tel:${inquiryNumber.replace(/[^0-9+]/g, '')}`}
-                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs sm:text-sm font-semibold hover:bg-green-100 hover:border-green-300 transition-all duration-200 group shrink-0"
-                >
-                  <Phone size={14} className="group-hover:animate-pulse" />
-                  <span className="hidden sm:inline">Call Us</span>
-                </a>
-              )}
-              <Link to="/shop" className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors shrink-0">
-                View All <ChevronRight size={14} />
-              </Link>
-            </div>
+            <Link to="/shop" className="text-sm text-theme-primary font-semibold hover:text-theme-dark flex items-center gap-1 transition-colors shrink-0">
+              View All <ChevronRight size={14} />
+            </Link>
           </div>
 
           <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-x-2 gap-y-[clamp(1rem,3.5vh,1.5rem)] sm:gap-4 lg:gap-6">

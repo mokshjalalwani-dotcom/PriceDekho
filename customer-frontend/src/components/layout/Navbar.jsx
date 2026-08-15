@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Menu, X, Search, Heart, GitCompare, User } from 'lucide-react';
+import axios from 'axios';
+import { ShoppingCart, Menu, X, Search, Heart, GitCompare, User, Phone } from 'lucide-react';
 import { useCategory } from '../../context/CategoryContext';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
@@ -15,6 +16,19 @@ const Navbar = () => {
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { compareCount } = useCompare();
+  const [inquiryNumber, setInquiryNumber] = useState('');
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await axios.get('/api/settings');
+        if (res.data?.inquiryNumber) {
+          setInquiryNumber(res.data.inquiryNumber);
+        }
+      } catch (e) { /* ignore */ }
+    };
+    fetchSettings();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -67,6 +81,16 @@ const Navbar = () => {
 
           {/* User Actions */}
           <div className="hidden md:flex items-center gap-1">
+            {inquiryNumber && (
+              <a
+                href={`tel:${inquiryNumber.replace(/[^0-9+]/g, '')}`}
+                className="flex items-center gap-1.5 text-green-600 hover:text-green-700 hover:bg-green-50 font-medium transition-colors text-sm relative rounded-full px-3 py-2 mr-1"
+                title="Call Us"
+              >
+                <Phone size={19} className="animate-pulse" />
+                <span className="hidden lg:inline">Call Us</span>
+              </a>
+            )}
             <Link to="/compare" className="flex items-center gap-1.5 text-gray-500 hover:text-[var(--color-primary)] hover:bg-[var(--theme-light)] font-medium transition-colors text-sm relative rounded-full px-3 py-2">
               <GitCompare size={19} />
               <span className="hidden lg:inline">Compare</span>
@@ -96,6 +120,11 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-1.5 shrink-0">
+            {inquiryNumber && (
+              <a href={`tel:${inquiryNumber.replace(/[^0-9+]/g, '')}`} className="text-green-600 hover:text-green-700 transition-colors relative p-2">
+                <Phone size={20} className="animate-pulse" />
+              </a>
+            )}
             <Link to="/compare" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
               <GitCompare size={20} />
               {compareCount > 0 && (
