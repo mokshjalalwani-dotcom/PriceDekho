@@ -96,17 +96,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Scroll down indicator — desktop only */}
-      <div className="hidden lg:flex justify-center -mt-4 mb-0 relative z-10">
-        <button
-          onClick={() => document.getElementById('trending-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="scroll-hint-btn"
-          aria-label="Scroll down to see more"
-        >
-          <ChevronDown size={22} className="scroll-hint-chevron" />
-        </button>
-      </div>
-      
       {/* USP Trust Badges */}
       <section className="py-5 bg-gray-50/80 border-y border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -130,6 +119,17 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Scroll down indicator — desktop only */}
+      <div className="hidden lg:flex justify-center py-3 relative z-10">
+        <button
+          onClick={() => document.getElementById('trending-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="scroll-hint-btn"
+          aria-label="Scroll down to see more"
+        >
+          <ChevronDown size={22} className="scroll-hint-chevron" />
+        </button>
+      </div>
 
       {/* Trending Products */}
       <section id="trending-section" className="py-12 bg-white">
