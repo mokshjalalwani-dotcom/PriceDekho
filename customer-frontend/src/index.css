@@ -282,6 +282,7 @@
 .splash-logo {
   width: clamp(200px, 60vw, 400px);
   height: auto;
+  border-radius: 16px;
   filter: drop-shadow(0 4px 24px rgba(255, 102, 0, 0.12));
 }
 
