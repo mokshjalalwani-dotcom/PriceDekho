@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 const SplashScreen = ({ onComplete }) => {
-  const [phase, setPhase] = useState('enter'); // 'enter' | 'unlock' | 'exit'
+  // Start in 'loading' phase so animation doesn't begin until image is ready
+  const [phase, setPhase] = useState('loading'); 
 
   useEffect(() => {
-    // 1. Logo animates in (0–1.2s)
-    // 2. Lock appears and turns open (1.2s–1.9s)
+    // Don't start timers until the image has actually loaded
+    if (phase === 'loading') return;
+
     const unlockTimer = setTimeout(() => setPhase('unlock'), 800);
     const exitTimer = setTimeout(() => setPhase('exit'), 1200);
     const doneTimer = setTimeout(() => onComplete(), 2000);
@@ -14,7 +16,16 @@ const SplashScreen = ({ onComplete }) => {
       clearTimeout(exitTimer);
       clearTimeout(doneTimer);
     };
-  }, [onComplete]);
+  }, [phase, onComplete]);
+
+  // Failsafe: if the image is already cached, onLoad might not fire
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/satguru-splash.png';
+    if (img.complete) {
+      setPhase(p => p === 'loading' ? 'enter' : p);
+    }
+  }, []);
 
   return (
     <div
@@ -25,18 +36,19 @@ const SplashScreen = ({ onComplete }) => {
       <div className="splash-shutter-slats" />
 
       {/* Bottom lock bar with rotating handle */}
-      <div className={`splash-shutter-bar ${phase !== 'enter' ? 'splash-bar-visible' : ''}`}>
+      <div className={`splash-shutter-bar ${phase === 'unlock' || phase === 'exit' ? 'splash-bar-visible' : ''}`}>
         <div className={`splash-lock-handle ${phase === 'unlock' || phase === 'exit' ? 'splash-lock-open' : ''}`} />
       </div>
 
-      {/* Logo content */}
-      <div className={`splash-content ${phase === 'exit' ? 'splash-content-exit' : ''}`}>
+      {/* Logo content — only animate enter once loaded */}
+      <div className={`splash-content ${phase === 'exit' ? 'splash-content-exit' : ''} ${phase === 'loading' ? 'opacity-0' : ''}`}>
         <img
           src="/satguru-splash.png"
           alt=""
           className="splash-logo"
+          onLoad={() => setPhase(p => p === 'loading' ? 'enter' : p)}
         />
-        <div className="splash-shimmer" />
+        {phase !== 'loading' && <div className="splash-shimmer" />}
       </div>
     </div>
   );
