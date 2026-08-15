@@ -17,10 +17,13 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(() => !sessionStorage.getItem('splashShown'));
   const { categories, loading: categoriesLoading } = useCategory();
 
-  const handleSplashComplete = useCallback(() => setShowSplash(false), []);
+  const handleSplashComplete = useCallback(() => {
+    setShowSplash(false);
+    sessionStorage.setItem('splashShown', '1');
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
