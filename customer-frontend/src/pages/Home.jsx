@@ -132,7 +132,7 @@ const Home = () => {
       </div>
 
       {/* Trending Products */}
-      <section id="trending-section" className="py-12 bg-white">
+      <section id="trending-section" className="py-12 bg-white scroll-mt-[76px]">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <div>
