@@ -51,14 +51,14 @@ const Navbar = () => {
         <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 h-[60px] md:h-[68px]">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-1.5 md:gap-2.5 group shrink-0 min-w-0">
+          <a href="/" className="flex items-center gap-1.5 md:gap-2.5 group shrink-0 min-w-0">
             <div className="w-7 h-7 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm ring-1 ring-gray-100 group-hover:shadow-md transition-shadow p-0.5">
               <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
             </div>
             <span className="font-[800] text-[14px] sm:text-lg tracking-tight text-[#242933] truncate">
               Satguru<span style={{ color: 'var(--theme-primary)' }}>Electricals</span>
             </span>
-          </Link>
+          </a>
 
           {/* Search Bar - Desktop */}
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
