@@ -47,15 +47,15 @@ const Navbar = () => {
 
   return (
     <div className={`w-full bg-white sticky top-0 z-50 transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
-      <nav className="max-w-[1400px] mx-auto border-b border-gray-100/80">
-        <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 h-[68px]">
+      <nav className="max-w-[1400px] mx-auto">
+        <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 h-[60px] md:h-[68px]">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 md:gap-2.5 group shrink-0 min-w-0">
-            <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm ring-1 ring-gray-100 group-hover:shadow-md transition-shadow p-0.5">
+          <Link to="/" className="flex items-center gap-1.5 md:gap-2.5 group shrink-0 min-w-0">
+            <div className="w-7 h-7 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm ring-1 ring-gray-100 group-hover:shadow-md transition-shadow p-0.5">
               <img src="/logo.png" alt="Satguru Electricals Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-[800] text-[15px] sm:text-lg tracking-tight text-[#242933] truncate">
+            <span className="font-[800] text-[14px] sm:text-lg tracking-tight text-[#242933] truncate">
               Satguru<span style={{ color: 'var(--theme-primary)' }}>Electricals</span>
             </span>
           </Link>
@@ -80,14 +80,14 @@ const Navbar = () => {
           </form>
 
           {/* User Actions */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5">
             {inquiryNumber && (
               <a
                 href={`tel:${inquiryNumber.replace(/[^0-9+]/g, '')}`}
-                className="flex items-center gap-1.5 text-green-600 hover:text-green-700 hover:bg-green-50 font-medium transition-colors text-sm relative rounded-full px-3 py-2 mr-1"
+                className="flex items-center gap-1.5 text-gray-500 hover:text-[var(--color-primary)] hover:bg-[var(--theme-light)] font-medium transition-colors text-sm relative rounded-full px-3 py-2"
                 title="Call Us"
               >
-                <Phone size={19} className="animate-pulse" />
+                <Phone size={19} />
                 <span className="hidden lg:inline">Call Us</span>
               </a>
             )}
@@ -118,50 +118,50 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-1.5 shrink-0">
+          {/* Mobile action icons */}
+          <div className="md:hidden flex items-center shrink-0">
             {inquiryNumber && (
-              <a href={`tel:${inquiryNumber.replace(/[^0-9+]/g, '')}`} className="text-green-600 hover:text-green-700 transition-colors relative p-2">
-                <Phone size={20} className="animate-pulse" />
+              <a href={`tel:${inquiryNumber.replace(/[^0-9+]/g, '')}`} className="text-gray-500 hover:text-[var(--color-primary)] transition-colors p-2.5">
+                <Phone size={19} />
               </a>
             )}
-            <Link to="/compare" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
-              <GitCompare size={20} />
+            <Link to="/compare" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2.5">
+              <GitCompare size={19} />
               {compareCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
+                <span className="absolute top-0.5 right-0 bg-[var(--color-primary)] text-white text-[8px] font-bold rounded-full h-3.5 w-3.5 flex items-center justify-center ring-[1.5px] ring-white">
                   {compareCount}
                 </span>
               )}
             </Link>
-            <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2">
-              <ShoppingCart size={20} />
+            <Link to="/cart" className="text-gray-500 hover:text-[var(--color-primary)] transition-colors relative p-2.5">
+              <ShoppingCart size={19} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[var(--color-primary)] text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center ring-2 ring-white">
+                <span className="absolute top-0.5 right-0 bg-[var(--color-primary)] text-white text-[8px] font-bold rounded-full h-3.5 w-3.5 flex items-center justify-center ring-[1.5px] ring-white">
                   {cartCount > 9 ? '9+' : cartCount}
                 </span>
               )}
             </Link>
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-400 p-2 rounded-lg hover:bg-gray-50 transition-colors ml-0.5">
+              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Search Bar - Rendered below main navbar header */}
-        <div className="md:hidden px-4 pb-3">
-          <form onSubmit={handleSearch} className="flex w-full rounded-full overflow-hidden bg-gray-50 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-theme-focus focus-within:bg-white transition-all h-[40px]">
-            <div className="flex items-center pl-3 text-gray-400">
-              <Search size={16} />
+        {/* Mobile Search Bar */}
+        <div className="md:hidden px-4 pb-2.5 border-b border-gray-100/80">
+          <form onSubmit={handleSearch} className="flex w-full rounded-full overflow-hidden bg-gray-50/80 ring-1 ring-gray-200/80 focus-within:ring-2 focus-within:ring-theme-focus focus-within:bg-white transition-all h-[38px]">
+            <div className="flex items-center pl-3.5 text-gray-400">
+              <Search size={15} />
             </div>
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-2 pl-2 pr-3 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400"
+              className="w-full py-2 pl-2.5 pr-3 bg-transparent outline-none text-[13px] text-gray-800 placeholder:text-gray-400"
             />
             <button type="submit" className="bg-[#242933] hover:bg-black text-white px-4 flex items-center justify-center transition-colors">
-              <Search size={16} />
+              <Search size={15} />
             </button>
           </form>
         </div>
