@@ -4,6 +4,18 @@ import Category from '../models/Category.js';
 import Brand from '../models/Brand.js';
 import { adaptProductForFrontend, adaptProductsListForFrontend } from '../utils/productResponseAdapter.js';
 
+/**
+ * Builds a word-boundary regex from a filter value for precise matching.
+ * - Escapes regex special characters (safe against injection)
+ * - Flexible whitespace matching ("55 inch" matches "55  inch")
+ * - Word boundaries prevent partial matches ("32 inch" won't match "132 inch")
+ */
+const buildSmartRegex = (value) => {
+  const escaped = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const flexSpaced = escaped.replace(/\s+/g, '\\s+');
+  return new RegExp(`\\b${flexSpaced}\\b`, 'i');
+};
+
 // @desc    Fetch all products with advanced filtering
 // @route   GET /api/products
 // @access  Public
@@ -86,16 +98,24 @@ export const getProducts = async (req, res) => {
       childCategoryFilter = { childCategory: req.query.childCategory };
     }
 
-    // --- Category-specific field filters ---
-    const categoryFieldFilters = {};
+    // --- Category-specific field filters (multi-field search) ---
+    const dynamicFilterConditions = [];
     const reservedKeys = [
       'page', 'pageSize', 'keyword', 'category', 'subCategory', 'childCategory', 'brand', 'sortBy',
       'minPrice', 'maxPrice', 'availability', 'color'
     ];
     Object.keys(req.query).forEach(key => {
       if (!reservedKeys.includes(key) && req.query[key]) {
-        // Check if it's a categoryFields filter
-        categoryFieldFilters[`categoryFields.${key}`] = { $regex: req.query[key], $options: 'i' };
+        const regex = buildSmartRegex(req.query[key]);
+        // Search across categoryFields, name, highlights, and shortDescription
+        dynamicFilterConditions.push({
+          $or: [
+            { [`categoryFields.${key}`]: regex },
+            { name: regex },
+            { highlights: regex },
+            { shortDescription: regex }
+          ]
+        });
       }
     });
 
@@ -126,9 +146,13 @@ export const getProducts = async (req, res) => {
       ...availabilityFilter,
       ...visibilityFilter,
       ...colorFilter,
-      ...categoryFieldFilters,
       ...(Object.keys(priceFilter).length > 0 ? priceFilter : {}),
     };
+
+    // Append dynamic filter conditions as $and (each filter must match in at least one field)
+    if (dynamicFilterConditions.length > 0) {
+      finalQuery.$and = (finalQuery.$and || []).concat(dynamicFilterConditions);
+    }
 
     const count = await Product.countDocuments(finalQuery);
     const products = await Product.find(finalQuery)

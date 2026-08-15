@@ -23,7 +23,7 @@ const Footer = () => {
               <span className="font-bold text-2xl tracking-tight text-white">Satguru<span style={{ color: 'var(--theme-primary)' }}>Electricals</span></span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mt-4">
-              Your trusted partner for premium home appliances & electronics. Quality products, competitive prices, and exceptional service since 1995.
+              Your trusted partner for premium home appliances & electronics. Quality products, competitive prices, and exceptional service since 1985.
             </p>
             <p className="text-[11px] text-gray-500 mt-2 uppercase tracking-wider font-medium">Trusted by families across Gujarat</p>
             <div className="flex space-x-4 pt-2">

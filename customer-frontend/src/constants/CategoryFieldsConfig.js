@@ -22,7 +22,7 @@ export const CATEGORY_FIELDS = {
       { key: 'wallMountIncluded', label: 'Wall Mount Included', type: 'boolean' },
       { key: 'energyRating', label: 'Energy Rating', type: 'select', options: ['1 Star', '2 Star', '3 Star', '4 Star', '5 Star'] },
     ],
-    filterFields: ['screenSize', 'resolution', 'smartTv', 'displayType'],
+    filterFields: ['screenSize', 'resolution', 'displayType'],
   },
 
   refrigerator: {
