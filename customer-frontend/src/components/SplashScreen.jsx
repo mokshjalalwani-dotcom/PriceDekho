@@ -30,18 +30,6 @@ const SplashScreen = ({ onComplete }) => {
     return () => timersRef.current.forEach(clearTimeout);
   }, [onComplete]);
 
-  // Don't render anything visible until image is ready
-  if (phase === 'loading') {
-    return (
-      <div className="splash-overlay" aria-hidden="true">
-        <div className="splash-shutter-slats" />
-        <div className="splash-shutter-bar">
-          <div className="splash-lock-handle" />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className={`splash-overlay ${phase === 'exit' ? 'splash-exit' : ''}`}
@@ -56,7 +44,10 @@ const SplashScreen = ({ onComplete }) => {
       </div>
 
       {/* Logo content */}
-      <div className={`splash-content ${phase === 'exit' ? 'splash-content-exit' : ''}`}>
+      <div 
+        className={`splash-content ${phase === 'exit' ? 'splash-content-exit' : ''}`}
+        style={{ opacity: phase === 'loading' ? 0 : 1 }}
+      >
         <img
           src="/satguru-splash.png"
           alt=""
