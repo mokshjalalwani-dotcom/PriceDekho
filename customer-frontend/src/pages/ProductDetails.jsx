@@ -33,7 +33,7 @@ const ProductDetails = () => {
   const { addToast } = useToast();
 
   useSEO({
-    title: product ? product.name : (loading ? 'Loading...' : 'Product Not Found'),
+    title: product ? `Buy ${product.name} in Vyara | Satguru Electronics` : (loading ? 'Loading...' : 'Product Not Found'),
     description: product ? (product.shortDescription || product.name) : '',
     image: product ? product.mainImage : '',
     url: window.location.href
